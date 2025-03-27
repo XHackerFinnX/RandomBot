@@ -1,0 +1,1089 @@
+:root {
+  --background: #121212;
+  --foreground: #ffffff;
+  --card-background: #1e1e1e;
+  --border-color: #333;
+  --muted-text: #888;
+  --blue: #3b82f6;
+  --blue-hover: #2563eb;
+  --gray-700: #374151;
+  --yellow: #f59e0b;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  /* Занимают всю высоту экрана */
+  width: 100%;
+  /* Занимают всю ширину экрана */
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  background-color: var(--background);
+  color: var(--foreground);
+  line-height: 1.5;
+}
+
+.container {
+  max-width: 480px;
+  margin: 0 auto;
+  padding: 1rem 0;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-top: 80px;
+  box-sizing: border-box;
+  /* Учитывает padding и border в общей ширине и высоте */
+}
+
+span {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+
+/* Main container for the loading screen */
+.container-loading {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  backdrop-filter: blur(8px);
+  transition: all 500ms;
+}
+
+.screen {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  max-width: 28rem;
+  width: 100%;
+  margin: 0 auto;
+  transition: all 500ms ease-out;
+  transform-origin: center;
+}
+
+.step-header-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 1.5rem;
+  margin-top: 24%;
+}
+
+.blue-box {
+  width: 200px;
+  height: 200px;
+  object-fit: contain;
+  border-radius: 0.75rem;
+  box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+  animation: float 3s ease-in-out infinite, subtle-rotate 6s ease-in-out infinite;
+}
+
+.title-loading {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: hsl(var(--primary));
+  margin-bottom: 0.5rem;
+  animation: pulse-opacity 2s ease-in-out infinite;
+}
+
+.text-loading {
+  color: hsl(var(--muted-foreground));
+  font-size: 1rem;
+}
+
+.step-content {
+  flex: 1;
+  padding: 16 1;
+  margin-top: 20%;
+}
+
+.step-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.step-icon {
+  width: 100px;
+  height: 100px;
+  margin-bottom: 0.5rem;
+}
+
+.step-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+  text-align: center;
+}
+
+/* /прогесс */
+.progress-indicator {
+  display: flex;
+  justify-content: center;
+  gap: 0.25rem;
+  margin: 1rem 0;
+}
+
+.progress-dot {
+  height: 6px;
+  width: 20px;
+  border-radius: 9999px;
+  background-color: var(--gray-700);
+}
+
+.progress-dot.active {
+  background-color: rgb(255, 255, 255);
+}
+
+.step-form {
+  margin-top: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.input-field {
+  background-color: var(--card-background);
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  font-weight: 700;
+  /* Толщина шрифта (жирный) */
+}
+
+.input-field input {
+  width: 100%;
+  background-color: transparent;
+  border: none;
+  color: var(--foreground);
+  font-size: 1rem;
+  font-weight: 700;
+  /* Толщина шрифта (жирный) */
+}
+
+.input-field input:focus {
+  outline: none;
+}
+
+.input-field input[type="number"] {
+  appearance: textfield;
+  -webkit-appearance: textfield;
+  -moz-appearance: textfield;
+}
+
+
+.input-field input[type="number"]::-webkit-outer-spin-button,
+.input-field input[type="number"]::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+#giveaway-name {
+  margin-left: 5px;
+}
+
+.input-field-text {
+  background-color: var(--card-background);
+  font-weight: 700;
+  /* Толщина шрифта (жирный) */
+  letter-spacing: 1px;
+  /* Расстояние между буквами */
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  position: relative;
+  display: inline-block;
+  color: #888;
+  /* Цвет текста */
+}
+
+.input-field-text input {
+  width: 100%;
+  padding-left: 86px;
+  /* Отступ слева, чтобы текст начинался после слова "Название:" */
+  background-color: transparent;
+  border: none;
+  color: var(--foreground);
+  font-size: 1rem;
+}
+
+.input-field-text label {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  pointer-events: none;
+  /* Чтобы клик по label не фокусировал input */
+  color: #888;
+  /* Цвет текста */
+}
+
+.input-field-text input:focus {
+  outline: none;
+}
+
+.field-with-icon {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  color: #888;
+}
+
+.clickable {
+  cursor: pointer;
+}
+
+.button-samples {
+  display: flex;
+  gap: 0.5rem;
+  justify-content: center;
+}
+
+.sample-button {
+  background-color: var(--card-background);
+  border: none;
+  color: white;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-weight: 700;
+}
+
+.sample-button-active {
+  background-color: var(--blue);
+  font-weight: 700;
+}
+
+.help-text {
+  font-size: 0.875rem;
+  color: var(--muted-text);
+  margin-top: 2px;
+  margin-left: 5px;
+}
+
+.warning-text {
+  color: var(--yellow);
+}
+
+.navigation-buttons {
+  display: flex;
+  gap: 1rem;
+}
+
+.navigation-buttons button {
+  padding: 13px 23px;
+  /* Увеличиваем внутренние отступы для большего размера */
+  font-size: 15px;
+  /* Увеличиваем размер текста */
+  font-weight: 700;
+  /* Делаем текст жирным */
+  border: none;
+  /* Убираем границу (опционально) */
+  border-radius: 10px;
+  /* Закругляем углы (опционально) */
+  background-color: #007bff;
+  /* Цвет фона кнопки (опционально) */
+  color: white;
+  /* Цвет текста (опционально) */
+  cursor: pointer;
+  /* Меняем курсор при наведении */
+  transition: background-color 0.3s ease;
+  /* Плавное изменение цвета при наведении */
+}
+
+.navigation-buttons button:hover {
+  background-color: #0056b3;
+  /* Цвет фона при наведении (опционально) */
+}
+
+.button {
+  flex: 1;
+  padding: 0.75rem;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  transition: background-color 0.2s;
+}
+
+.button-primary {
+  background-color: #007bff;
+  /* Синий фон */
+  border: 1px solid #007bff;
+  /* Синяя рамка */
+  color: white;
+  /* Белый текст */
+  font-weight: 700;
+}
+
+.button-primary:hover {
+  background-color: var(--blue-hover);
+}
+
+.button-outline {
+  background-color: #2a2a2a;
+  /* Прозрачный фон */
+  color: #ffffff;
+  /* Темный текст */
+  font-weight: 700;
+}
+
+.button-outline:hover {
+  background-color: #f0f0f0;
+  /* Светлый фон при наведении */
+}
+
+.modal-actions {
+  display: flex;
+  gap: 15px;
+  /* Расстояние между кнопками */
+  justify-content: flex-end;
+  /* Выравнивание кнопок вправо */
+  margin-top: 20px;
+  /* Отступ сверху */
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+  font-weight: 1000;
+}
+
+.full-width {
+  width: 100%;
+}
+
+.channels-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.channel-item {
+  background-color: var(--card-background);
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.channel-avatar {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+}
+
+.channel-name {
+  color: white;
+}
+
+.channel-subscribers {
+  font-size: 0.875rem;
+  color: var(--muted-text);
+}
+
+.button-edit-button {
+  height: 36px;
+  background-color: #2a2a2a;
+  /* Прозрачный фон */
+  color: #ffffff;
+  /* Темный текст */
+  font-weight: 700;
+  width: 100%;
+  border-radius: 11px;
+  border-color: transparent;
+  cursor: pointer;
+}
+
+.button-button-outline {
+  height: 36px;
+  background-color: #2a2a2a;
+  /* Прозрачный фон */
+  color: #ffffff;
+  /* Темный текст */
+  font-weight: 700;
+  width: 100%;
+  border-radius: 11px;
+  border-color: transparent;
+  cursor: pointer;
+}
+
+.select-button {
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background-color: var(--gray-700);
+  border: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.select-button.selected {
+  background-color: var(--blue);
+}
+
+.check-icon {
+  color: white;
+  width: 16px;
+  height: 16px;
+  display: none;
+}
+
+.select-button.selected .check-icon {
+  display: block;
+}
+
+/* Switch styles */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 44px;
+  height: 24px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--gray-700);
+  transition: .4s;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 16px;
+  width: 16px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  transition: .4s;
+}
+
+input:checked+.slider {
+  background-color: var(--blue);
+}
+
+input:checked+.slider:before {
+  transform: translateX(20px);
+}
+
+.slider.round {
+  border-radius: 24px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+/* Date display */
+.date-placeholder {
+  color: white;
+}
+
+/* Review styles */
+.review-section {
+  margin-bottom: 1.5rem;
+}
+
+.review-section-title {
+  display: flex;
+  align-items: center;
+  color: white;
+  margin-bottom: 0.5rem;
+}
+
+.review-section-title span {
+  margin-right: 0.5rem;
+}
+
+.review-item {
+  background-color: var(--card-background);
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  margin-bottom: 0.5rem;
+  height: 50px;
+  display: flex;
+  align-items: center;
+}
+
+.review-label-sup {
+  color: var(--card-background);
+  padding-left: 15px;
+  text-align: center;
+  font-weight: 700;
+  color: #888;
+}
+
+.review-label-post {
+  color: var(--card-background);
+  padding-left: 15px;
+  text-align: center;
+  font-weight: 700;
+  color: #888;
+}
+
+.review-label-name {
+  color: var(--card-background);
+  padding-left: 15px;
+  text-align: center;
+  font-weight: 700;
+  color: #888;
+}
+
+.review-value {
+  color: white;
+  margin-right: 15px;
+  padding-left: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.review-value-post {
+  color: white;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  margin-right: 14px;
+  padding-left: 4px;
+}
+
+.mt-4 {
+  margin-top: 1rem;
+}
+
+
+/* Стили Календаря */
+.calendar-container {
+  max-width: 300px;
+  margin: auto auto;
+  font-family: Arial, sans-serif;
+}
+
+.calendar-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: transparent;
+  border-radius: 8px;
+}
+
+.calendar-nav-button {
+  width: 28px;
+  height: 28px;
+  background-color: transparent;
+  border: none;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: rgb(255, 255, 255);
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+}
+
+.calendar-nav-button:hover {
+  background-color: #444;
+  /* Изменение цвета при наведении */
+}
+
+#current-month {
+  font-size: 16px;
+  font-weight: bold;
+  color: #ffffff;
+}
+
+.calendar {
+  margin-top: 1rem;
+}
+
+.weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+  font-size: 0.8rem;
+}
+
+.calendar-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 8px;
+  margin-top: 0.5rem;
+}
+
+.calendar-day {
+  height: 36px;
+  width: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.calendar-day:hover {
+  background-color: #333;
+}
+
+.calendar-day.selected {
+  background-color: var(--blue);
+}
+
+.calendar-day.today {
+  background-color: var(--blue);
+}
+
+.calendar-day.outside-month {
+  color: var(--muted-text);
+  opacity: 0.5;
+}
+
+.time-selector {
+  margin: 0 auto;
+  padding: 0.5rem;
+  background-color: #2a2a2a;
+  border-radius: 0.5rem;
+  text-align: center;
+  width: 110px;
+  /* Фиксированная ширина */
+
+}
+
+.time-selector input {
+  background-color: transparent;
+  border: none;
+  color: white;
+  font-size: 1rem;
+  text-align: center;
+  width: 100%;
+}
+
+.time-selector input:focus {
+  outline: none;
+}
+
+
+.modal-date {
+  display: none;
+  position: fixed;
+  z-index: 1000;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  /* затемнение фона */
+  align-items: center;
+  justify-content: center;
+  /* overflow: hidden; Убедитесь, что содержимое не выходит за границы */
+}
+
+.modal-content-date {
+  background-color: var(--card-background);
+  border-radius: 0.75rem;
+  width: 90%;
+  max-width: 360px;
+  /* Максимальная ширина */
+  height: 520;
+  /* Высота на 100% */
+  overflow-y: auto;
+  /* Прокрутка по вертикали, если нужно */
+  animation: fadeIn 0.3s ease-out;
+  /* Анимация появления */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.modal-header-date {
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 700;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+#start-date-field {
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+
+#start-date-field.hidden {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.hidden {
+  display: none;
+}
+
+/* Стили для страницы проверки (review) */
+.review-section {
+  margin-bottom: 24px;
+  padding: 16px 3;
+  background-color: transparent;
+  border-radius: 8px;
+  padding-left: 1px;
+  padding-right: 1px;
+}
+
+.review-section-title {
+  display: flex;
+  align-items: center;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.review-section-title span {
+  margin-right: 8px;
+}
+
+.review-item {
+  display: flex;
+  /* justify-content:left; */
+  padding: 8px 0;
+  color: #1e1e1e;
+}
+
+.review-label {
+  color: var(--card-background);
+  padding-left: 15px;
+  text-align: center;
+  font-weight: 700;
+  color: #888;
+}
+
+.edit-button {
+  background-color: #2a2a2a;
+  /* Прозрачный фон */
+  color: #ffffff;
+  /* Темный текст */
+  font-weight: 700;
+  width: 100%;
+  min-height: 50%;
+}
+
+.edit-button:hover {
+  background-color: #e0e0e0;
+}
+
+.date-placeholder {
+  color: #666;
+}
+
+@media (max-width: 480px) {
+  .container {
+    padding: 10px;
+  }
+
+  .button {
+    font-size: 14px;
+    padding: 8px 12px;
+  }
+}
+
+/* ------------ */
+.review-channel-item {
+  background-color: var(--card-background);
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.review-channel-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.75rem 0.7rem;
+  padding-right: 0.002rem;
+  background-color: #1a1a1a;
+  border-bottom: 1px solid rgba(107, 114, 128, 0.1);
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: slideIn 0.3s ease-out forwards;
+  border-radius: 18px;
+  margin-bottom: 8px;
+}
+
+
+.channel-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  padding: 0.75rem 0.7rem;
+  padding-right: 0.002rem;
+  background-color: #1a1a1a;
+  border-bottom: 1px solid rgba(107, 114, 128, 0.1);
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: translateY(10px);
+  animation: slideIn 0.3s ease-out forwards;
+  border-radius: 18px;
+  margin-bottom: 8px;
+}
+
+.channel-content {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.channel-avatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #1e40af;
+}
+
+.channel-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.channel-avatar-letter {
+  color: white;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.channel-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.channel-name-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.channel-name {
+  color: #e5e7eb;
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+.channel-status {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.status-verified {
+  color: #10b981;
+}
+
+.status-not-verified {
+  color: #ef4444;
+}
+
+.channel-subscribers {
+  color: #9ca3af;
+  font-size: 0.75rem;
+}
+
+.channel-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.channel-button {
+  padding: 0.2rem;
+  border-radius: 9999px;
+  color: #9ca3af;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.channel-button:hover {
+  color: white;
+  background-color: #374151;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.checkbox-container {
+  display: inline-block;
+  position: relative;
+  padding-left: 40px;
+  cursor: pointer;
+  font-size: 16px;
+  user-select: none;
+  line-height: 28px;
+  /* Match the height of the checkbox */
+}
+
+/* Скрытый стандартный чекбокс */
+.checkbox-container input {
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  height: 0;
+  width: 0;
+}
+
+/* Кастомный чекбокс */
+.checkmark {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  transform: translateY(-50%);
+  height: 28px;
+  width: 28px;
+  background-color: #ccc;
+  border-radius: 50%;
+  transition: all 0.3s ease;
+}
+
+/* При наведении */
+.checkbox-container:hover .checkmark {
+  background-color: #bbb;
+}
+
+/* Когда чекбокс отмечен */
+.checkbox-container input:checked~.checkmark {
+  background-color: #4CAF50;
+}
+
+/* Стиль для галочки */
+.checkmark:after {
+  content: "";
+  position: absolute;
+  display: none;
+  width: 5px;
+  height: 10px;
+  border: solid white;
+  border-width: 0 3px 3px 0;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) rotate(45deg);
+  transform-origin: center;
+}
+
+/* Отображаем галочку при выборе */
+.checkbox-container input:checked~.checkmark:after {
+  display: block;
+}
+
+/* Стили для кастомного alert */
+/* Стили для кастомного alert */
+.custom-alert {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  /* Окно на всю ширину экрана */
+  background-color: rgba(0, 0, 0, 0.8);
+  /* Темный фон */
+  color: white;
+  padding: 15px 20px;
+  box-sizing: border-box;
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+  display: none;
+  /* Скрыто по умолчанию */
+  z-index: 9999;
+  border-top: 5px solid red;
+  /* Красная полоска снизу */
+  box-shadow: 0 -4px 10px rgba(0, 0, 0, 0.4);
+}
+
+/* Кнопка закрытия уведомления */
+.alert-close {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 20px;
+  cursor: pointer;
+  position: absolute;
+  top: 5px;
+  right: 10px;
+}
+
+/* Стили текста уведомления */
+#alert-message {
+  margin: 0;
+  padding-right: 40px;
+  /* Чтобы текст не перекрывался кнопкой */
+}

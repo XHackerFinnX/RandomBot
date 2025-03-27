@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>RandomWood</title>
+  <link rel="stylesheet" href="/static/basic/basic_styles.css">
+  <link rel="stylesheet" href="/static/modal/modal_style.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lucide-icons@0.187.0/dist/umd/lucide-icons.js">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+
+<body>
+  <div id="app" class="telegram-container">
+    <div id="loading" class="loading-container">
+      <div class="loading-spinner"></div>
+    </div>
+
+    <div id="main-content" class="main-content hidden">
+      <!-- Создать розыгрыш секция -->
+      <div class="telegram-section pt-4">
+        <div class="greeting animate-fade-in">
+          <span class="emoji">👋</span>
+          <h1 class="greeting-text">
+            Привет, <span id="user_name" class="username-gradient">Пользователь</span>!
+          </h1>
+        </div>
+        <button id="new-giveaway-btn" class="telegram-primary-button">
+          <span class="icon">✨</span>
+          <span>Новый розыгрыш</span>
+        </button>
+      </div>
+
+      <!-- Розыгрыши секция -->
+      <div class="telegram-section animate-fade-in" style="animation-delay: 0.1s;">
+        <div class="section-header">
+          <div class="section-title">
+            <span class="section-icon gift-icon">🎁</span>
+            <h2>Розыгрыши</h2>
+          </div>
+        </div>
+        <div>
+          <p class="section-desc">У вас пока нет активных розыгрышей</p>
+          <button id="view-all-giveaways-btn" class="telegram-secondary-button">
+            🎰 Все розыгрыши
+          </button>
+        </div>
+      </div>
+
+      <!-- Канал секция -->
+      <div class="telegram-section animate-fade-in" style="animation-delay: 0.2s;">
+        <div class="section-header">
+          <div class="section-title">
+            <span class="section-icon radio-icon">📻</span>
+            <h2>Каналы</h2>
+          </div>
+          <button class="view-all-btn" id="view-all-channels">Все</button>
+        </div>
+        <div class="items-list" id="channels-list" style="display: none;">
+          <!-- Динамически добавлятся каналы -->
+        </div>
+        <div id="no-channels-container">
+          <p class="section-desc">У вас пока нет подключенных каналов</p>
+          <button id="addChannelBtn" class="telegram-secondary-button">
+            <span class="icon">➕</span>
+            <span>Добавить канал</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Пост секция -->
+      <div class="telegram-section animate-fade-in" style="animation-delay: 0.3s;">
+        <div class="section-header">
+          <div class="section-title">
+            <span class="section-icon file-icon">📃</span>
+            <h2>Посты</h2>
+          </div>
+          <button class="view-all-btn" id="view-all-posts">Все</button>
+        </div>
+        <div class="items-list" id="posts-list" style="display: none;">
+          <!-- Динамически добавляется посты -->
+        </div>
+        <div id="no-posts-container">
+          <p class="section-desc">У вас пока нет постов</p>
+          <button id="addPostBtn" class="telegram-secondary-button">
+            <span>✏️</span>
+            <span>Новый пост</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Модальное окно постов -->
+    <div id="modalOverlay" class="modal-overlay">
+      <div class="modal-container">
+        <div class="modal-header">
+          <h2 class="modal-title">Список постов</h2>
+          <button id="closeModalBtn" class="close-button" aria-label="Close">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <div class="modal-content">
+          <!-- Контейнер для списка постов -->
+          <div id="postsListContainer" class="posts-list-container hidden">
+            <div class="posts-list" id="modalPostsList"></div>
+          </div>
+          <button id="add-newpost" class="add-button-container" style="display: none;">Новый пост</button>
+
+          <!-- Сообщение при отсутствии постов -->
+          <div id="noPostsMessage" class="no-posts-message">
+            <p class="modal-message">Посты не найдены</p>
+            <button id="add-newpost" class="add-button">Новый пост</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Модальное окно каналов -->
+    <div id="channelModalOverlay" class="modal-overlay">
+      <div class="modal-container">
+        <div class="modal-header">
+          <h2 class="modal-title">Список каналов</h2>
+          <button id="closeChannelModalBtn" class="close-button" aria-label="Close">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="18" y1="6" x2="6" y2="18"></line>
+              <line x1="6" y1="6" x2="18" y2="18"></line>
+            </svg>
+          </button>
+        </div>
+
+        <div class="modal-content-channel">
+          <!-- Контейнер для списка каналов -->
+          <div id="channelListContainer" class="channel-list-container hidden">
+            <div class="channel-list" id="modalChannelList"></div>
+          </div>
+          <button id="add-newchannel" class="add-button-container-channel" style="display: none;">Добавить новый
+            канал</button>
+
+          <!-- Сообщение при отсутствии постов -->
+          <div id="noChannelMessage" class="no-channel-message">
+            <p class="modal-message">Каналы не найдены</p>
+            <button id="add-newchannel" class="add-button">Добавить канал</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
+  <script src="/static/basic/basic_script.js"></script>
+  <script src="/static/basic/basic_requests.js"></script>
+  <script src="/static/modal/modal_script.js"></script>
+</body>
+
+</html>

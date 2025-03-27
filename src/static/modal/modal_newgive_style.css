@@ -1,0 +1,335 @@
+:root {
+    --telegram-blue: #4EA4F6;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: none;
+    justify-content: center;
+    align-items: flex-end;
+    z-index: 50;
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+    pointer-events: none;
+}
+
+.modal-overlay.show {
+    display: flex;
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.modal-container {
+    background-color: #171717;
+    height: 75vh;
+    width: 100%;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    padding: 4px;
+    padding-left: 8px;
+    position: relative;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(100%);
+    transition: transform 0.3s ease-out;
+}
+
+.modal-container.show {
+    transform: translateY(0);
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.modal-title {
+    font-size: 1.25rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+.close-button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 5px;
+    box-shadow: none;
+}
+
+.close-button:hover {
+    color: #ccc;
+    background: none;
+}
+
+.modal-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-message {
+    margin-bottom: 24px;
+}
+
+.add-button {
+    background: linear-gradient(90deg, var(--telegram-blue), #0088cc, #6bbbe2, var(--telegram-blue));
+    color: white;
+    padding: 8px 24px;
+    border-radius: 10px;
+    cursor: pointer;
+    animation: gradientFlow 3s linear infinite;
+    transition: opacity 0.3s ease, transform 0.2s ease;
+    font-size: 18px;
+    height: 50px;
+}
+
+.add-button:hover {
+    opacity: 0.9;
+    animation-play-state: paused;
+}
+
+.add-button:active {
+    transform: scale(0.98);
+}
+
+@keyframes gradientFlow {
+    0% {
+        background-position: 0% 50%;
+    }
+
+    50% {
+        background-position: 100% 50%;
+    }
+
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+.add-button {
+    font-size: clamp(0.875rem, 4vw, 1rem);
+    padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 4vw, 1.5rem);
+}
+
+.animate-fade-in {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.animate-fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.animate-slide-up {
+    transform: translateY(0);
+}
+
+.animate-slide-down {
+    transform: translateY(100%);
+}
+
+.modal-content-channel {
+    padding: 16px;
+    padding-top: 0px;
+    flex: 1;
+}
+
+.modal-message-channel {
+    color: #a1a1aa;
+    margin-bottom: 16px;
+    font-size: 14px;
+}
+
+.add-button-channel {
+    background: linear-gradient(90deg, var(--telegram-blue), #0088cc, #6bbbe2, var(--telegram-blue));
+    color: white;
+    border: #171717;
+    padding: 8px 24px;
+    border-radius: 10px;
+    cursor: pointer;
+    animation: gradientFlow 3s linear infinite;
+    transition: opacity 0.3s ease, transform 0.2s ease;
+    font-size: 18px;
+    height: 50px;
+    margin-top: 15px;
+}
+
+
+
+/* -------------- */
+
+
+.posts-list-container {
+    width: 100%;
+    max-height: 60vh;
+    overflow-y: auto;
+    padding: 1rem 0.5rem;
+    margin-bottom: 12px;
+}
+
+.post-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.post-item {
+    padding: 8px 0;
+    border-bottom: 1px;
+    cursor: default;
+    margin-bottom: 10px;
+    background-color: #242424;
+}
+
+.post-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    cursor: default;
+}
+
+.post-details {
+    flex-grow: 1;
+    max-width: calc(100% - 68px);
+}
+
+.post-title {
+    margin: 0;
+    padding-left: 7px;
+    font-size: 16px;
+    color: #ffffff;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.post-meta {
+    font-size: 12px;
+    color: #353535;
+    margin-top: 4px;
+}
+
+.post-actions {
+    display: flex;
+}
+
+.action-button {
+    padding: 0.4rem;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    border-radius: 8px;
+    justify-content: center;
+    color: #9ca3af;
+    background:#303030;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.action-button svg {
+    width: 20px;
+    height: 20px;
+}
+
+.action-button:active {
+    background-color: #194b25;
+}
+
+.no-posts-message {
+    text-align: center;
+    padding: 2rem;
+}
+
+.hidden {
+    display: none;
+}
+
+.add-button-container {
+    background: linear-gradient(90deg, var(--telegram-blue), #0088cc, #6bbbe2, var(--telegram-blue));
+    color: white;
+    padding: 8px 24px;
+    border-radius: 10px;
+    cursor: pointer;
+    animation: gradientFlow 3s linear infinite;
+    transition: opacity 0.3s ease, transform 0.2s ease;
+    font-size: 18px;
+    height: 50px;
+    width: 100%;
+}
+
+.add-button-container:hover {
+    opacity: 0.9;
+    animation-play-state: paused;
+}
+
+.add-button-container:active {
+    transform: scale(0.98);
+}
+
+.add-button-container {
+    font-size: clamp(0.875rem, 4vw, 1rem);
+    padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 4vw, 1.5rem);
+}
+
+.add-button-container-channel {
+    background: linear-gradient(90deg, var(--telegram-blue), #0088cc, #6bbbe2, var(--telegram-blue));
+    color: white;
+    padding: 8px 24px;
+    border-radius: 10px;
+    cursor: pointer;
+    animation: gradientFlow 3s linear infinite;
+    transition: opacity 0.3s ease, transform 0.2s ease;
+    font-size: 18px;
+    height: 50px;
+    width: 100%;
+}
+
+.add-button-container-channel:hover {
+    opacity: 0.9;
+    animation-play-state: paused;
+}
+
+.add-button-container-channel:active {
+    transform: scale(0.98);
+}
+
+.add-button-container-channel {
+    font-size: clamp(0.875rem, 4vw, 1rem);
+    padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 4vw, 1.5rem);
+}
+
+@keyframes gradientFlow {
+    0% {
+        background-position: 0% 50%;
+        /* Начальная позиция градиента */
+    }
+
+    50% {
+        background-position: 100% 50%;
+        /* Смещение градиента */
+    }
+
+    100% {
+        background-position: 0% 50%;
+        /* Возврат к начальной позиции */
+    }
+}

@@ -1,0 +1,41 @@
+/* iPhone 14 Pro Max */
+@media only screen and (max-width: 430px) and (max-height: 932px) {
+    body {
+        padding-top: 9vh;
+    }
+}
+
+/* iPhone 14 */
+@media only screen and (max-width: 390px) and (max-height: 844px) {
+    body {
+        padding-top: 9vh;
+    }
+}
+
+/* iPhone SE */
+@media only screen and (max-width: 375px) and (max-height: 667px) {
+    body {
+        padding-top: 8vh;
+    }
+}
+
+/* Samsung Galaxy S22 Ultra */
+@media only screen and (max-width: 412px) and (max-height: 915px) {
+    body {
+        padding-top: 9vh;
+    }
+}
+
+/* Google Pixel 6 */
+@media only screen and (max-width: 393px) and (max-height: 851px) {
+    body {
+        padding-top: 7vh;
+    }
+}
+
+/* Samsung Galaxy A12 */
+@media only screen and (max-width: 360px) and (max-height: 780px) {
+    body {
+        padding-top: 6vh;
+    }
+}

@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Все розыгрыши</title>
+  <link rel="stylesheet" href="/static/allgive/allgive_style.css">
+  <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>Ваши розыгрыши</h1>
+    </div>
+    
+    <div class="tabs">
+      <div class="tabs-list">
+        <button class="tab-trigger active" data-status="active">Активен</button>
+        <button class="tab-trigger" data-status="pending">Ожидание</button>
+        <button class="tab-trigger" data-status="completed">Завершен</button>
+      </div>
+      
+      <div class="tab-content active" data-status="active">
+        <p class="no-giveaways">У вас нет созданных розыгрышей в статусе "Активен"</p>
+        <a href="/newgive" class="button">Создать розыгрыш</a>
+      </div>
+      
+      <div class="tab-content" data-status="pending">
+        <p class="no-giveaways">У вас нет созданных розыгрышей в статусе "Ожидание"</p>
+        <a href="/newgive" class="button">Создать розыгрыш</a>
+      </div>
+      
+      <div class="tab-content" data-status="completed">
+        <p class="no-giveaways">У вас нет созданных розыгрышей в статусе "Завершен"</p>
+        <a href="/newgive" class="button">Создать розыгрыш</a>
+      </div>
+    </div>
+  </div>
+  
+  <script src="/static/allgive/allgive_script.js" defer></script>
+</body>
+</html>

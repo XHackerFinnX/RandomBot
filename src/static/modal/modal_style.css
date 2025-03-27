@@ -1,0 +1,461 @@
+:root {
+    --telegram-blue: #4EA4F6;
+}
+
+body.modal-open {
+    overflow: hidden;
+}
+
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: flex-end;
+    z-index: 50;
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+    pointer-events: none;
+}
+
+.modal-container {
+    background-color: #171717;
+    height: 75vh;
+    width: 100%;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    padding: 4px;
+    padding-left: 8px;
+    position: relative;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    transform: translateY(100%);
+    transition: transform 0.3s ease-out;
+}
+
+.modal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.modal-title {
+    font-size: 1.25rem;
+    font-weight: 500;
+    margin: 0;
+}
+
+.close-button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    padding: 5px;
+    box-shadow: none;
+}
+
+.close-button:hover {
+    color: #ccc;
+    background: none;
+}
+
+.modal-content {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-content-channel {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-message {
+    margin-bottom: 24px;
+}
+
+.add-button {
+    background: linear-gradient(90deg, var(--telegram-blue), #0088cc, #6bbbe2, var(--telegram-blue));
+    color: white;
+    padding: 8px 24px;
+    border-radius: 10px;
+    cursor: pointer;
+    animation: gradientFlow 3s linear infinite;
+    transition: opacity 0.3s ease, transform 0.2s ease;
+    font-size: 18px;
+    height: 50px;
+}
+
+.add-button:hover {
+    opacity: 0.9;
+    /* Эффект при наведении */
+    animation-play-state: paused;
+    /* Останавливаем анимацию при наведении */
+}
+
+.add-button:active {
+    transform: scale(0.98);
+    /* Эффект при нажатии */
+}
+
+.add-button {
+    font-size: clamp(0.875rem, 4vw, 1rem);
+    /* Адаптивный размер текста кнопки */
+    padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 4vw, 1.5rem);
+    /* Адаптивные отступы */
+}
+
+.animate-fade-in {
+    opacity: 1;
+    pointer-events: auto;
+}
+
+.animate-fade-out {
+    opacity: 0;
+    pointer-events: none;
+}
+
+.animate-slide-up {
+    transform: translateY(0);
+}
+
+.animate-slide-down {
+    transform: translateY(100%);
+}
+
+/* -------------------- */
+
+
+.posts-list-container {
+    width: 100%;
+    max-height: 60vh;
+    overflow-y: auto;
+    padding: 1rem 0.5rem;
+    border: 2px solid #303030;
+    /* Добавляем рамку */
+    border-radius: 8px;
+    /* Закругляем углы рамки */
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+    /* Добавляем тень для красоты */
+    margin-bottom: 12px;
+}
+
+.post-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem;
+    border-radius: 0.75rem;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.post-item:hover {
+    background-color: rgba(0, 0, 0, 0.8);
+}
+
+.post-item {
+    padding: 8px 0;
+    border-bottom: 1px;
+    cursor: default;
+    margin-bottom: 10px;
+    background-color: #242424;
+}
+
+.post-content {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    width: 100%;
+    cursor: default;
+}
+
+.post-details {
+    flex-grow: 1;
+    max-width: calc(100% - 100px);
+}
+
+.post-title {
+    margin: 0;
+    padding-left: 7px;
+    font-size: 16px;
+    color: #ffffff;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}
+
+.post-meta {
+    font-size: 12px;
+    color: #353535;
+    margin-top: 4px;
+}
+
+.post-actions {
+    display: flex;
+}
+
+.action-button {
+    padding: 0.4rem;
+    border-radius: 6px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 9999px;
+    color: #9ca3af;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.action-button svg {
+    width: 20px;
+    height: 20px;
+}
+
+.no-posts-message {
+    text-align: center;
+    padding: 2rem;
+}
+
+.hidden {
+    display: none;
+}
+
+.add-button-container {
+    background: linear-gradient(90deg, var(--telegram-blue), #0088cc, #6bbbe2, var(--telegram-blue));
+    color: white;
+    padding: 8px 24px;
+    border-radius: 10px;
+    cursor: pointer;
+    animation: gradientFlow 3s linear infinite;
+    transition: opacity 0.3s ease, transform 0.2s ease;
+    font-size: 18px;
+    height: 50px;
+    width: 100%;
+}
+
+.add-button-container:hover {
+    opacity: 0.9;
+    animation-play-state: paused;
+}
+
+.add-button-container:active {
+    transform: scale(0.98);
+}
+
+.add-button-container {
+    font-size: clamp(0.875rem, 4vw, 1rem);
+    padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 4vw, 1.5rem);
+}
+
+.add-button-container-channel {
+    background: linear-gradient(90deg, var(--telegram-blue), #0088cc, #6bbbe2, var(--telegram-blue));
+    color: white;
+    padding: 8px 24px;
+    border-radius: 10px;
+    cursor: pointer;
+    animation: gradientFlow 3s linear infinite;
+    transition: opacity 0.3s ease, transform 0.2s ease;
+    font-size: 18px;
+    height: 50px;
+    width: 100%;
+}
+
+.add-button-container-channel:hover {
+    opacity: 0.9;
+    animation-play-state: paused;
+}
+
+.add-button-container-channel:active {
+    transform: scale(0.98);
+}
+
+.add-button-container-channel {
+    font-size: clamp(0.875rem, 4vw, 1rem);
+    padding: clamp(0.5rem, 2vw, 0.75rem) clamp(1rem, 4vw, 1.5rem);
+}
+
+@keyframes gradientFlow {
+    0% {
+        background-position: 0% 50%;
+        /* Начальная позиция градиента */
+    }
+
+    50% {
+        background-position: 100% 50%;
+        /* Смещение градиента */
+    }
+
+    100% {
+        background-position: 0% 50%;
+        /* Возврат к начальной позиции */
+    }
+}
+
+
+
+.channel-list-container {
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    opacity: 0;
+    animation: fadeIn 0.3s ease-out forwards;
+    border: 2px solid #303030;
+    /* Добавляем рамку */
+    border-radius: 8px;
+    /* Закругляем углы рамки */
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+    /* Добавляем тень для красоты */
+    margin-bottom: 12px;
+    padding-left: 8px;
+    padding-right: 8px;
+}
+
+.channel-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 0.75rem 1rem;
+    background-color: #1a1a1a;
+    border-bottom: 1px solid rgba(107, 114, 128, 0.1);
+    transition: all 0.3s ease;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: slideIn 0.3s ease-out forwards;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    border-radius: 18px;
+}
+
+.channel-content {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+}
+
+.channel-avatar {
+    width: 2rem;
+    height: 2rem;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #1e40af;
+}
+
+.channel-avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.channel-avatar-letter {
+    color: white;
+    font-size: 0.875rem;
+    font-weight: 600;
+}
+
+.channel-info {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.channel-name-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.channel-name {
+    color: #e5e7eb;
+    font-weight: 500;
+    font-size: 0.875rem;
+}
+
+.channel-status {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.status-verified {
+    color: #10b981;
+}
+
+.status-not-verified {
+    color: #ef4444;
+}
+
+.channel-subscribers {
+    color: #9ca3af;
+    font-size: 0.75rem;
+}
+
+.channel-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.channel-button {
+    padding: 0.2rem;
+    border-radius: 9999px;
+    color: #9ca3af;
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.channel-button:hover {
+    color: white;
+    background-color: #374151;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateY(10px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
+        transform: rotate(360deg);
+    }
+}

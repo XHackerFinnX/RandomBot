@@ -1,0 +1,382 @@
+:root {
+    --background: #121212;
+    --foreground: #ffffff;
+    --card-background: #1e1e1e;
+    --border-color: #333;
+    --muted-text: #888;
+    --blue: #3b82f6;
+    --blue-hover: #2563eb;
+    --gray-700: #374151;
+    --yellow: #f59e0b;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: Arial, sans-serif;
+}
+
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    width: 100%;
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+    background-color: var(--background);
+    color: var(--foreground);
+    line-height: 1.5;
+}
+
+/* Main container for the loading screen */
+.container-loading {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 50;
+    backdrop-filter: blur(8px);
+    transition: all 500ms;
+}
+
+.screen {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    max-width: 28rem;
+    width: 100%;
+    margin: 0 auto;
+    transition: all 500ms ease-out;
+    transform-origin: center;
+    padding-top: 0;
+}
+
+.step-header-loading {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 1.5rem;
+    margin-top: 24%;
+}
+
+.blue-box {
+    width: 200px;
+    height: 200px;
+    object-fit: contain;
+    border-radius: 0.75rem;
+    box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1);
+}
+
+.title-loading {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: hsl(var(--primary));
+    margin-bottom: 0.5rem;
+    animation: pulse-opacity 2s ease-in-out infinite;
+}
+
+.text-loading {
+    color: hsl(var(--muted-foreground));
+    font-size: 1rem;
+    margin-bottom: 15px;
+}
+
+.step-header {
+    font-size: 10px;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 0.5rem;
+}
+
+.green-box {
+    width: 128px;
+    height: 128px;
+    /* background-color: #16a34a; */
+    /* green-600 */
+    border-radius: 24px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 8px;
+    margin-top: 10%;
+}
+
+.large {
+    width: 160px;
+    height: 160px;
+}
+
+.icon-large {
+    font-size: 48px !important;
+}
+
+.title {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 3%;
+}
+
+.text {
+    text-align: center;
+    margin-bottom: 32px;
+}
+
+.blue-button-full-width {
+    width: 100%;
+    height: 45px;
+    font-weight: 100;
+    /* Толщина шрифта (жирный) */
+    background-color: #2563eb;
+    /* blue-600 */
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-weight: 1000;
+    font-size: 16px;
+}
+
+.blue-button {
+    width: 100%;
+    height: 45px;
+    font-weight: 700;
+    /* Толщина шрифта (жирный) */
+    background-color: #2563eb;
+    /* blue-600 */
+    color: white;
+    border: none;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 140 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 1%;
+    margin-bottom: 1%;
+    font-size: 16px;
+}
+
+.blue-button:hover {
+    background-color: #1d4ed8;
+    /* blue-700 */
+}
+
+.blue-button-small {
+    width: 152px;
+    height: 32px;
+    background-color: #2563eb;
+    /* blue-600 */
+    color: white;
+    border: none;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 8px;
+    padding-bottom: 8px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 140 160px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 1%;
+    margin-bottom: 1%;
+}
+
+.gray-button {
+    width: 100%;
+    background-color: #27272a;
+    /* zinc-800 */
+    color: white;
+    border: none;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-bottom: 5%;
+}
+
+.gray-button:hover {
+    background-color: #3f3f46;
+    /* zinc-700 */
+}
+
+.small {
+    padding: 4px 16px;
+    font-size: 14px;
+}
+
+.flex-between {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.channel-box {
+    width: 100%;
+    background-color: #27272a;
+    /* zinc-800 */
+    padding: 12px;
+    border-radius: 8px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 2%;
+}
+
+.flex-start {
+    display: flex;
+    align-items: center;
+}
+
+.avatar {
+    width: 32px;
+    height: 32px;
+    background-color: #2563eb;
+    /* blue-600 */
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 12px;
+}
+
+.small-text {
+    margin-top: 1px;
+    font-size: 14px;
+    color: #9ca3af;
+    /* gray-400 */
+}
+
+.full-width {
+    width: 100%;
+}
+
+/* стили диалога */
+.dialog {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 1000;
+}
+
+.dialog-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.8);
+    animation: fadeIn 0.2s ease-in;
+}
+
+.dialog-content {
+    position: relative;
+    background-color: #18181b;
+    /* zinc-900 */
+    border: 1px solid #27272a;
+    /* zinc-800 */
+    border-radius: 8px;
+    max-width: 400px;
+    width: 90%;
+    padding: 24px;
+    z-index: 51;
+    animation: zoomIn 0.2s ease-in;
+}
+
+.dialog-header {
+    text-align: center;
+    margin-bottom: 16px;
+    position: relative;
+    font-weight: 1000;
+}
+
+.dialog-title {
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.dialog-close {
+    position: absolute;
+    right: 0;
+    top: 0;
+    background: transparent;
+    border: none;
+    color: white;
+    opacity: 0.7;
+    cursor: pointer;
+}
+
+.dialog-close:hover {
+    opacity: 1;
+}
+
+.dialog-body {
+    opacity: 0.9;
+    margin-bottom: 16px;
+}
+
+.dialog-body p {
+    margin-bottom: 16px;
+}
+
+.dialog-body ul {
+    list-style-type: disc;
+    padding-left: 20px;
+    margin-bottom: 16px;
+}
+
+.dialog-body li {
+    margin-bottom: 8px;
+}
+
+
+/* ---------------- */
+
+
+
+
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+@keyframes zoomIn {
+    from {
+        transform: scale(0.95);
+        opacity: 0;
+    }
+
+    to {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
