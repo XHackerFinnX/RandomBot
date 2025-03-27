@@ -47,7 +47,6 @@ async def receive_channel(message: Message, state: FSMContext, bot: Bot):
             except Exception as e:
                 member_count = 0
             
-            # Получаем аватарку
             try:
                 if chat.photo:
                     file = await bot.get_file(chat.photo.big_file_id)

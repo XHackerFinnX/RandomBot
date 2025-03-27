@@ -1,9 +1,9 @@
 from aiogram import Bot, Router, html
-from aiogram.filters import CommandStart, Command
+from aiogram.filters import CommandStart
 from aiogram.types import Message
 
 from bot.keyboard.inline import markup_start
-from bot.keyboard.reply import rmk, add_channel_keyboard
+from bot.keyboard.reply import add_channel_keyboard
 from bot.tg_name import telegram_name_users
 from db.models.user import check_user, add_user, update_winuser
 from bot.text import HELLO_TEXT, MENU_TEXT, ADD_CHANNEL_TEXT
@@ -12,11 +12,6 @@ from aiogram.fsm.context import FSMContext
 
 from zoneinfo import ZoneInfo
 from datetime import datetime
-
-
-
-from aiogram.types import InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
-from config import config
 
 router = Router()
 MOSCOW_TZ = ZoneInfo("Europe/Moscow")

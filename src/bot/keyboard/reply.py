@@ -1,11 +1,10 @@
 from aiogram.utils.keyboard import ReplyKeyboardBuilder
-from aiogram.types import KeyboardButton, KeyboardButtonRequestChat, ChatAdministratorRights, ReplyKeyboardRemove
+from aiogram.types import KeyboardButtonRequestChat, ChatAdministratorRights, ReplyKeyboardRemove
 
 rmk = ReplyKeyboardRemove()
 
 builder = ReplyKeyboardBuilder()
 
-# Добавляем кнопку "Добавить канал"
 builder.button(
     text="🗂 Добавить канал",
     request_chat=KeyboardButtonRequestChat(
@@ -30,5 +29,4 @@ builder.button(
     )
 )
 
-# Создаем разметку клавиатуры
 add_channel_keyboard = builder.as_markup(resize_keyboard=True, one_time_keyboard=True)

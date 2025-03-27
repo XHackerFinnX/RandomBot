@@ -10,10 +10,10 @@ class Settings(BaseSettings):
     POSTGRESQL_DATABASE: SecretStr
     
     # WEBAPP_URL: str = "https://uixdum.serveo.net"
-    WEBAPP_URL: str = "https://d889241bd4c95cf935bf774737c88d5d.serveo.net"
+    WEBAPP_URL: str = "https://randomrace.serveo.net"
     
     # WEBHOOK_URL: str = "https://uixdum.serveo.net"
-    WEBHOOK_URL: str = "https://d889241bd4c95cf935bf774737c88d5d.serveo.net"
+    WEBHOOK_URL: str = "https://randomrace.serveo.net"
     WEBHOOK_PATH: str = "/webhook"
     
     APP_HOST: str = "localhost"

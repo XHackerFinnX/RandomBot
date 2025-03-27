@@ -54,11 +54,9 @@ async def lifespan(app: FastAPI):
     except asyncio.CancelledError:
         print("App is shutting down.")
     finally:
-        # Safely close the bot session
         await bot.session.close()
 
         if is_event_loop_running():
-            # Safely cancel tasks if the event loop is still running
             for task in tasks:
                 task.cancel()
                 try:

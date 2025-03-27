@@ -23,7 +23,6 @@ from db.models.channels import (
 from db.models.user import add_channel_send, add_user, check_user, winner_user, select_channel_send, count_user_sub_channel
 
 from config import config
-from bot.tg_name import telegram_name_users
 
 bot = Bot(
     config.BOT_TOKEN.get_secret_value(),

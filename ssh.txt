@@ -1,1 +1,3 @@
 ssh -R 80:localhost:8000 serveo.net
+
+ssh -R randomrace.serveo.net:80:localhost:8000 serveo.net
