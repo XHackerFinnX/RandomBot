@@ -160,8 +160,8 @@ async def select_tgname_channel(channel_id):
         print(f"Ошибка получения channel: {error}")
         return None
     
-async def select_active_raffle():
-    status = 'Активен'
+async def select_active_raffle(status):
+
     query = """
     SELECT raffle_id, start_date, end_date
     FROM random_raffle
