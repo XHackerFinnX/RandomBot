@@ -1,10 +1,12 @@
 from datetime import datetime
+from io import BytesIO
 from zoneinfo import ZoneInfo
 import requests
 import ast
 
 from aiogram import Bot
 from aiogram.enums import ParseMode
+from aiogram.types import BufferedInputFile
 from aiogram.client.default import DefaultBotProperties
 from bot.keyboard.inline import markup_continue
 from aiogram.types import (
@@ -20,7 +22,7 @@ from db.models.channels import (
     update_channel_false,
     select_tgname_channel,
 )
-from db.models.user import add_channel_send, add_user, check_user, winner_user, select_channel_send, count_user_sub_channel
+from db.models.user import add_channel_send, add_user, check_user, select_photo_raffle, winner_user, select_channel_send, count_user_sub_channel
 
 from config import config
 
@@ -163,37 +165,69 @@ async def message_new_raffle(data, hash_id):
             ]
         ]
     )
-    text_id = "ID:#" + f"{hash_id}"
-    await bot.send_message(chat_id=user_id, text=post_text, reply_markup=markup_sub)
+    text_id = "ID: " + f"{hash_id}"
+    photo_post = await select_photo_raffle(hash_id)
+    if photo_post is None:
+        await bot.send_message(chat_id=user_id, text=post_text, reply_markup=markup_sub)
+    else:
+        photo = BufferedInputFile(photo_post, filename="image.jpg")
+        await bot.send_photo(chat_id=user_id, photo=photo, caption=post_text, reply_markup=markup_sub)
+        
     await bot.send_message(
         chat_id=user_id,
         text=f'{text_id}\n\n✅ Ваш розыгрыш "{name}" создан\n\nВы можете управлять им в приложении 👇🏻\n\nДля вызова меню нажмите 👉🏻 /start',
     )
 
     channel_sub = []
-    for channel in data.sub_channel_id:
-        try:
-            channel_tg = await select_tgname_channel(int(channel))
-            send_raffle_channel_sub = await bot.send_message(
-                chat_id=channel_tg, text=post_text, reply_markup=markup_sub
-            )
-            channel_sub.append([send_raffle_channel_sub.message_id, int(channel)])
-        except:
+    if photo_post is None:
+        for channel in data.sub_channel_id:
             try:
+                channel_tg = await select_tgname_channel(int(channel))
                 send_raffle_channel_sub = await bot.send_message(
-                    chat_id=str(channel), text=post_text, reply_markup=markup_sub
+                    chat_id=channel_tg, text=post_text, reply_markup=markup_sub
                 )
                 channel_sub.append([send_raffle_channel_sub.message_id, int(channel)])
             except:
                 try:
                     send_raffle_channel_sub = await bot.send_message(
-                        chat_id=channel, text=post_text, reply_markup=markup_sub
+                        chat_id=str(channel), text=post_text, reply_markup=markup_sub
                     )
-                    channel_sub.append(
-                        [send_raffle_channel_sub.message_id, int(channel)]
+                    channel_sub.append([send_raffle_channel_sub.message_id, int(channel)])
+                except:
+                    try:
+                        send_raffle_channel_sub = await bot.send_message(
+                            chat_id=channel, text=post_text, reply_markup=markup_sub
+                        )
+                        channel_sub.append(
+                            [send_raffle_channel_sub.message_id, int(channel)]
+                        )
+                    except Exception as e:
+                        print(e)
+    else:
+        photo = BufferedInputFile(photo_post, filename="image.jpg")
+        for channel in data.sub_channel_id:
+            try:
+                channel_tg = await select_tgname_channel(int(channel))
+                send_raffle_channel_sub = await bot.send_photo(
+                    chat_id=channel_tg, photo=photo, caption=post_text, reply_markup=markup_sub
+                )
+                channel_sub.append([send_raffle_channel_sub.message_id, int(channel)])
+            except:
+                try:
+                    send_raffle_channel_sub = await bot.send_photo(
+                        chat_id=channel_tg, photo=photo, caption=post_text, reply_markup=markup_sub
                     )
-                except Exception as e:
-                    print(e)
+                    channel_sub.append([send_raffle_channel_sub.message_id, int(channel)])
+                except:
+                    try:
+                        send_raffle_channel_sub = await bot.send_photo(
+                            chat_id=channel_tg, photo=photo, caption=post_text, reply_markup=markup_sub
+                        )
+                        channel_sub.append(
+                            [send_raffle_channel_sub.message_id, int(channel)]
+                        )
+                    except Exception as e:
+                        print(e)
 
     await add_channel_send(hash_id, str(channel_sub))
 
@@ -284,17 +318,32 @@ async def message_update_send_channel(text_post, button_post, hash_id):
             ]
         )
 
-        for item in list(channel_list):
-            send_id, channel_id = item
-            try:
-                await bot.edit_message_text(
-                    chat_id=channel_id,
-                    message_id=send_id,
-                    text=text_post,
-                    reply_markup=markup_sub,
-                )
-            except:
-                print("Не обновлен", item)
+        photo_post = await select_photo_raffle(hash_id)
+
+        if photo_post is None:
+            for item in list(channel_list):
+                send_id, channel_id = item
+                try:
+                    await bot.edit_message_text(
+                        chat_id=channel_id,
+                        message_id=send_id,
+                        text=text_post,
+                        reply_markup=markup_sub
+                    )
+                except:
+                    print("Не обновлен без фото", item)
+        else:
+            for item in list(channel_list):
+                send_id, channel_id = item
+                try:
+                    await bot.edit_message_caption(
+                        chat_id=channel_id,
+                        message_id=send_id,
+                        caption=text_post,
+                        reply_markup=markup_sub
+                    )
+                except:
+                    print("Не обновлен с фото", item)
     except Exception as e:
         print("Ошибка одновления смс", e)
 
