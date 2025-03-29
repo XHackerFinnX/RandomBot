@@ -323,3 +323,23 @@ async def update_winuser(hash_id, user_id):
             await conn.execute(query, hash_id, user_id)
     except Exception as error:
         print(f"Ошибка обновления подкрутки: {error}")
+        
+async def select_photo_raffle(hash_id):
+    query = """
+    SELECT photo_post FROM (
+	    SELECT rr.raffle_id, rp.photo_post
+	    FROM random_raffle AS rr
+	    JOIN random_posts AS rp
+	    ON rr.post_text = rp.text_post AND rr.user_id = rp.user_id
+    )
+    WHERE raffle_id = $1
+    """
+    
+    try:
+        pool = await User.connect()
+        async with pool.acquire() as conn:
+            post_photo = await conn.fetchval(query, hash_id)
+            return post_photo
+    except Exception as error:
+        print(f"Ошибка получения фотографии для поста: {error}")
+        return None
