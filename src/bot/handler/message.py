@@ -22,7 +22,7 @@ from db.models.channels import (
     update_channel_false,
     select_tgname_channel,
 )
-from db.models.user import add_channel_send, add_user, check_user, select_photo_raffle, winner_user, select_channel_send, count_user_sub_channel
+from db.models.user import add_channel_send, add_user, check_user, select_photo_post, select_photo_raffle, winner_user, select_channel_send, count_user_sub_channel
 
 from config import config
 
@@ -51,7 +51,13 @@ async def message_check_user_raffle(user_id):
 
 
 async def message_post(user_id: int, text: str):
-    await bot.send_message(user_id, text)
+    photo_post = await select_photo_post(user_id, text)
+    if photo_post is None:
+        await bot.send_message(user_id, text)
+    else:
+        photo = BufferedInputFile(photo_post, filename="image.jpg")
+        await bot.send_photo(chat_id=user_id, photo=photo, caption=text)
+        
     await bot.send_message(user_id, "👆🏻 ваш пост", reply_markup=markup_continue)
 
 
