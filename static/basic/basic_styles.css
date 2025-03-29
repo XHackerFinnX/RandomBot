@@ -20,12 +20,12 @@
   --ring: hsl(212.7, 26.8%, 83.9%);
   --radius: 0.75rem;
 
-  --telegram-blue: #4EA4F6;
-  --telegram-dark: #17212B;
-  --telegram-gray: #242F3D;
-  --telegram-lightgray: #8A8D91;
-  --telegram-channelIcon: #8774E1;
-  --telegram-postIcon: #8A8D91;
+  --telegram-blue: #4ea4f6;
+  --telegram-dark: #17212b;
+  --telegram-gray: #242f3d;
+  --telegram-lightgray: #8a8d91;
+  --telegram-channelIcon: #8774e1;
+  --telegram-postIcon: #8a8d91;
 }
 
 * {
@@ -38,7 +38,8 @@
 body {
   background-color: var(--background);
   color: var(--foreground);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
+    Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   font-feature-settings: "ss01";
@@ -91,7 +92,13 @@ button {
 }
 
 .telegram-primary-button {
-  background: linear-gradient(90deg, var(--telegram-blue), #0088cc, #6bbbe2, var(--telegram-blue));
+  background: linear-gradient(
+    90deg,
+    var(--telegram-blue),
+    #0088cc,
+    #6bbbe2,
+    var(--telegram-blue)
+  );
   background-size: 300% 100%;
   color: white;
   width: 100%;

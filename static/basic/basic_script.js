@@ -1,31 +1,30 @@
-document.addEventListener('DOMContentLoaded', function () {
-  const newGiveawayBtn = document.getElementById('new-giveaway-btn');
-  const allGiveawayBtn = document.getElementById('view-all-giveaways-btn');
+document.addEventListener("DOMContentLoaded", function () {
+  const newGiveawayBtn = document.getElementById("new-giveaway-btn");
+  const allGiveawayBtn = document.getElementById("view-all-giveaways-btn");
 
-  newGiveawayBtn.addEventListener('click', function () {
-    window.location.href = '/newgive';
+  newGiveawayBtn.addEventListener("click", function () {
+    window.location.href = "/newgive";
   });
 
-  allGiveawayBtn.addEventListener('click', function () {
-    window.location.href = '/allgive';
+  allGiveawayBtn.addEventListener("click", function () {
+    window.location.href = "/allgive";
   });
 });
 
-document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener("DOMContentLoaded", function () {
   const tg = window.Telegram?.WebApp;
-  // tg.requestFullscreen();
   tg.BackButton.hide();
 
   const userData = {
-    name: 'Пользователь'
+    name: "Пользователь",
   };
 
   init();
 
   function init() {
     setTimeout(() => {
-      document.getElementById('loading').classList.add('hidden');
-      document.getElementById('main-content').classList.remove('hidden');
+      document.getElementById("loading").classList.add("hidden");
+      document.getElementById("main-content").classList.remove("hidden");
     }, 300);
 
     if (tg && tg.initDataUnsafe && tg.initDataUnsafe.user) {
@@ -36,30 +35,27 @@ document.addEventListener('DOMContentLoaded', function () {
   }
 
   function updateUsername(name) {
-    const usernameElement = document.getElementById('user_name');
+    const usernameElement = document.getElementById("user_name");
     if (usernameElement) {
       usernameElement.textContent = name;
     }
   }
 });
 
-document.addEventListener('DOMContentLoaded', async function () {
+document.addEventListener("DOMContentLoaded", async function () {
   const tg = window.Telegram?.WebApp;
 
-  // Elements for channels
-  const channelsList = document.getElementById("channels-list")
-  const noChannelsContainer = document.getElementById("no-channels-container")
+  const channelsList = document.getElementById("channels-list");
+  const noChannelsContainer = document.getElementById("no-channels-container");
 
-  // Elements for posts
-  const postsList = document.getElementById("posts-list")
-  const noPostsContainer = document.getElementById("no-posts-container")
+  const postsList = document.getElementById("posts-list");
+  const noPostsContainer = document.getElementById("no-posts-container");
 
   async function fetchData() {
     const userId = tg?.initDataUnsafe?.user?.id;
-    // const userId = 1387002896;
     if (!userId) {
-      console.error("Не удалось получить ID пользователя.")
-      return
+      console.error("Не удалось получить ID пользователя.");
+      return;
     }
 
     try {
@@ -67,42 +63,39 @@ document.addEventListener('DOMContentLoaded', async function () {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ user_id: userId }),
-      })
+      });
 
       if (!response.ok) {
-        console.error("Ошибка ответа от сервера:", response.statusText)
-        return
+        console.error("Ошибка ответа от сервера:", response.statusText);
+        return;
       }
 
-      const data = await response.json()
-      updateChannels(data.channels)
-      updatePosts(data.posts)
+      const data = await response.json();
+      updateChannels(data.channels);
+      updatePosts(data.posts);
     } catch (error) {
-      console.error("Ошибка загрузки данных:", error)
+      console.error("Ошибка загрузки данных:", error);
     }
   }
 
   function updateChannels(channels) {
     if (!channels || channels.length === 0) {
-      noChannelsContainer.style.display = "block"
-      channelsList.style.display = "none"
-      return
+      noChannelsContainer.style.display = "block";
+      channelsList.style.display = "none";
+      return;
     }
 
-    // Show channels list and hide "no channels" message
-    noChannelsContainer.style.display = "none"
-    channelsList.style.display = "block"
+    noChannelsContainer.style.display = "none";
+    channelsList.style.display = "block";
 
-    // Clear existing channels
-    channelsList.innerHTML = ""
+    channelsList.innerHTML = "";
 
-    // Display up to 2 channels
-    const displayCount = Math.min(channels.length, 2)
+    const displayCount = Math.min(channels.length, 2);
 
     for (let i = 0; i < displayCount; i++) {
-      const channel = channels[i]
-      const channelElement = createChannelElement(channel)
-      channelsList.appendChild(channelElement)
+      const channel = channels[i];
+      const channelElement = createChannelElement(channel);
+      channelsList.appendChild(channelElement);
     }
   }
 
@@ -118,8 +111,8 @@ document.addEventListener('DOMContentLoaded', async function () {
   }
 
   function getRandomColor() {
-    const letters = '0123456789ABCDEF';
-    let color = '#';
+    const letters = "0123456789ABCDEF";
+    let color = "#";
     for (let i = 0; i < 6; i++) {
       color += letters[Math.floor(Math.random() * 16)];
     }
@@ -127,61 +120,62 @@ document.addEventListener('DOMContentLoaded', async function () {
   }
 
   function createChannelElement(channel) {
-    const channelDiv = document.createElement("div")
-    channelDiv.className = "item-card"
+    const channelDiv = document.createElement("div");
+    channelDiv.className = "item-card";
 
     channelDiv.innerHTML = `
       <div class="item-card">
         <div class="item">
           <div class="item-avatar">
-            ${channel.photo_url ? `<img src="${channel.photo_url}" alt="${channel.name}" class="avatar-img" />` : generateAvatarLetter(channel.name)}
+            ${
+              channel.photo_url
+                ? `<img src="${channel.photo_url}" alt="${channel.name}" class="avatar-img" />`
+                : generateAvatarLetter(channel.name)
+            }
           </div>
           <div class="item-details">
             <div class="item-title">${channel.name}</div>
-            <div class="item-subtitle">Подписчиков: ${channel.subscribers || 0}</div>
+            <div class="item-subtitle">Подписчиков: ${
+              channel.subscribers || 0
+            }</div>
           </div>
         </div>
       </div>
       `;
 
     channelDiv.addEventListener("click", () => {
-      // Handle channel click
-      console.log("Channel clicked:", channel)
-    })
+      console.log("Channel clicked:", channel);
+    });
 
-    return channelDiv
+    return channelDiv;
   }
 
   function updatePosts(posts) {
     if (!posts || posts.length === 0) {
-      noPostsContainer.style.display = "block"
-      postsList.style.display = "none"
-      return
+      noPostsContainer.style.display = "block";
+      postsList.style.display = "none";
+      return;
     }
 
-    // Show posts list and hide "no posts" message
-    noPostsContainer.style.display = "none"
-    postsList.style.display = "block"
+    noPostsContainer.style.display = "none";
+    postsList.style.display = "block";
 
-    // Clear existing posts
-    postsList.innerHTML = ""
+    postsList.innerHTML = "";
 
-    // Display up to 2 posts
-    const displayCount = Math.min(posts.length, 2)
+    const displayCount = Math.min(posts.length, 2);
 
     for (let i = 0; i < displayCount; i++) {
-      const post = posts[i]
-      const postElement = createPostElement(post)
-      postsList.appendChild(postElement)
+      const post = posts[i];
+      const postElement = createPostElement(post);
+      postsList.appendChild(postElement);
     }
   }
 
   function createPostElement(post) {
-    const postDiv = document.createElement("div")
-    postDiv.className = "item-card"
+    const postDiv = document.createElement("div");
+    postDiv.className = "item-card";
 
-    // Format date
-    const formattedDate = formatDate(post.date)
+    const formattedDate = formatDate(post.date);
 
     postDiv.innerHTML = `
       <div class="item-card">
@@ -195,31 +189,29 @@ document.addEventListener('DOMContentLoaded', async function () {
           </div>
         </div>
       </div>
-    `
+    `;
 
     postDiv.addEventListener("click", () => {
-      // Handle post click
-      console.log("Post clicked:", post)
-    })
+      console.log("Post clicked:", post);
+    });
 
-    return postDiv
+    return postDiv;
   }
 
   function formatDate(dateString) {
-    const date = new Date(dateString)
+    const date = new Date(dateString);
 
-    // Check if date is valid
     if (isNaN(date.getTime())) {
-      return dateString // Return original string if invalid
+      return dateString;
     }
 
-    const day = date.getDate().toString().padStart(2, "0")
-    const month = (date.getMonth() + 1).toString().padStart(2, "0")
-    const year = date.getFullYear()
-    const hours = date.getHours().toString().padStart(2, "0")
-    const minutes = date.getMinutes().toString().padStart(2, "0")
+    const day = date.getDate().toString().padStart(2, "0");
+    const month = (date.getMonth() + 1).toString().padStart(2, "0");
+    const year = date.getFullYear();
+    const hours = date.getHours().toString().padStart(2, "0");
+    const minutes = date.getMinutes().toString().padStart(2, "0");
 
-    return `${day}.${month}.${year}, ${hours}:${minutes}`
+    return `${day}.${month}.${year}, ${hours}:${minutes}`;
   }
 
   await fetchData();
