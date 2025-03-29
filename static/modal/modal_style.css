@@ -161,9 +161,9 @@ body.modal-open {
     transition: all 0.2s;
 }
 
-.post-item:hover {
+/* .post-item:hover {
     background-color: rgba(0, 0, 0, 0.8);
-}
+} */
 
 .post-item {
     padding: 8px 0;
@@ -420,12 +420,6 @@ body.modal-open {
     background: none;
     border: none;
     cursor: pointer;
-    transition: all 0.2s;
-}
-
-.channel-button:hover {
-    color: white;
-    background-color: #374151;
 }
 
 @keyframes fadeIn {
