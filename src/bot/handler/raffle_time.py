@@ -29,13 +29,13 @@ bot = Bot(
     default=DefaultBotProperties(parse_mode=ParseMode.HTML),
 )
 MOSCOW_TZ = ZoneInfo("Europe/Moscow")
-
 # Хранилище для задач
 raffle_tasks = []
 
 
 async def background_task():
-    raffle = await select_active_raffle()
+    
+    raffle = await select_active_raffle(status='Активен')
     if not raffle:
         return
 
@@ -45,6 +45,38 @@ async def background_task():
                 raffle_start["raffle_id"],
                 raffle_start["start_date"],
                 raffle_start["end_date"],
+            )
+        )
+        raffle_tasks.append(task)
+    
+    
+    raffle_expectation = await select_active_raffle(status='Ожидание')
+    if not raffle_expectation:
+        return
+
+    # Добавить сюда data для передачи в функцию
+    """
+    data = class Raffle(BaseModel):
+        user_id: int
+        name: str
+        post_id: int
+        post_text: str
+        post_button: str
+        sub_channel_id: List[int]
+        announcet_channel_id: List[int]
+        results_channel_id: List[int]
+        start_date: str
+        end_date: str
+        user_win: int
+    """
+    data = None
+    for raffle_start_expectation in raffle_expectation:
+        task = asyncio.create_task(
+            waiting_drawing_start(
+                data,
+                raffle_start_expectation["raffle_id"],
+                raffle_start_expectation["start_date"],
+                raffle_start_expectation["end_date"],
             )
         )
         raffle_tasks.append(task)
