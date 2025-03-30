@@ -343,3 +343,66 @@ async def select_photo_raffle(hash_id):
     except Exception as error:
         print(f"Ошибка получения фотографии для поста: {error}")
         return None
+    
+async def select_photo_post(user_id, post_text):
+    query = """
+    SELECT photo_post FROM random_posts
+    WHERE user_id = $1 AND text_post = $2
+    """
+    
+    try:
+        pool = await User.connect()
+        async with pool.acquire() as conn:
+            post_photo = await conn.fetchval(query, user_id, post_text)
+            return post_photo
+    except Exception as error:
+        print(f"Ошибка получения фотографии для поста из random_posts: {error}")
+        return None
+    
+async def select_raffle_active_my(user_id):
+    query = """
+    SELECT raffle_id, name, start_date, end_date, status FROM random_raffle
+    WHERE user_id = $1 AND status = 'Активен'
+    ORDER BY status = 'Активен' DESC, start_date DESC
+    """
+    
+    try:
+        pool = await User.connect()
+        async with pool.acquire() as conn:
+            user_raffle_my = await conn.fetch(query, user_id)
+            return user_raffle_my
+    except Exception as error:
+        print(f"Ошибка получения активных розыгрышей: {error}")
+        return None
+    
+async def select_raffle_expectation_my(user_id):
+    query = """
+    SELECT raffle_id, name, start_date, end_date, status FROM random_raffle
+    WHERE user_id = $1 AND status = 'Ожидание'
+    ORDER BY status = 'Ожидание' DESC, start_date DESC
+    """
+    
+    try:
+        pool = await User.connect()
+        async with pool.acquire() as conn:
+            user_raffle_my = await conn.fetch(query, user_id)
+            return user_raffle_my
+    except Exception as error:
+        print(f"Ошибка получения ожидающих розыгрышей: {error}")
+        return None
+    
+async def select_raffle_completed_my(user_id):
+    query = """
+    SELECT raffle_id, name, start_date, end_date, status FROM random_raffle
+    WHERE user_id = $1 AND status = 'Завершен'
+    ORDER BY status = 'Завершен' DESC, start_date DESC
+    """
+    
+    try:
+        pool = await User.connect()
+        async with pool.acquire() as conn:
+            user_raffle_my = await conn.fetch(query, user_id)
+            return user_raffle_my
+    except Exception as error:
+        print(f"Ошибка получения завершенных розыгрышей: {error}")
+        return None
