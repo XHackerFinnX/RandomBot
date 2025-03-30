@@ -1,71 +1,78 @@
-document.addEventListener('DOMContentLoaded', function () {
-    const tg = window.Telegram?.WebApp;
-    const winnersListElement = document.getElementById('winners-list');
-    const hashid = new URLSearchParams(window.location.search).get('raffle_id');
-    const data = { hashid };
-    const url = '/api/list_winner';
+document.addEventListener("DOMContentLoaded", function () {
+  const tg = window.Telegram?.WebApp;
 
-    fetch(url, {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
+  if (tg) {
+    tg.BackButton.show();
+    tg.BackButton.onClick(function () {
+      window.location.href = "/allgive";
+    });
+  }
+  const winnersListElement = document.getElementById("winners-list");
+  const hashid = new URLSearchParams(window.location.search).get("raffle_id");
+  const data = { hashid };
+  const url = "/api/list_winner";
+
+  fetch(url, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(data),
+  })
+    .then((response) => response.json())
+    .then((winners) => {
+      winners.forEach((winner) => {
+        const winnerElement = document.createElement("div");
+        winnerElement.className = "winner-item";
+
+        const winnerText = document.createElement("p");
+        winnerText.textContent = `${winner.id}. ${winner.name}`;
+
+        winnerElement.appendChild(winnerText);
+        winnersListElement.appendChild(winnerElement);
+      });
     })
-        .then(response => response.json())
-        .then(winners => {
-            winners.forEach(winner => {
-                const winnerElement = document.createElement('div');
-                winnerElement.className = 'winner-item';
-
-                const winnerText = document.createElement('p');
-                winnerText.textContent = `${winner.id}. ${winner.name}`;
-
-                winnerElement.appendChild(winnerText);
-                winnersListElement.appendChild(winnerElement);
-            });
-        })
-        .catch(error => {
-            console.error('Ошибка при запросе к серверу:', error);
-        });
-
-    const closeButton = document.getElementById('close-button');
-    closeButton.addEventListener('click', function () {
-        tg.close();
+    .catch((error) => {
+      console.error("Ошибка при запросе к серверу:", error);
     });
 
-    function showToast(title, description) {
-        const toastContainer = document.getElementById('toast-container');
+  const closeButton = document.getElementById("close-button");
+  closeButton.addEventListener("click", function () {
+    tg.close();
+  });
 
-        const toast = document.createElement('div');
-        toast.className = 'toast';
+  function showToast(title, description) {
+    const toastContainer = document.getElementById("toast-container");
 
-        const toastTitle = document.createElement('div');
-        toastTitle.className = 'toast-title';
-        toastTitle.textContent = title;
+    const toast = document.createElement("div");
+    toast.className = "toast";
 
-        const toastDescription = document.createElement('div');
-        toastDescription.className = 'toast-description';
-        toastDescription.textContent = description;
+    const toastTitle = document.createElement("div");
+    toastTitle.className = "toast-title";
+    toastTitle.textContent = title;
 
-        toast.appendChild(toastTitle);
-        toast.appendChild(toastDescription);
-        toastContainer.appendChild(toast);
+    const toastDescription = document.createElement("div");
+    toastDescription.className = "toast-description";
+    toastDescription.textContent = description;
 
-        requestAnimationFrame(() => {
-            requestAnimationFrame(() => {
-                toast.classList.add('visible');
-            });
-        });
+    toast.appendChild(toastTitle);
+    toast.appendChild(toastDescription);
+    toastContainer.appendChild(toast);
 
-        setTimeout(() => {
-            toast.classList.remove('visible');
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        toast.classList.add("visible");
+      });
+    });
 
-            setTimeout(() => {
-                if (toast.parentNode === toastContainer) {
-                    toastContainer.removeChild(toast);
-                }
-            }, 300);
-        }, 3000);
-    }
+    setTimeout(() => {
+      toast.classList.remove("visible");
+
+      setTimeout(() => {
+        if (toast.parentNode === toastContainer) {
+          toastContainer.removeChild(toast);
+        }
+      }, 300);
+    }, 3000);
+  }
 });
