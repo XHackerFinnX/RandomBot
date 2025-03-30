@@ -173,6 +173,10 @@ body {
   font-size: 12px;
   color: #a0a0a0;
   margin-bottom: 10px;
+  background-color: #2a2a2a;
+  border-radius: 999px;
+  padding: 4px 10px;
+  font-size: 12px;
 }
 
 .raffle-title {
@@ -190,6 +194,9 @@ body {
 .raffle-name {
   font-size: 16px;
   font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 }
 
 .raffle-dates {
