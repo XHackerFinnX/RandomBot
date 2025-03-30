@@ -9,10 +9,10 @@ class Settings(BaseSettings):
     POSTGRESQL_PORT: SecretStr
     POSTGRESQL_DATABASE: SecretStr
     
-    # WEBAPP_URL: str = "https://uixdum.serveo.net"
+    # WEBAPP_URL: str = "https://dqrest-178-236-140-171.ru.tuna.am"
     WEBAPP_URL: str = "https://randomrace.serveo.net"
     
-    # WEBHOOK_URL: str = "https://uixdum.serveo.net"
+    # WEBHOOK_URL: str = "https://dqrest-178-236-140-171.ru.tuna.am"
     WEBHOOK_URL: str = "https://randomrace.serveo.net"
     WEBHOOK_PATH: str = "/webhook"
     
