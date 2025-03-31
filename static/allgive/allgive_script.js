@@ -38,7 +38,6 @@ document.addEventListener("DOMContentLoaded", function () {
 
   async function fetchRaffleData(status) {
     const user_id = tg?.initDataUnsafe?.user?.id;
-    console.log(user_id, status);
     try {
       const response = await fetch(`/api/raffle-my?status=${status}`, {
         method: "POST",
@@ -69,6 +68,17 @@ document.addEventListener("DOMContentLoaded", function () {
     if (data.length === 0) {
       const noGiveawaysMessage = document.createElement("p");
       noGiveawaysMessage.classList.add("no-giveaways");
+
+      if (status === "active") {
+        status = "Активен";
+      }
+      if (status === "pending") {
+        status = "Ожидание";
+      } 
+      if (status === "completed") {
+        status = "Завершен";
+      }
+
       noGiveawaysMessage.textContent = `У вас нет созданных розыгрышей в статусе "${status}"`;
       tabContent.appendChild(noGiveawaysMessage);
 
@@ -96,7 +106,8 @@ document.addEventListener("DOMContentLoaded", function () {
         let buttonText = "Управлять";
         if (
           raffle.status.toLowerCase() === "завершен" ||
-          raffle.status.toLowerCase() === "completed"
+          raffle.status.toLowerCase() === "completed" ||
+          raffle.status_user
         ) {
           buttonText = "Подробнее";
         }
@@ -128,11 +139,12 @@ document.addEventListener("DOMContentLoaded", function () {
         manageButton.addEventListener("click", function () {
           if (
             raffle.status.toLowerCase() === "завершен" ||
-            raffle.status.toLowerCase() === "completed"
+            raffle.status.toLowerCase() === "completed" ||
+            raffle.status_user
           ) {
             window.location.href = `/raffle?raffle_id=${raffle.raffle_id}`;
           } else {
-            window.location.href = `/manage-raffle/${raffle.raffle_id}`;
+            window.location.href = `/manage-raffle?raffle_id=${raffle.raffle_id}`;
           }
         });
 
