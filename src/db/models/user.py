@@ -406,3 +406,28 @@ async def select_raffle_completed_my(user_id):
     except Exception as error:
         print(f"Ошибка получения завершенных розыгрышей: {error}")
         return None
+    
+async def select_raffle_participating(user_id, status):
+    query = """
+    SELECT DISTINCT ON (rut.raffle_id) 
+        rut.raffle_id, 
+        rr.name, 
+        rr.start_date,
+        rr.end_date, 
+        rr.status
+    FROM random_user_turn AS rut
+    LEFT JOIN random_raffle AS rr
+        ON rut.raffle_id = rr.raffle_id
+    WHERE rut.user_id = $1
+        AND rr.status = $2
+    ORDER BY rut.raffle_id, rr.start_date DESC;
+    """
+    
+    try:
+        pool = await User.connect()
+        async with pool.acquire() as conn:
+            user_raffle = await conn.fetch(query, user_id, status)
+            return user_raffle
+    except Exception as error:
+        print(f"Ошибка получения активных розыгрышей участвовшего пользователя: {error}")
+        return None
