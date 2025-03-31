@@ -125,7 +125,7 @@ async def check_channel_user_sub(channel_tg: str):
             rows = await conn.fetch(query, channel_tg)
             return rows
     except Exception as error:
-        print(f"Ошибка получения channel: {error}")
+        print(f"Ошибка получения channel по tg: {error}")
         return None
     
 async def check_channel_id_sub(channel_id: int):
@@ -141,7 +141,7 @@ async def check_channel_id_sub(channel_id: int):
             rows = await conn.fetch(query, channel_id)
             return rows
     except Exception as error:
-        print(f"Ошибка получения channel: {error}")
+        print(f"Ошибка получения channel по id: {error}")
         return None
     
 async def select_tgname_channel(channel_id):
