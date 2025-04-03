@@ -1,0 +1,419 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+    Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+}
+
+body {
+  background-color: #000;
+  color: #fff;
+  line-height: 1.5;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.giveaway-interface {
+  width: 100%;
+  max-width: 400px;
+  background-color: #000;
+  border-radius: 0.5rem;
+  padding: 1.5rem;
+  margin-top: 25px;
+}
+
+/* Header */
+.header {
+  margin-bottom: 1rem;
+  text-align: center;
+  color: #9ca3af;
+}
+
+/* Status button */
+.status-container {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 1rem;
+}
+
+.status-button {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  border-radius: 0.375rem;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.875rem;
+  background-color: #27272a;
+  color: #9ca3af;
+  border: none;
+  position: relative;
+  transition: background-color 0.3s ease;
+}
+
+.status-button.active {
+  background-color: #27272a;
+  color: #fff;
+}
+
+.status-indicator {
+  display: inline-block;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background-color: #6b7280;
+}
+
+.status-button.active .status-indicator {
+  background-color: #ef4444 !important; /* Красный для активного */
+}
+
+.status-button.waiting .status-indicator {
+  background-color: #f59e0b !important; /* Оранжевый для ожидания */
+}
+
+/* Participants counter */
+.participants-counter {
+  margin-bottom: 1rem;
+  padding: 0.75rem;
+  background-color: #18181b;
+  border-radius: 0.5rem;
+  text-align: center;
+}
+
+.counter-label {
+  font-size: 0.875rem;
+  color: #9ca3af;
+}
+
+.counter-value {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+/* Action buttons */
+.action-buttons {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1rem;
+}
+
+.end-early-button {
+  flex: 1;
+  padding: 0.75rem;
+  background-color: #3b82f6;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.end-early-button:hover {
+  background-color: #2563eb;
+}
+
+.cancel-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  background-color: #ef4444;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+}
+
+.cancel-button:hover {
+  background-color: #dc2626;
+}
+
+/* Sections */
+.section {
+  margin-bottom: 1rem;
+}
+
+.section-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.section-header h2 {
+  font-size: 1.125rem;
+  font-weight: bold;
+}
+
+.icon-orange {
+  color: #fdba74;
+}
+
+.icon-blue {
+  color: #60a5fa;
+}
+
+.icon-yellow {
+  color: #fcd34d;
+}
+
+/* Setting items */
+.setting-item {
+  margin-bottom: 0.5rem;
+  padding: 0.75rem;
+  background-color: #18181b;
+  border-radius: 0.5rem;
+}
+
+.setting-item:last-child {
+  margin-bottom: 0;
+}
+
+.setting-label {
+  font-size: 0.875rem;
+  color: #9ca3af;
+}
+
+.setting-value {
+  font-weight: 500;
+}
+
+.text-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* Channels list */
+.channels-list {
+  background-color: #18181b;
+  border-radius: 0.5rem;
+  text-align: center;
+  color: #6b7280;
+}
+
+.announcement-list {
+  background-color: #18181b;
+  border-radius: 0.5rem;
+  text-align: center;
+  color: #6b7280;
+}
+
+.result-list {
+  background-color: #18181b;
+  border-radius: 0.5rem;
+  text-align: center;
+  color: #6b7280;
+}
+
+/* Date editing */
+.date-edit-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.edit-button {
+  padding: 0.25rem;
+  background-color: #3f3f46;
+  color: #fff;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.date-edit-form {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.date-input {
+  flex: 1;
+  padding: 0.25rem 0.5rem;
+  background-color: #27272a;
+  color: #fff;
+  border: none;
+  border-radius: 0.25rem;
+}
+
+.save-button {
+  padding: 0.25rem;
+  background-color: #16a34a;
+  color: #fff;
+  border: none;
+  border-radius: 0.25rem;
+  cursor: pointer;
+}
+
+.review-section-title {
+  display: flex;
+  align-items: center;
+  color: white;
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.review-section-title span {
+  margin-right: 8px;
+}
+
+.channel-item {
+  background-color: var(--card-background);
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.channel-content {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.channel-avatar {
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #1e40af;
+}
+
+.channel-avatar-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.channel-info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.channel-name-container {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.channel-name {
+  color: #e5e7eb;
+  font-weight: 500;
+  font-size: 0.875rem;
+}
+
+.channel-subscribers {
+  color: #9ca3af;
+  font-size: 0.875rem;
+}
+
+/* Стили для модального окна */
+#confirmation-modal {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  justify-content: center;
+  align-items: center;
+}
+
+.modal-content {
+  background: #18181b;
+  padding: 0.6rem;
+  border-radius: 0.5rem;
+  text-align: center;
+  width: 90%;
+  max-width: 400px;
+}
+
+.modal-actions {
+  display: flex;
+  justify-content: space-between;
+  flex-direction: row;
+  margin-top: 8%;
+}
+
+.modal-text {
+  color: #fff;
+  font-size: 1rem;
+  margin-bottom: 1rem;
+}
+
+.modal-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+}
+
+.modal-button {
+  flex: 1;
+  padding: 0.75rem;
+  border: none;
+  border-radius: 0.5rem;
+  font-weight: 500;
+  cursor: pointer;
+  font-size: 16px;
+}
+
+.confirm-button-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #ef4444;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  padding: 1rem;
+  font-size: 15px;
+}
+
+.cancel-button-modal {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #3b82f6;
+  color: #fff;
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  padding: 1rem;
+  font-size: 15px;
+}
+
+#modal-confirm {
+  background-color: #3b82f6;
+  color: #fff;
+}
+
+#modal-confirm:hover {
+  background-color: #2563eb;
+}
+
+#modal-cancel {
+  background-color: #ef4444;
+  color: #fff;
+}
+
+#modal-cancel:hover {
+  background-color: #dc2626;
+}
