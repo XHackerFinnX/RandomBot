@@ -1,3 +1,4 @@
+from collections import namedtuple
 from datetime import datetime
 from io import BytesIO
 from zoneinfo import ZoneInfo
@@ -158,6 +159,7 @@ async def message_add_newpost(user_id):
 
 
 async def message_new_raffle(data, hash_id):
+    
     user_id = data.user_id
     name = data.name
     post_text = data.post_text
@@ -212,6 +214,88 @@ async def message_new_raffle(data, hash_id):
     else:
         photo = BufferedInputFile(photo_post, filename="image.jpg")
         for channel in data.sub_channel_id:
+            try:
+                channel_tg = await select_tgname_channel(int(channel))
+                send_raffle_channel_sub = await bot.send_photo(
+                    chat_id=channel_tg, photo=photo, caption=post_text, reply_markup=markup_sub
+                )
+                channel_sub.append([send_raffle_channel_sub.message_id, int(channel)])
+            except:
+                try:
+                    send_raffle_channel_sub = await bot.send_photo(
+                        chat_id=channel_tg, photo=photo, caption=post_text, reply_markup=markup_sub
+                    )
+                    channel_sub.append([send_raffle_channel_sub.message_id, int(channel)])
+                except:
+                    try:
+                        send_raffle_channel_sub = await bot.send_photo(
+                            chat_id=channel_tg, photo=photo, caption=post_text, reply_markup=markup_sub
+                        )
+                        channel_sub.append(
+                            [send_raffle_channel_sub.message_id, int(channel)]
+                        )
+                    except Exception as e:
+                        print(e)
+
+    await add_channel_send(hash_id, str(channel_sub))
+    
+
+async def message_new_raffle_list_data(data, hash_id):
+    
+    user_id = data[0]["user_id"]
+    name = data[0]["name"]
+    post_text = data[0]["post_text"]
+    markup_sub = InlineKeyboardMarkup(
+        inline_keyboard=[
+            [
+                InlineKeyboardButton(
+                    text=data[0]["post_button"] + " (0)",
+                    url=f"https://t.me/RandomRace_bot?startapp={hash_id}",
+                )
+            ]
+        ]
+    )
+    text_id = "ID: " + f"{hash_id}"
+    photo_post = await select_photo_raffle(hash_id)
+    if photo_post is None:
+        await bot.send_message(chat_id=user_id, text=post_text, reply_markup=markup_sub)
+    else:
+        photo = BufferedInputFile(photo_post, filename="image.jpg")
+        await bot.send_photo(chat_id=user_id, photo=photo, caption=post_text, reply_markup=markup_sub)
+        
+    await bot.send_message(
+        chat_id=user_id,
+        text=f'{text_id}\n\n✅ Ваш розыгрыш "{name}" создан\n\nВы можете управлять им в приложении 👇🏻\n\nДля вызова меню нажмите 👉🏻 /start',
+    )
+
+    channel_sub = []
+    if photo_post is None:
+        for channel in data[0]["sub_channel_id"]:
+            try:
+                channel_tg = await select_tgname_channel(int(channel))
+                send_raffle_channel_sub = await bot.send_message(
+                    chat_id=channel_tg, text=post_text, reply_markup=markup_sub
+                )
+                channel_sub.append([send_raffle_channel_sub.message_id, int(channel)])
+            except:
+                try:
+                    send_raffle_channel_sub = await bot.send_message(
+                        chat_id=str(channel), text=post_text, reply_markup=markup_sub
+                    )
+                    channel_sub.append([send_raffle_channel_sub.message_id, int(channel)])
+                except:
+                    try:
+                        send_raffle_channel_sub = await bot.send_message(
+                            chat_id=channel, text=post_text, reply_markup=markup_sub
+                        )
+                        channel_sub.append(
+                            [send_raffle_channel_sub.message_id, int(channel)]
+                        )
+                    except Exception as e:
+                        print(e)
+    else:
+        photo = BufferedInputFile(photo_post, filename="image.jpg")
+        for channel in data[0]["sub_channel_id"]:
             try:
                 channel_tg = await select_tgname_channel(int(channel))
                 send_raffle_channel_sub = await bot.send_photo(
