@@ -42,7 +42,7 @@ async def main_random(raffle_id: str, request: Request):
     name = data["name"]
     status = data["status"]
 
-    if status == 'Активен' or status == 'Ожидание' or status == 'Ждем':
+    if status == 'Активен' or status == 'Ждем':
         return templates.TemplateResponse(
             "endgive.html",
             {
@@ -51,6 +51,9 @@ async def main_random(raffle_id: str, request: Request):
                 "name": name
             },
         )
+        
+    elif status == 'Ожидание' or status == 'Отмена':
+        return templates.TemplateResponse("basic.html", {"request": request})
     
     elif status == 'Завершен':
         return templates.TemplateResponse(
