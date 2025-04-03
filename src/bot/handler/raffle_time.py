@@ -20,6 +20,7 @@ from bot.handler.message import (
     message_channel_result_raffle,
     message_data_check_sub_user_end_raffle,
     message_new_raffle,
+    message_new_raffle_list_data,
     message_update_raffle_end,
 )
 from db.models.channels import check_channel_id_sub, select_active_raffle
@@ -36,9 +37,6 @@ raffle_tasks = []
 async def background_task():
     
     raffle = await select_active_raffle(status='Активен')
-    if not raffle:
-        return
-
     for raffle_start in raffle:
         task = asyncio.create_task(
             waiting_drawing(
@@ -49,28 +47,9 @@ async def background_task():
         )
         raffle_tasks.append(task)
     
-    
     raffle_expectation = await select_active_raffle(status='Ожидание')
-    if not raffle_expectation:
-        return
-
-    # Добавить сюда data для передачи в функцию
-    """
-    data = class Raffle(BaseModel):
-        user_id: int
-        name: str
-        post_id: int
-        post_text: str
-        post_button: str
-        sub_channel_id: List[int]
-        announcet_channel_id: List[int]
-        results_channel_id: List[int]
-        start_date: str
-        end_date: str
-        user_win: int
-    """
-    data = None
     for raffle_start_expectation in raffle_expectation:
+        data = await select_raffle_data(raffle_start_expectation["raffle_id"])
         task = asyncio.create_task(
             waiting_drawing_start(
                 data,
@@ -92,9 +71,14 @@ async def waiting_drawing(hash_id, start_date, end_date):
         else:
             await asyncio.sleep(2)
 
+        data = await select_raffle_data(hash_id)
+        if data[0]["status"] == 'Завершен':
+            print('Розыгрыш завершен принудительно!')
+            return
+        
         await update_raffle_end(hash_id, "Ждем")
         await asyncio.sleep(2)
-        data = await select_raffle_data(hash_id)
+        
         count_winner = data[0]["user_winners"]
         sub_channel = data[0]["sub_channel_id"]
 
@@ -151,14 +135,23 @@ async def waiting_drawing_start(data, hash_id, start_date, end_date):
     try:
         entry_date = datetime.now(MOSCOW_TZ).replace(tzinfo=None)
         raffle_time_start = (start_date - entry_date).total_seconds()
+
         print(f"Розыгрыш {hash_id} начнется через {raffle_time_start} сек.")
         if raffle_time_start > 0:
             await asyncio.sleep(raffle_time_start)
         else:
             await asyncio.sleep(2)
-            
+        
+        temp_data = await select_raffle_data(hash_id)
+        
+        if temp_data[0]["status"] == "Активен":
+            return
+        
         await update_raffle_end(hash_id, "Активен")
-        await message_new_raffle(data, hash_id)
+        if type(data) is list:
+            await message_new_raffle_list_data(data, hash_id)
+        else:
+            await message_new_raffle(data, hash_id)
             
         entry_date = datetime.now(MOSCOW_TZ).replace(tzinfo=None)
         raffle_time = (end_date - entry_date).total_seconds()
