@@ -431,3 +431,31 @@ async def select_raffle_participating(user_id, status):
     except Exception as error:
         print(f"Ошибка получения активных розыгрышей участвовшего пользователя: {error}")
         return None
+    
+async def update_cancel_raffle(raffle_id):
+    query = """
+    UPDATE random_raffle
+    SET status = 'Отмена'
+    WHERE raffle_id = $1
+    """
+    
+    try:
+        pool = await User.connect()
+        async with pool.acquire() as conn:
+            await conn.execute(query, raffle_id)
+    except Exception as error:
+        print(f"Ошибка отмены розыгрыша: {error}")
+        
+async def update_status_raffle_start(raffle_id):
+    query = """
+    UPDATE random_raffle
+    SET status = 'Активен'
+    WHERE raffle_id = $1
+    """
+    
+    try:
+        pool = await User.connect()
+        async with pool.acquire() as conn:
+            await conn.execute(query, raffle_id)
+    except Exception as error:
+        print(f"Ошибка запуска розыгрыша через настройки: {error}")
