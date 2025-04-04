@@ -1,5 +1,5 @@
 :root {
-    --telegram-blue: #4EA4F6;
+    --telegram-blue: #4ea4f6;
 }
 
 body.modal-open {
@@ -86,7 +86,13 @@ body.modal-open {
 }
 
 .add-button {
-    background: linear-gradient(90deg, var(--telegram-blue), #0088cc, #6bbbe2, var(--telegram-blue));
+    background: linear-gradient(
+        90deg,
+        var(--telegram-blue),
+        #0088cc,
+        #6bbbe2,
+        var(--telegram-blue)
+    );
     color: white;
     padding: 8px 24px;
     border-radius: 10px;
@@ -135,7 +141,6 @@ body.modal-open {
 }
 
 /* -------------------- */
-
 
 .posts-list-container {
     width: 100%;
@@ -235,7 +240,13 @@ body.modal-open {
 }
 
 .add-button-container {
-    background: linear-gradient(90deg, var(--telegram-blue), #0088cc, #6bbbe2, var(--telegram-blue));
+    background: linear-gradient(
+        90deg,
+        var(--telegram-blue),
+        #0088cc,
+        #6bbbe2,
+        var(--telegram-blue)
+    );
     color: white;
     padding: 8px 24px;
     border-radius: 10px;
@@ -262,7 +273,13 @@ body.modal-open {
 }
 
 .add-button-container-channel {
-    background: linear-gradient(90deg, var(--telegram-blue), #0088cc, #6bbbe2, var(--telegram-blue));
+    background: linear-gradient(
+        90deg,
+        var(--telegram-blue),
+        #0088cc,
+        #6bbbe2,
+        var(--telegram-blue)
+    );
     color: white;
     padding: 8px 24px;
     border-radius: 10px;
@@ -304,8 +321,6 @@ body.modal-open {
         /* Возврат к начальной позиции */
     }
 }
-
-
 
 .channel-list-container {
     width: 100%;

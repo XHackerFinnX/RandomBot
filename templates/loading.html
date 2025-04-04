@@ -1,32 +1,36 @@
 <!DOCTYPE html>
 <html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Розыгрыш призов</title>
+        <link rel="stylesheet" href="/static/loading/loading_style.css" />
+        <script src="https://telegram.org/js/telegram-web-app.js"></script>
+        <link
+            href="https://fonts.googleapis.com/icon?family=Material+Icons"
+            rel="stylesheet"
+        />
+    </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Розыгрыш призов</title>
-  <link rel="stylesheet" href="/static/loading/loading_style.css">
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-</head>
+    <body>
+        <div class="container-loading">
+            <!-- Экран успешного выполнения -->
+            <div id="success-screen" class="screen hidden">
+                <div class="step-header">
+                    <span class="material-icons icon-large"></span>
+                    <img
+                        src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Activity/Trophy.webp"
+                        class="blue-box"
+                    />
+                </div>
+                <h2 class="title-loading">Успешно!</h2>
+                <p class="text-loading">👏 Розыгрыш создан 👏</p>
 
-<body>
-  <div class="container-loading">
-    <!-- Экран успешного выполнения -->
-    <div id="success-screen" class="screen hidden">
-      <div class="step-header">
-        <span class="material-icons icon-large"></span>
-        <img
-          src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Activity/Trophy.webp"
-          class="blue-box" />
-      </div>
-      <h2 class="title-loading">Успешно!</h2>
-      <p class="text-loading">👏 Розыгрыш создан 👏</p>
-
-      <button id="success-close-button" class="blue-button">Закрыть</button>
-    </div>
-
-    <script src="/static/loading/loading_script.js"></script>
-</body>
-
+                <button id="success-close-button" class="blue-button">
+                    Закрыть
+                </button>
+            </div>
+        </div>
+        <script src="/static/loading/loading_script.js"></script>
+    </body>
 </html>

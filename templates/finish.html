@@ -1,37 +1,43 @@
 <!DOCTYPE html>
 <html lang="ru">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Результаты розыгрыша</title>
-    <link rel="stylesheet" href="/static/finish/finish_style.css">
-    <script src="https://telegram.org/js/telegram-web-app.js"></script>
-</head>
-<body>
-    <div class="container">
-        <div class="header">
-            <div class="giveaway-title">{{ name }} 🎁</div>
-            <div class="giveaway-id">{{ raffle_id }}</div>
-        </div>
-        
-        <div class="image-container">
-            <img src="https://raw.githubusercontent.com/XHackerFinnX/Domeae/master/db/file_zip/animSticker/graybmw-ezgif.com-gif-maker.webp" alt="Машина с подарком" class="giveaway-image">
-        </div>
-        
-        <h1 class="title">Завершен!</h1>
-        <p class="subtitle">Список победителей:</p>
-        
-        <div class="winners-list" id="winners-list">
-            <!-- Winners will be added here by JavaScript -->
-        </div>
-        
-        <div class="buttons-container">
-            <button class="button button-primary" id="close-button">Закрыть</button>
-        </div>
-    </div>
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Результаты розыгрыша</title>
+        <link rel="stylesheet" href="/static/finish/finish_style.css" />
+        <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    </head>
+    <body>
+        <div class="container">
+            <div class="header">
+                <div class="giveaway-title">{{ name }} 🎁</div>
+                <div class="giveaway-id">{{ raffle_id }}</div>
+            </div>
 
-    <div id="toast-container" class="toast-container"></div>
+            <div class="image-container">
+                <img
+                    src="https://raw.githubusercontent.com/XHackerFinnX/Domeae/master/db/file_zip/animSticker/graybmw-ezgif.com-gif-maker.webp"
+                    alt="Машина с подарком"
+                    class="giveaway-image"
+                />
+            </div>
 
-    <script defer src="/static/finish/finish_script.js"></script>
-</body>
+            <h1 class="title">Завершен!</h1>
+            <p class="subtitle">Список победителей:</p>
+
+            <div class="winners-list" id="winners-list">
+                <!-- Winners will be added here by JavaScript -->
+            </div>
+
+            <div class="buttons-container">
+                <button class="button button-primary" id="close-button">
+                    Закрыть
+                </button>
+            </div>
+        </div>
+
+        <div id="toast-container" class="toast-container"></div>
+
+        <script defer src="/static/finish/finish_script.js"></script>
+    </body>
 </html>

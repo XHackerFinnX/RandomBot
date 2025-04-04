@@ -1,333 +1,334 @@
 :root {
-  --background: hsl(0, 0%, 0%);
-  --foreground: hsl(0, 0%, 95%);
-  --card: hsl(210, 30%, 15%);
-  --card-foreground: hsl(0, 0%, 95%);
-  --popover: hsl(210, 30%, 12%);
-  --popover-foreground: hsl(0, 0%, 95%);
-  --primary: hsl(214, 100%, 64%);
-  --primary-foreground: hsl(0, 0%, 100%);
-  --secondary: hsl(216, 19%, 19%);
-  --secondary-foreground: hsl(0, 0%, 98%);
-  --muted: hsl(216, 19%, 19%);
-  --muted-foreground: hsl(0, 0%, 65%);
-  --accent: hsl(216, 19%, 19%);
-  --accent-foreground: hsl(0, 0%, 98%);
-  --destructive: hsl(0, 84.2%, 60.2%);
-  --destructive-foreground: hsl(0, 0%, 98%);
-  --border: hsl(217.2, 32.6%, 17.5%);
-  --input: hsl(217.2, 32.6%, 17.5%);
-  --ring: hsl(212.7, 26.8%, 83.9%);
-  --radius: 0.75rem;
+    --background: hsl(0, 0%, 0%);
+    --foreground: hsl(0, 0%, 95%);
+    --card: hsl(210, 30%, 15%);
+    --card-foreground: hsl(0, 0%, 95%);
+    --popover: hsl(210, 30%, 12%);
+    --popover-foreground: hsl(0, 0%, 95%);
+    --primary: hsl(214, 100%, 64%);
+    --primary-foreground: hsl(0, 0%, 100%);
+    --secondary: hsl(216, 19%, 19%);
+    --secondary-foreground: hsl(0, 0%, 98%);
+    --muted: hsl(216, 19%, 19%);
+    --muted-foreground: hsl(0, 0%, 65%);
+    --accent: hsl(216, 19%, 19%);
+    --accent-foreground: hsl(0, 0%, 98%);
+    --destructive: hsl(0, 84.2%, 60.2%);
+    --destructive-foreground: hsl(0, 0%, 98%);
+    --border: hsl(217.2, 32.6%, 17.5%);
+    --input: hsl(217.2, 32.6%, 17.5%);
+    --ring: hsl(212.7, 26.8%, 83.9%);
+    --radius: 0.75rem;
 
-  --telegram-blue: #4ea4f6;
-  --telegram-dark: #17212b;
-  --telegram-gray: #242f3d;
-  --telegram-lightgray: #8a8d91;
-  --telegram-channelIcon: #8774e1;
-  --telegram-postIcon: #8a8d91;
+    --telegram-blue: #4ea4f6;
+    --telegram-dark: #17212b;
+    --telegram-gray: #242f3d;
+    --telegram-lightgray: #8a8d91;
+    --telegram-channelIcon: #8774e1;
+    --telegram-postIcon: #8a8d91;
 }
 
 * {
-  box-sizing: border-box;
-  margin: 0;
-  padding: 0;
-  border-color: var(--border);
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    border-color: var(--border);
 }
 
 body {
-  background-color: var(--background);
-  color: var(--foreground);
-  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
-    Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-  font-feature-settings: "ss01";
+    background-color: var(--background);
+    color: var(--foreground);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+        Helvetica, Arial, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-feature-settings: "ss01";
 }
 
 .telegram-container {
-  max-width: 32rem;
-  height: 100vh;
-  margin: 0 auto;
-  min-height: 100vh;
-  background-color: var(--background);
-  color: var(--foreground);
-  display: flex;
-  flex-direction: column;
-  padding-top: 9vh;
+    max-width: 32rem;
+    height: 100vh;
+    margin: 0 auto;
+    min-height: 100vh;
+    background-color: var(--background);
+    color: var(--foreground);
+    display: flex;
+    flex-direction: column;
+    padding-top: 9vh;
 }
 
 .loading-container {
-  flex: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
+    flex: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 100vh;
 }
 
 .loading-spinner {
-  width: 4rem;
-  height: 4rem;
-  border: 4px solid var(--telegram-blue);
-  border-top-color: transparent;
-  border-radius: 50%;
-  animation: spin 1s linear infinite;
+    width: 4rem;
+    height: 4rem;
+    border: 4px solid var(--telegram-blue);
+    border-top-color: transparent;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
 }
 
 .telegram-section {
-  padding: 0.75rem 1rem;
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
+    padding: 0.75rem 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
 }
 
 .pt-4 {
-  padding-top: 1rem;
+    padding-top: 1rem;
 }
 
 button {
-  font-family: inherit;
-  border: none;
-  cursor: pointer;
+    font-family: inherit;
+    border: none;
+    cursor: pointer;
 }
 
 .telegram-primary-button {
-  background: linear-gradient(
-    90deg,
-    var(--telegram-blue),
-    #0088cc,
-    #6bbbe2,
-    var(--telegram-blue)
-  );
-  background-size: 300% 100%;
-  color: white;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-  font-weight: 1000;
-  font-size: 18px;
-  border-radius: var(--radius);
-  font-weight: 500;
-  animation: gradientFlow 3s linear infinite;
-  transition: opacity 0.3s ease, transform 0.2s ease;
+    background: linear-gradient(
+        90deg,
+        var(--telegram-blue),
+        #0088cc,
+        #6bbbe2,
+        var(--telegram-blue)
+    );
+    background-size: 300% 100%;
+    color: white;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    font-weight: 1000;
+    font-size: 18px;
+    border-radius: var(--radius);
+    font-weight: 500;
+    animation: gradientFlow 3s linear infinite;
+    transition: opacity 0.3s ease, transform 0.2s ease;
 }
 
 @keyframes gradientFlow {
-  0% {
-    background-position: 0% 50%;
-  }
+    0% {
+        background-position: 0% 50%;
+    }
 
-  50% {
-    background-position: 100% 20%;
-  }
+    50% {
+        background-position: 100% 20%;
+    }
 
-  100% {
-    background-position: 0% 50%;
-  }
+    100% {
+        background-position: 0% 50%;
+    }
 }
 
 .telegram-primary-button:hover {
-  opacity: 0.9;
-  animation-play-state: paused;
+    opacity: 0.9;
+    animation-play-state: paused;
 }
 
 .telegram-primary-button:active {
-  transform: scale(0.99);
+    transform: scale(0.99);
 }
 
 .telegram-secondary-button {
-  background-color: rgba(27, 27, 27, 0.1);
-  color: white;
-  font-size: 16px;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem;
-  border-radius: var(--radius);
-  font-weight: 500;
-  border: 1px solid rgb(255, 255, 255);
-  transition: opacity 0.3s ease, transform 0.2s ease, background-color 0.3s ease;
+    background-color: rgba(27, 27, 27, 0.1);
+    color: white;
+    font-size: 16px;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+    border-radius: var(--radius);
+    font-weight: 500;
+    border: 1px solid rgb(255, 255, 255);
+    transition: opacity 0.3s ease, transform 0.2s ease,
+        background-color 0.3s ease;
 }
 
 .telegram-secondary-button:hover {
-  opacity: 0.9;
-  background-color: rgba(29, 28, 28, 0.2);
+    opacity: 0.9;
+    background-color: rgba(29, 28, 28, 0.2);
 }
 
 .telegram-secondary-button:active {
-  transform: scale(0.99);
+    transform: scale(0.99);
 }
 
 .greeting {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  padding: 0.5rem 0;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0;
 }
 
 .emoji {
-  font-size: 1.25rem;
+    font-size: 1.25rem;
 }
 
 .greeting-text {
-  font-size: 1.5rem;
-  font-weight: 700;
+    font-size: 1.5rem;
+    font-weight: 700;
 }
 
 .section-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
 }
 
 .section-title {
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
 .section-icon {
-  font-size: 1.5rem;
-  line-height: 1;
+    font-size: 1.5rem;
+    line-height: 1;
 }
 
 .view-all-btn {
-  font-size: 0.875rem;
-  color: white;
-  background: #242527;
-  border-radius: 10px;
-  padding: 3px 6px;
-  cursor: pointer;
-  transition: background-color 0.3s ease;
+    font-size: 0.875rem;
+    color: white;
+    background: #242527;
+    border-radius: 10px;
+    padding: 3px 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .view-all-btn:hover {
-  background: #e0e0e0;
+    background: #e0e0e0;
 }
 
 .section-desc {
-  font-size: 0.875rem;
-  margin-bottom: 10px;
-  margin-left: 8px;
-  color: var(--telegram-lightgray);
+    font-size: 0.875rem;
+    margin-bottom: 10px;
+    margin-left: 8px;
+    color: var(--telegram-lightgray);
 }
 
 .items-list {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  margin-top: 0.25rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    margin-top: 0.25rem;
 }
 
 .channel-avatar {
-  flex-shrink: 0;
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: 50%;
-  background-color: var(--telegram-channelIcon);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  font-weight: 500;
+    flex-shrink: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: 50%;
+    background-color: var(--telegram-channelIcon);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;
+    font-weight: 500;
 }
 
 .post-icon {
-  flex-shrink: 0;
-  width: 2.5rem;
-  height: 2.5rem;
-  border-radius: var(--radius);
-  background-color: rgba(138, 141, 145, 0.1);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--telegram-lightgray);
+    flex-shrink: 0;
+    width: 2.5rem;
+    height: 2.5rem;
+    border-radius: var(--radius);
+    background-color: rgba(138, 141, 145, 0.1);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--telegram-lightgray);
 }
 
 .channel-info,
 .post-info {
-  flex-grow: 1;
+    flex-grow: 1;
 }
 
 .channel-name,
 .post-title {
-  font-weight: 500;
-  margin-bottom: 0.25 rem;
+    font-weight: 500;
+    margin-bottom: 0.25 rem;
 }
 
 .channel-subscribers,
 .post-date {
-  font-size: 0.875rem;
-  color: var(--telegram-lightgray);
+    font-size: 0.875rem;
+    color: var(--telegram-lightgray);
 }
 
 .hidden {
-  display: none;
+    display: none;
 }
 
 @keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
+    0% {
+        transform: rotate(0deg);
+    }
 
-  100% {
-    transform: rotate(360deg);
-  }
+    100% {
+        transform: rotate(360deg);
+    }
 }
 
 .icon {
-  margin-right: 0.5rem;
+    margin-right: 0.5rem;
 }
 
 #no-channels-container,
 #no-posts-container {
-  margin-top: 0.5rem;
+    margin-top: 0.5rem;
 }
 
 .item {
-  display: flex;
-  align-items: center;
-  width: 100%;
-  background-color: #242424;
-  border-radius: 8px;
-  padding: 6px;
-  margin-bottom: 10px;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    background-color: #242424;
+    border-radius: 8px;
+    padding: 6px;
+    margin-bottom: 10px;
 }
 
 .item-avatar {
-  margin-right: 15px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  border-radius: 50%;
+    margin-right: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
 }
 
 .avatar-img {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  object-fit: cover;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
 }
 
 .item-details {
-  flex-grow: 1;
-  max-width: calc(100% - 55px);
+    flex-grow: 1;
+    max-width: calc(100% - 55px);
 }
 
 .item-title {
-  font-size: 16px;
-  color: #ffffff;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  overflow: hidden;
+    font-size: 16px;
+    color: #ffffff;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
 }
 
 .item-subtitle {
-  font-size: 14px;
-  color: #666;
+    font-size: 14px;
+    color: #666;
 }

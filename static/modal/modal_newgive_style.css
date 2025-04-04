@@ -1,5 +1,5 @@
 :root {
-    --telegram-blue: #4EA4F6;
+    --telegram-blue: #4ea4f6;
 }
 
 .modal-overlay {
@@ -84,7 +84,13 @@
 }
 
 .add-button {
-    background: linear-gradient(90deg, var(--telegram-blue), #0088cc, #6bbbe2, var(--telegram-blue));
+    background: linear-gradient(
+        90deg,
+        var(--telegram-blue),
+        #0088cc,
+        #6bbbe2,
+        var(--telegram-blue)
+    );
     color: white;
     padding: 8px 24px;
     border-radius: 10px;
@@ -154,7 +160,13 @@
 }
 
 .add-button-channel {
-    background: linear-gradient(90deg, var(--telegram-blue), #0088cc, #6bbbe2, var(--telegram-blue));
+    background: linear-gradient(
+        90deg,
+        var(--telegram-blue),
+        #0088cc,
+        #6bbbe2,
+        var(--telegram-blue)
+    );
     color: white;
     border: #171717;
     padding: 8px 24px;
@@ -167,10 +179,7 @@
     margin-top: 15px;
 }
 
-
-
 /* -------------- */
-
 
 .posts-list-container {
     width: 100%;
@@ -239,7 +248,7 @@
     border-radius: 8px;
     justify-content: center;
     color: #9ca3af;
-    background:#303030;
+    background: #303030;
     border: none;
     cursor: pointer;
     transition: all 0.2s;
@@ -264,7 +273,13 @@
 }
 
 .add-button-container {
-    background: linear-gradient(90deg, var(--telegram-blue), #0088cc, #6bbbe2, var(--telegram-blue));
+    background: linear-gradient(
+        90deg,
+        var(--telegram-blue),
+        #0088cc,
+        #6bbbe2,
+        var(--telegram-blue)
+    );
     color: white;
     padding: 8px 24px;
     border-radius: 10px;
@@ -291,7 +306,13 @@
 }
 
 .add-button-container-channel {
-    background: linear-gradient(90deg, var(--telegram-blue), #0088cc, #6bbbe2, var(--telegram-blue));
+    background: linear-gradient(
+        90deg,
+        var(--telegram-blue),
+        #0088cc,
+        #6bbbe2,
+        var(--telegram-blue)
+    );
     color: white;
     padding: 8px 24px;
     border-radius: 10px;

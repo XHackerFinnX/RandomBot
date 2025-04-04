@@ -1,455 +1,633 @@
 <!DOCTYPE html>
 <html lang="ru">
+    <head>
+        <meta charset="UTF-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="autocomplete" content="off" />
+        <title>Создание розыгрыша</title>
+        <link
+            rel="stylesheet"
+            href="/static/newgive/newgive_style.css?v=1.0.1"
+        />
+        <link
+            rel="stylesheet"
+            href="/static/modal/modal_newgive_style.css?v=1.0.1"
+        />
+        <script src="https://telegram.org/js/telegram-web-app.js"></script>
+        <script src="https://unpkg.com/lucide@latest"></script>
+    </head>
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="autocomplete" content="off">
-  <title>Создание розыгрыша</title>
-  <link rel="stylesheet" href="/static/newgive/newgive_style.css?v=1.0.1">
-  <link rel="stylesheet" href="/static/modal/modal_newgive_style.css?v=1.0.1">
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <script src="https://unpkg.com/lucide@latest"></script>
-</head>
+    <body>
+        <div class="container" id="main-container">
+            <div id="step-content" class="step-content">
+                <!-- Содержимое шага будет загружено через JavaScript -->
+            </div>
 
-<body>
-  <div class="container" id="main-container">
-    <div id="step-content" class="step-content">
-      <!-- Содержимое шага будет загружено через JavaScript -->
-    </div>
-
-    <div class="navigation-buttons">
-      <button id="back-button" class="button button-outline">Назад</button>
-      <button id="next-button" class="button button-primary">Вперед</button>
-    </div>
-  </div>
-
-  <div class="container-loading" id="loading-container" style="display: none;">
-    <!-- Экран загрузки -->
-    <div id="loading-screen" class="screen">
-      <div class="step-header-loading">
-        <span class="material-icons icon-large"></span>
-        <img
-          src="https://raw.githubusercontent.com/XHackerFinnX/Domeae/master/db/file_zip/animSticker/fucjplasticred-ezgif.com-gif-maker.webp"
-          alt="Sticker Image" class="blue-box" />
-      </div>
-      <h2 class="title-loading">Загрузка...</h2>
-      <p class="text-loading">Идёт создание поста</p>
-    </div>
-  </div>
-
-  <!-- 1 Шаг ОСНОВНЫЕ НАСТРОЙКИ -->
-  <template id="template-basics">
-    <div class="step-header">
-      <img
-        src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Identification%20Card.webp"
-        alt="Briefcase" class="step-icon">
-      <h2 class="step-title">Основные настройки</h2>
-    </div>
-    <div class="progress-indicator"></div>
-
-    <div class="step-form">
-      <div class="input-field-text">
-        <label for="giveaway-name">Название:</label>
-        <input type="text" id="giveaway-name" placeholder=" ">
-      </div>
-
-      <div class="input-field clickable" id="selectPostBtn">
-        <div class="field-with-icon">
-          <span id="">Выбрать пост</span>
-          <i data-lucide="chevron-right"></i>
-        </div>
-      </div>
-
-      <div class="input-field">
-        <input type="text" id="button-text" placeholder="Текст кнопки поста:" value="Участвовать">
-      </div>
-
-      <div class="button-samples">
-        <button class="sample-button sample-button-active">Участвовать</button>
-        <button class="sample-button">Принять участие</button>
-        <button class="sample-button">Участвую!</button>
-      </div>
-
-      <p class="help-text">
-        Укажите название розыгрыша. Выберите пост или создайте новый.
-      </p>
-    </div>
-
-    <!-- Модальное окно постов -->
-    <div id="modalOverlay" class="modal-overlay">
-      <div class="modal-container">
-        <div class="modal-header">
-          <h2 class="modal-title">Список постов</h2>
-          <button id="closeModalBtn" class="close-button" aria-label="Close">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-          </button>
+            <div class="navigation-buttons">
+                <button id="back-button" class="button button-outline">
+                    Назад
+                </button>
+                <button id="next-button" class="button button-primary">
+                    Вперед
+                </button>
+            </div>
         </div>
 
-        <div class="modal-content">
-          <!-- Контейнер для списка постов -->
-          <div id="postsListContainer" class="posts-list-container hidden">
-            <div class="posts-list" id="modalPostsList"></div>
-          </div>
-
-          <!-- Сообщение при отсутствии постов -->
-          <div id="noPostsMessage" class="no-posts-message">
-            <p class="modal-message">Посты не найдены</p>
-          </div>
-        </div>
-      </div>
-    </div>
-
-  </template>
-
-  <!-- 2 Шаг На какие каналы нужно подписаться -->
-  <template id="template-channels">
-    <div class="step-header">
-      <img src="//raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Pencil.webp"
-        alt="Channels" width="100" class="step-icon">
-      <h2 class="step-title">На какие каналы нужно подписаться участникам?</h2>
-    </div>
-    <div class="progress-indicator"></div>
-
-    <div class="step-form">
-      <div class="channels-list" id="subscription-channels-list">
-        <!-- Channel items will be rendered here -->
-      </div>
-
-      <div class="input-field clickable" id="open-channel-modal-btn">
-        <div class="field-with-icon">
-          <span>Добавить другие каналы</span>
-          <i data-lucide="chevron-right"></i>
-        </div>
-      </div>
-
-      <p class="help-text">
-        Добавьте Telegram-каналы или чаты, на которые нужно подписаться для участия.
-        <span class="warning-text" id="no-channels-warning">⚠️ Вы не выбрали ни одного канала, розыгрыш будет проходить
-          без проверки подписки.</span>
-      </p>
-    </div>
-
-    <!-- Модальное окно для добавления канала -->
-    <div id="modalOverlayChannel" class="modal-overlay">
-      <div class="modal-container">
-        <div class="modal-header">
-          <h2 class="modal-title">Добавить канал</h2>
-          <button id="closeChannelModalBtn" class="close-button" aria-label="Close">
-            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none"
-              stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <line x1="18" y1="6" x2="6" y2="18"></line>
-              <line x1="6" y1="6" x2="18" y2="18"></line>
-            </svg>
-          </button>
-        </div>
-        <div class="modal-content-channel">
-          <p class="modal-message-channel">
-            Введите ссылку на канал в формате @example.
-            Бот должен быть админом канала.
-          </p>
-          <div class="input-field">
-            <input type="text" id="channel-name-input" placeholder="@mychannel">
-          </div>
-          <button id="add-button" class="add-button-channel full-width">Добавить</button>
-        </div>
-      </div>
-    </div>
-
-  </template>
-
-  <!-- 3 Шаг Где опубликовать пост с анонсом -->
-  <template id="template-announcement">
-    <div class="step-header">
-      <img
-        src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Newspaper.webp"
-        alt="Newspaper" class="step-icon" />
-      <h2 class="step-title">Где опубликовать пост с анонсом?</h2>
-    </div>
-    <div class="progress-indicator"></div>
-    <div class="step-form">
-      <div class="channels-list" id="announcement-channels-list">
-        <!-- Channel items will be rendered here -->
-      </div>
-
-      <p class="help-text">
-        Посты с анонсом розыгрыша будут опубликованы в выбранных каналах.
-      </p>
-    </div>
-  </template>
-
-  <!-- 4 Шаг Где опубликовать пост с итогами -->
-  <template id="template-results">
-    <div class="step-header">
-      <img
-        src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Megaphone.webp"
-        alt="Results" class="step-icon" />
-      <h2 class="step-title">Где опубликовать пост с итогами?</h2>
-    </div>
-    <div class="progress-indicator"></div>
-    <div class="step-form">
-      <div class="channels-list" id="result-channels-list">
-        <!-- Channel items will be rendered here -->
-      </div>
-
-      <p class="help-text">
-        Посты с итогами розыгрыша будут опубликованы в выбранных каналах.
-      </p>
-    </div>
-  </template>
-
-  <!-- 5 Шаг Дата -->
-  <template id="template-dates">
-    <div class="step-header">
-      <img
-        src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Tear%20Off%20Calendar.webp"
-        alt="Dates" class="step-icon">
-      <h2 class="step-title">Даты</h2>
-    </div>
-    <div class="progress-indicator"></div>
-    <div class="step-form">
-      <div class="input-field clickable">
-        <div class="field-with-icon">
-          <span>Начать сразу</span>
-          <label class="switch">
-            <input type="checkbox" id="start-immediately" checked>
-            <span class="slider round"></span>
-          </label>
-        </div>
-      </div>
-      <div class="input-field clickable" id="start-date-field">
-        <div class="field-with-icon">
-          <span>Дата начала:</span>
-          <span class="date-placeholder" id="start-date-display">выбрать</span>
-        </div>
-      </div>
-      <div class="input-field clickable" id="end-date-field">
-        <div class="field-with-icon">
-          <span>Дата окончания:</span>
-          <span class="date-placeholder" id="end-date-display">выбрать</span>
-        </div>
-      </div>
-      <p class="help-text">
-        Укажите даты начала и окончания розыгрыша. Бот работает в Московском времени (GMT+3).
-      </p>
-    </div>
-  </template>
-
-  <!-- 6 Шаг Победители -->
-  <template id="template-winners">
-    <div class="step-header">
-      <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Crown.webp"
-        alt="Winners" class="step-icon" />
-      <h2 class="step-title">Победители</h2>
-    </div>
-    <div class="progress-indicator"></div>
-
-    <div class="step-form">
-      <div class="input-field">
-        <input type="number" id="winners-count" min="1" max="30" value="1" placeholder="Количество победителей:">
-      </div>
-
-      <p class="help-text">
-        Укажите количество победителей. Они будут выбраны случайным образом в конце розыгрыша. Максимальное количество
-        победителей: 30
-      </p>
-    </div>
-  </template>
-
-  <!-- 7 Шаг Проверка -->
-  <template id="template-review">
-    <div class="step-header">
-      <img
-        src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Magnifying%20Glass%20Tilted%20Right.webp"
-        alt="Review" class="step-icon">
-      <h2 class="step-title">Проверка</h2>
-    </div>
-    <div class="progress-indicator"></div>
-    <div class="step-form" id="review-form">
-      <!-- Основные настройки -->
-      <div class="review-section">
-        <h3 class="review-section-title"><span>🪪</span> Основные настройки</h3>
-        <div class="review-item" autocomplete="off">
-          <div class="review-label-name">Название:</div>
-          <div class="review-value" id="review-name">Не указано</div>
-        </div>
-        <div class="review-item" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
-          <div class="review-label-post" style="display: inline;">Выбранный пост:</div>
-          <div class="review-value-post" id="review-post" style="display: inline;">Не выбран</div>
-        </div>
-        <div class="review-item">
-          <div class="review-label-sup">Текст кнопки поста:</div>
-          <div class="review-value" id="review-button-text">Участвовать</div>
-        </div>
-        <button class="button-edit-button" data-step="0">Редактировать</button>
-      </div>
-
-      <!-- Каналы подписки -->
-      <div class="review-section">
-        <h3 class="review-section-title"> ✏️ На какие каналы нужно подписаться участникам?</h3>
-        <div id="review-subscription-channels" class="channels-list">
-          <!-- Generated in JavaScript -->
-        </div>
-        <button class="button-edit-button" data-step="1">Редактировать</button>
-      </div>
-
-      <!-- Анонс -->
-      <div class="review-section">
-        <h3 class="review-section-title"> 📰 Где опубликовать пост с анонсом?</h3>
-        <div id="review-announcement-channels" class="channels-list">
-          <!-- Generated in JavaScript -->
-        </div>
-        <button class="button-edit-button" data-step="2">Редактировать</button>
-      </div>
-
-      <!-- Итоги -->
-      <div class="review-section">
-        <h3 class="review-section-title"> 📢 Где опубликовать пост с итогами?</h3>
-        <div id="review-result-channels" class="channels-list">
-          <!-- Generated in JavaScript -->
+        <div
+            class="container-loading"
+            id="loading-container"
+            style="display: none"
+        >
+            <!-- Экран загрузки -->
+            <div id="loading-screen" class="screen">
+                <div class="step-header-loading">
+                    <span class="material-icons icon-large"></span>
+                    <img
+                        src="https://raw.githubusercontent.com/XHackerFinnX/Domeae/master/db/file_zip/animSticker/fucjplasticred-ezgif.com-gif-maker.webp"
+                        alt="Sticker Image"
+                        class="blue-box"
+                    />
+                </div>
+                <h2 class="title-loading">Загрузка...</h2>
+                <p class="text-loading">Идёт создание поста</p>
+            </div>
         </div>
 
-        <button class="button-edit-button" data-step="3">Редактировать</button>
-      </div>
+        <!-- 1 Шаг ОСНОВНЫЕ НАСТРОЙКИ -->
+        <template id="template-basics">
+            <div class="step-header">
+                <img
+                    src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Identification%20Card.webp"
+                    alt="Briefcase"
+                    class="step-icon"
+                />
+                <h2 class="step-title">Основные настройки</h2>
+            </div>
+            <div class="progress-indicator"></div>
 
-      <!-- Даты -->
-      <div class="review-section">
-        <h3 class="review-section-title"><span>📅</span> Даты</h3>
-        <div class="review-item">
-          <div class="review-label">Дата начала:</div>
-          <div class="review-value" id="review-start-date">начнется сразу</div>
+            <div class="step-form">
+                <div class="input-field-text">
+                    <label for="giveaway-name">Название:</label>
+                    <input type="text" id="giveaway-name" placeholder=" " />
+                </div>
+
+                <div class="input-field clickable" id="selectPostBtn">
+                    <div class="field-with-icon">
+                        <span id="">Выбрать пост</span>
+                        <i data-lucide="chevron-right"></i>
+                    </div>
+                </div>
+
+                <div class="input-field">
+                    <input
+                        type="text"
+                        id="button-text"
+                        placeholder="Текст кнопки поста:"
+                        value="Участвовать"
+                    />
+                </div>
+
+                <div class="button-samples">
+                    <button class="sample-button sample-button-active">
+                        Участвовать
+                    </button>
+                    <button class="sample-button">Принять участие</button>
+                    <button class="sample-button">Участвую!</button>
+                </div>
+
+                <p class="help-text">
+                    Укажите название розыгрыша. Выберите пост или создайте
+                    новый.
+                </p>
+            </div>
+
+            <!-- Модальное окно постов -->
+            <div id="modalOverlay" class="modal-overlay">
+                <div class="modal-container">
+                    <div class="modal-header">
+                        <h2 class="modal-title">Список постов</h2>
+                        <button
+                            id="closeModalBtn"
+                            class="close-button"
+                            aria-label="Close"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+                    </div>
+
+                    <div class="modal-content">
+                        <!-- Контейнер для списка постов -->
+                        <div
+                            id="postsListContainer"
+                            class="posts-list-container hidden"
+                        >
+                            <div class="posts-list" id="modalPostsList"></div>
+                        </div>
+
+                        <!-- Сообщение при отсутствии постов -->
+                        <div id="noPostsMessage" class="no-posts-message">
+                            <p class="modal-message">Посты не найдены</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!-- 2 Шаг На какие каналы нужно подписаться -->
+        <template id="template-channels">
+            <div class="step-header">
+                <img
+                    src="//raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Pencil.webp"
+                    alt="Channels"
+                    width="100"
+                    class="step-icon"
+                />
+                <h2 class="step-title">
+                    На какие каналы нужно подписаться участникам?
+                </h2>
+            </div>
+            <div class="progress-indicator"></div>
+
+            <div class="step-form">
+                <div class="channels-list" id="subscription-channels-list">
+                    <!-- Channel items will be rendered here -->
+                </div>
+
+                <div class="input-field clickable" id="open-channel-modal-btn">
+                    <div class="field-with-icon">
+                        <span>Добавить другие каналы</span>
+                        <i data-lucide="chevron-right"></i>
+                    </div>
+                </div>
+
+                <p class="help-text">
+                    Добавьте Telegram-каналы или чаты, на которые нужно
+                    подписаться для участия.
+                    <span class="warning-text" id="no-channels-warning"
+                        >⚠️ Вы не выбрали ни одного канала, розыгрыш будет
+                        проходить без проверки подписки.</span
+                    >
+                </p>
+            </div>
+
+            <!-- Модальное окно для добавления канала -->
+            <div id="modalOverlayChannel" class="modal-overlay">
+                <div class="modal-container">
+                    <div class="modal-header">
+                        <h2 class="modal-title">Добавить канал</h2>
+                        <button
+                            id="closeChannelModalBtn"
+                            class="close-button"
+                            aria-label="Close"
+                        >
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="24"
+                                height="24"
+                                viewBox="0 0 24 24"
+                                fill="none"
+                                stroke="currentColor"
+                                stroke-width="2"
+                                stroke-linecap="round"
+                                stroke-linejoin="round"
+                            >
+                                <line x1="18" y1="6" x2="6" y2="18"></line>
+                                <line x1="6" y1="6" x2="18" y2="18"></line>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="modal-content-channel">
+                        <p class="modal-message-channel">
+                            Введите ссылку на канал в формате @example. Бот
+                            должен быть админом канала.
+                        </p>
+                        <div class="input-field">
+                            <input
+                                type="text"
+                                id="channel-name-input"
+                                placeholder="@mychannel"
+                            />
+                        </div>
+                        <button
+                            id="add-button"
+                            class="add-button-channel full-width"
+                        >
+                            Добавить
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </template>
+
+        <!-- 3 Шаг Где опубликовать пост с анонсом -->
+        <template id="template-announcement">
+            <div class="step-header">
+                <img
+                    src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Newspaper.webp"
+                    alt="Newspaper"
+                    class="step-icon"
+                />
+                <h2 class="step-title">Где опубликовать пост с анонсом?</h2>
+            </div>
+            <div class="progress-indicator"></div>
+            <div class="step-form">
+                <div class="channels-list" id="announcement-channels-list">
+                    <!-- Channel items will be rendered here -->
+                </div>
+
+                <p class="help-text">
+                    Посты с анонсом розыгрыша будут опубликованы в выбранных
+                    каналах.
+                </p>
+            </div>
+        </template>
+
+        <!-- 4 Шаг Где опубликовать пост с итогами -->
+        <template id="template-results">
+            <div class="step-header">
+                <img
+                    src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Megaphone.webp"
+                    alt="Results"
+                    class="step-icon"
+                />
+                <h2 class="step-title">Где опубликовать пост с итогами?</h2>
+            </div>
+            <div class="progress-indicator"></div>
+            <div class="step-form">
+                <div class="channels-list" id="result-channels-list">
+                    <!-- Channel items will be rendered here -->
+                </div>
+
+                <p class="help-text">
+                    Посты с итогами розыгрыша будут опубликованы в выбранных
+                    каналах.
+                </p>
+            </div>
+        </template>
+
+        <!-- 5 Шаг Дата -->
+        <template id="template-dates">
+            <div class="step-header">
+                <img
+                    src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Tear%20Off%20Calendar.webp"
+                    alt="Dates"
+                    class="step-icon"
+                />
+                <h2 class="step-title">Даты</h2>
+            </div>
+            <div class="progress-indicator"></div>
+            <div class="step-form">
+                <div class="input-field clickable">
+                    <div class="field-with-icon">
+                        <span>Начать сразу</span>
+                        <label class="switch">
+                            <input
+                                type="checkbox"
+                                id="start-immediately"
+                                checked
+                            />
+                            <span class="slider round"></span>
+                        </label>
+                    </div>
+                </div>
+                <div class="input-field clickable" id="start-date-field">
+                    <div class="field-with-icon">
+                        <span>Дата начала:</span>
+                        <span class="date-placeholder" id="start-date-display"
+                            >выбрать</span
+                        >
+                    </div>
+                </div>
+                <div class="input-field clickable" id="end-date-field">
+                    <div class="field-with-icon">
+                        <span>Дата окончания:</span>
+                        <span class="date-placeholder" id="end-date-display"
+                            >выбрать</span
+                        >
+                    </div>
+                </div>
+                <p class="help-text">
+                    Укажите даты начала и окончания розыгрыша. Бот работает в
+                    Московском времени (GMT+3).
+                </p>
+            </div>
+        </template>
+
+        <!-- 6 Шаг Победители -->
+        <template id="template-winners">
+            <div class="step-header">
+                <img
+                    src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Crown.webp"
+                    alt="Winners"
+                    class="step-icon"
+                />
+                <h2 class="step-title">Победители</h2>
+            </div>
+            <div class="progress-indicator"></div>
+
+            <div class="step-form">
+                <div class="input-field">
+                    <input
+                        type="number"
+                        id="winners-count"
+                        min="1"
+                        max="30"
+                        value="1"
+                        placeholder="Количество победителей:"
+                    />
+                </div>
+
+                <p class="help-text">
+                    Укажите количество победителей. Они будут выбраны случайным
+                    образом в конце розыгрыша. Максимальное количество
+                    победителей: 30
+                </p>
+            </div>
+        </template>
+
+        <!-- 7 Шаг Проверка -->
+        <template id="template-review">
+            <div class="step-header">
+                <img
+                    src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Objects/Magnifying%20Glass%20Tilted%20Right.webp"
+                    alt="Review"
+                    class="step-icon"
+                />
+                <h2 class="step-title">Проверка</h2>
+            </div>
+            <div class="progress-indicator"></div>
+            <div class="step-form" id="review-form">
+                <!-- Основные настройки -->
+                <div class="review-section">
+                    <h3 class="review-section-title">
+                        <span>🪪</span> Основные настройки
+                    </h3>
+                    <div class="review-item" autocomplete="off">
+                        <div class="review-label-name">Название:</div>
+                        <div class="review-value" id="review-name">
+                            Не указано
+                        </div>
+                    </div>
+                    <div
+                        class="review-item"
+                        style="
+                            white-space: nowrap;
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                        "
+                    >
+                        <div class="review-label-post" style="display: inline">
+                            Выбранный пост:
+                        </div>
+                        <div
+                            class="review-value-post"
+                            id="review-post"
+                            style="display: inline"
+                        >
+                            Не выбран
+                        </div>
+                    </div>
+                    <div class="review-item">
+                        <div class="review-label-sup">Текст кнопки поста:</div>
+                        <div class="review-value" id="review-button-text">
+                            Участвовать
+                        </div>
+                    </div>
+                    <button class="button-edit-button" data-step="0">
+                        Редактировать
+                    </button>
+                </div>
+
+                <!-- Каналы подписки -->
+                <div class="review-section">
+                    <h3 class="review-section-title">
+                        ✏️ На какие каналы нужно подписаться участникам?
+                    </h3>
+                    <div
+                        id="review-subscription-channels"
+                        class="channels-list"
+                    >
+                        <!-- Generated in JavaScript -->
+                    </div>
+                    <button class="button-edit-button" data-step="1">
+                        Редактировать
+                    </button>
+                </div>
+
+                <!-- Анонс -->
+                <div class="review-section">
+                    <h3 class="review-section-title">
+                        📰 Где опубликовать пост с анонсом?
+                    </h3>
+                    <div
+                        id="review-announcement-channels"
+                        class="channels-list"
+                    >
+                        <!-- Generated in JavaScript -->
+                    </div>
+                    <button class="button-edit-button" data-step="2">
+                        Редактировать
+                    </button>
+                </div>
+
+                <!-- Итоги -->
+                <div class="review-section">
+                    <h3 class="review-section-title">
+                        📢 Где опубликовать пост с итогами?
+                    </h3>
+                    <div id="review-result-channels" class="channels-list">
+                        <!-- Generated in JavaScript -->
+                    </div>
+
+                    <button class="button-edit-button" data-step="3">
+                        Редактировать
+                    </button>
+                </div>
+
+                <!-- Даты -->
+                <div class="review-section">
+                    <h3 class="review-section-title"><span>📅</span> Даты</h3>
+                    <div class="review-item">
+                        <div class="review-label">Дата начала:</div>
+                        <div class="review-value" id="review-start-date">
+                            начнется сразу
+                        </div>
+                    </div>
+                    <div class="review-item">
+                        <div class="review-label">Дата окончания:</div>
+                        <div class="review-value" id="review-end-date">
+                            не указана
+                        </div>
+                    </div>
+                    <button class="button-edit-button" data-step="4">
+                        Редактировать
+                    </button>
+                </div>
+
+                <!-- Победители -->
+                <div class="review-section">
+                    <h3 class="review-section-title">👑 Победители</h3>
+                    <div class="review-item">
+                        <div class="review-label">Количество победителей:</div>
+                        <div class="review-value" id="review-winners-count">
+                            1
+                        </div>
+                    </div>
+                    <button class="button-edit-button" data-step="5">
+                        Редактировать
+                    </button>
+                </div>
+            </div>
+        </template>
+
+        <!-- Шаблон для элемента канала -->
+        <template id="template-channel-item">
+            <div class="channel-item">
+                <div class="channel-info">
+                    <img class="channel-avatar" src="" alt="" />
+                    <div class="channel-details">
+                        <div class="channel-name"></div>
+                        <div class="channel-subscribers"></div>
+                    </div>
+                </div>
+                <button class="select-button">
+                    <i data-lucide="check" class="check-icon"></i>
+                </button>
+            </div>
+        </template>
+
+        <!-- Модальное окно выбора даты -->
+        <div id="date-picker-dialog" class="modal-date" style="display: none">
+            <div class="modal-content-date">
+                <div class="modal-header-date">
+                    <h3 id="date-picker-title">Выберите дату</h3>
+                </div>
+
+                <div class="calendar-container">
+                    <div class="calendar-header">
+                        <button id="prev-month" class="calendar-nav-button">
+                            <i data-lucide="chevron-left"></i>
+                        </button>
+                        <div id="current-month">Январь 2024</div>
+                        <button id="next-month" class="calendar-nav-button">
+                            <i data-lucide="chevron-right"></i>
+                        </button>
+                    </div>
+
+                    <div class="calendar">
+                        <div class="weekdays">
+                            <div>Пн</div>
+                            <div>Вт</div>
+                            <div>Ср</div>
+                            <div>Чт</div>
+                            <div>Пт</div>
+                            <div>Сб</div>
+                            <div>Вс</div>
+                        </div>
+                        <div id="calendar-days" class="calendar-days">
+                            <!-- Calendar days will be rendered here -->
+                        </div>
+                    </div>
+                </div>
+
+                <div class="time-selector">
+                    <input type="time" id="time-picker" value="00:00" />
+                </div>
+
+                <div class="modal-actions">
+                    <button id="cancel-date" class="button button-outline">
+                        Отменить
+                    </button>
+                    <button id="apply-date" class="button button-primary">
+                        Применить
+                    </button>
+                </div>
+            </div>
         </div>
-        <div class="review-item">
-          <div class="review-label">Дата окончания:</div>
-          <div class="review-value" id="review-end-date">не указана</div>
-        </div>
-        <button class="button-edit-button" data-step="4">Редактировать</button>
-      </div>
 
-      <!-- Победители -->
-      <div class="review-section">
-        <h3 class="review-section-title">👑 Победители</h3>
-        <div class="review-item">
-          <div class="review-label">Количество победителей:</div>
-          <div class="review-value" id="review-winners-count">1</div>
-        </div>
-        <button class="button-edit-button" data-step="5">Редактировать</button>
-      </div>
-    </div>
-  </template>
+        <script src="/static/newgive/newgive_script.js" defer></script>
+        <script src="/static/modal/modal_newgive_script.js" defer></script>
 
-  <!-- Шаблон для элемента канала -->
-  <template id="template-channel-item">
-    <div class="channel-item">
-      <div class="channel-info">
-        <img class="channel-avatar" src="" alt="">
-        <div class="channel-details">
-          <div class="channel-name"></div>
-          <div class="channel-subscribers"></div>
-        </div>
-      </div>
-      <button class="select-button">
-        <i data-lucide="check" class="check-icon"></i>
-      </button>
-    </div>
-  </template>
-
-  <!-- Модальное окно выбора даты -->
-  <div id="date-picker-dialog" class="modal-date" style="display: none;">
-    <div class="modal-content-date">
-      <div class="modal-header-date">
-        <h3 id="date-picker-title">Выберите дату</h3>
-      </div>
-
-      <div class="calendar-container">
-        <div class="calendar-header">
-          <button id="prev-month" class="calendar-nav-button"><i data-lucide="chevron-left"></i></button>
-          <div id="current-month">Январь 2024</div>
-          <button id="next-month" class="calendar-nav-button"><i data-lucide="chevron-right"></i></button>
+        <!-- Модальное окно для выбора канала -->
+        <div id="channel-modal" class="modal" style="display: none">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Выберите канал</h3>
+                    <button id="close-channel-modal" class="close-button">
+                        &times;
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="channel-list-modal" class="channel-list-modal">
+                        <!-- Каналы будут добавлены через JavaScript -->
+                    </div>
+                    <div class="input-field">
+                        <input
+                            type="text"
+                            id="new-channel-input"
+                            placeholder="@mychannel"
+                        />
+                        <button
+                            id="add-channel-button"
+                            class="button button-primary"
+                        >
+                            Добавить
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
 
-        <div class="calendar">
-          <div class="weekdays">
-            <div>Пн</div>
-            <div>Вт</div>
-            <div>Ср</div>
-            <div>Чт</div>
-            <div>Пт</div>
-            <div>Сб</div>
-            <div>Вс</div>
-          </div>
-          <div id="calendar-days" class="calendar-days">
-            <!-- Calendar days will be rendered here -->
-          </div>
+        <!-- Модальное окно для выбора поста -->
+        <div id="post-modal" class="modal" style="display: none">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3>Выберите пост</h3>
+                    <button id="close-post-modal" class="close-button">
+                        &times;
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div id="post-list" class="post-list">
+                        <!-- Посты будут добавлены через JavaScript -->
+                        <p class="no-posts-message">Посты не найдены</p>
+                    </div>
+                    <button
+                        id="create-post-button"
+                        class="button button-primary"
+                    >
+                        Создать новый пост
+                    </button>
+                </div>
+            </div>
         </div>
-      </div>
 
-      <div class="time-selector">
-        <input type="time" id="time-picker" value="00:00">
-      </div>
-
-      <div class="modal-actions">
-        <button id="cancel-date" class="button button-outline">Отменить</button>
-        <button id="apply-date" class="button button-primary">Применить</button>
-      </div>
-    </div>
-  </div>
-
-  <script src="/static/newgive/newgive_script.js" defer></script>
-  <script src="/static/modal/modal_newgive_script.js" defer></script>
-
-  <!-- Модальное окно для выбора канала -->
-  <div id="channel-modal" class="modal" style="display: none;">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>Выберите канал</h3>
-        <button id="close-channel-modal" class="close-button">&times;</button>
-      </div>
-      <div class="modal-body">
-        <div id="channel-list-modal" class="channel-list-modal">
-          <!-- Каналы будут добавлены через JavaScript -->
+        <!-- Контейнер для уведомлений -->
+        <div id="custom-alert" class="custom-alert">
+            <p id="alert-message"></p>
+            <button id="alert-close" class="alert-close">X</button>
         </div>
-        <div class="input-field">
-          <input type="text" id="new-channel-input" placeholder="@mychannel">
-          <button id="add-channel-button" class="button button-primary">Добавить</button>
-        </div>
-      </div>
-    </div>
-  </div>
 
-  <!-- Модальное окно для выбора поста -->
-  <div id="post-modal" class="modal" style="display: none;">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h3>Выберите пост</h3>
-        <button id="close-post-modal" class="close-button">&times;</button>
-      </div>
-      <div class="modal-body">
-        <div id="post-list" class="post-list">
-          <!-- Посты будут добавлены через JavaScript -->
-          <p class="no-posts-message">Посты не найдены</p>
-        </div>
-        <button id="create-post-button" class="button button-primary">Создать новый пост</button>
-      </div>
-    </div>
-  </div>
+        <script
+            src="https://cdn.gpteng.co/gptengineer.js"
+            type="module"
+        ></script>
 
-  <!-- Контейнер для уведомлений -->
-  <div id="custom-alert" class="custom-alert">
-    <p id="alert-message"></p>
-    <button id="alert-close" class="alert-close">X</button>
-  </div>
-
-  <script src="https://cdn.gpteng.co/gptengineer.js" type="module"></script>
-
-  <script>
-    lucide.createIcons();
-  </script>
-
-</body>
-
+        <script>
+            lucide.createIcons();
+        </script>
+    </body>
 </html>

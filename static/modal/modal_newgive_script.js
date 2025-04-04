@@ -4,7 +4,8 @@ document.addEventListener("click", function (event) {
         const postModalOverlay = document.getElementById("modalOverlay");
         postModalOverlay.classList.add("show");
         postModalOverlay.style.display = "flex";
-        const modalContainer = postModalOverlay.querySelector('.modal-container');
+        const modalContainer =
+            postModalOverlay.querySelector(".modal-container");
         modalContainer.classList.add("show");
 
         // Загрузка постов при открытии модального окна
@@ -15,7 +16,8 @@ document.addEventListener("click", function (event) {
     if (event.target.closest("#closeModalBtn")) {
         const postModalOverlay = document.getElementById("modalOverlay");
         postModalOverlay.classList.remove("show");
-        const modalContainer = postModalOverlay.querySelector('.modal-container');
+        const modalContainer =
+            postModalOverlay.querySelector(".modal-container");
         modalContainer.classList.remove("show");
         setTimeout(() => {
             postModalOverlay.style.display = "none";
@@ -24,18 +26,24 @@ document.addEventListener("click", function (event) {
 
     // Открытие модального окна для добавления каналов
     if (event.target.closest("#open-channel-modal-btn")) {
-        const channelModalOverlay = document.getElementById("modalOverlayChannel");
+        const channelModalOverlay = document.getElementById(
+            "modalOverlayChannel"
+        );
         channelModalOverlay.classList.add("show");
         channelModalOverlay.style.display = "flex";
-        const modalContainer = channelModalOverlay.querySelector('.modal-container');
+        const modalContainer =
+            channelModalOverlay.querySelector(".modal-container");
         modalContainer.classList.add("show");
     }
 
     // Закрытие модального окна для добавления каналов
     if (event.target.closest("#closeChannelModalBtn")) {
-        const channelModalOverlay = document.getElementById("modalOverlayChannel");
+        const channelModalOverlay = document.getElementById(
+            "modalOverlayChannel"
+        );
         channelModalOverlay.classList.remove("show");
-        const modalContainer = channelModalOverlay.querySelector('.modal-container');
+        const modalContainer =
+            channelModalOverlay.querySelector(".modal-container");
         modalContainer.classList.remove("show");
         setTimeout(() => {
             channelModalOverlay.style.display = "none";
@@ -46,8 +54,10 @@ document.addEventListener("click", function (event) {
 function openPostsModal() {
     loadPostsToModal().then(() => {
         const postModalOverlay = document.getElementById("modalOverlay");
-        postModalOverlay.classList.add('animate-fade-in');
-        postModalOverlay.querySelector('.modal-container').classList.add('animate-slide-up');
+        postModalOverlay.classList.add("animate-fade-in");
+        postModalOverlay
+            .querySelector(".modal-container")
+            .classList.add("animate-slide-up");
     });
 }
 
@@ -63,42 +73,45 @@ async function loadPostsToModal() {
         });
 
         const posts = await response.json();
-        const postsList = document.getElementById('modalPostsList');
-        const noPostsMessage = document.getElementById('noPostsMessage');
-        const postsListContainer = document.getElementById('postsListContainer');
+        const postsList = document.getElementById("modalPostsList");
+        const noPostsMessage = document.getElementById("noPostsMessage");
+        const postsListContainer =
+            document.getElementById("postsListContainer");
 
-        postsList.innerHTML = '';
+        postsList.innerHTML = "";
 
         if (posts.length > 0) {
-            postsListContainer.classList.remove('hidden');
-            noPostsMessage.classList.add('hidden');
+            postsListContainer.classList.remove("hidden");
+            noPostsMessage.classList.add("hidden");
 
-            const modalContent = document.querySelector('.modal-content');
+            const modalContent = document.querySelector(".modal-content");
             if (modalContent) {
-                modalContent.style.flexGrow = '0';
+                modalContent.style.flexGrow = "0";
             }
 
-            const addButtonContainer = document.querySelector('.add-button-container');
+            const addButtonContainer = document.querySelector(
+                ".add-button-container"
+            );
             if (addButtonContainer) {
-                addButtonContainer.style.display = 'block';
+                addButtonContainer.style.display = "block";
             }
 
-            posts.forEach(post => {
+            posts.forEach((post) => {
                 const postElement = createPostElement(post);
                 postsList.appendChild(postElement);
             });
         } else {
-            postsListContainer.classList.add('hidden');
-            noPostsMessage.classList.remove('hidden');
+            postsListContainer.classList.add("hidden");
+            noPostsMessage.classList.remove("hidden");
         }
     } catch (error) {
-        console.error('Ошибка загрузки постов:', error);
+        console.error("Ошибка загрузки постов:", error);
     }
 }
 
 function createPostElement(post) {
-    const postElement = document.createElement('div');
-    postElement.className = 'post-item';
+    const postElement = document.createElement("div");
+    postElement.className = "post-item";
     postElement.innerHTML = `
       <div class="post-content" id="${post.id}">
         <div class="post-details">
@@ -115,9 +128,9 @@ function createPostElement(post) {
     `;
 
     // Добавление обработчика события на кнопку "Выбрать"
-    postElement.querySelector('.view-button').addEventListener('click', () => {
+    postElement.querySelector(".view-button").addEventListener("click", () => {
         // Находим элемент, куда нужно записать выбранный пост
-        const selectPostBtn = document.getElementById('selectPostBtn');
+        const selectPostBtn = document.getElementById("selectPostBtn");
         // Обновляем содержимое элемента #selectPostBtn
         selectPostBtn.innerHTML = `
           <div class="field-with-icon">
@@ -129,7 +142,8 @@ function createPostElement(post) {
         // Закрытие модального окна после выбора
         const postModalOverlay = document.getElementById("modalOverlay");
         postModalOverlay.classList.remove("show");
-        const modalContainer = postModalOverlay.querySelector('.modal-container');
+        const modalContainer =
+            postModalOverlay.querySelector(".modal-container");
         modalContainer.classList.remove("show");
         setTimeout(() => {
             postModalOverlay.style.display = "none";
@@ -137,11 +151,11 @@ function createPostElement(post) {
     });
 
     // Убедитесь, что элементы поста добавляются в DOM
-    const postsList = document.getElementById('modalPostsList');
+    const postsList = document.getElementById("modalPostsList");
     if (postsList) {
         postsList.appendChild(postElement);
     } else {
-        console.error('Элемент с id modalPostsList не найден.');
+        console.error("Элемент с id modalPostsList не найден.");
     }
 
     return postElement;
