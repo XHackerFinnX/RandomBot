@@ -74,7 +74,7 @@ document.addEventListener("DOMContentLoaded", function () {
       }
       if (status === "pending") {
         status = "Ожидание";
-      } 
+      }
       if (status === "completed") {
         status = "Завершен";
       }
@@ -98,7 +98,7 @@ document.addEventListener("DOMContentLoaded", function () {
         const diff = end - now;
 
         let remainingTimeHTML = "";
-        if (diff > 0) {
+        if (diff > 0 && raffle.status.toLowerCase() !== "завершен") {
           const remainingTime = calculateRemainingTime(raffle.end_date);
           remainingTimeHTML = `<div class="raffle-time" id="raffle-time-${raffle.raffle_id}">Осталось: ${remainingTime}</div>`;
         }
