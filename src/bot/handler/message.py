@@ -469,7 +469,16 @@ async def message_update_raffle_end(text_post, hash_id):
                     reply_markup=markup_sub,
                 )
             except:
-                print("Не обновлен", item)
+                print("Не обновлен без фото", item)
+                try:
+                    await bot.edit_message_caption(
+                        chat_id=channel_id,
+                        message_id=send_id,
+                        caption=text_post,
+                        reply_markup=markup_sub
+                    )
+                except:
+                    print("Не обновлен с фото", item)
     except Exception as e:
         print("Ошибка одновления смс", e)
 
