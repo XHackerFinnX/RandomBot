@@ -74,7 +74,7 @@ async def waiting_drawing(hash_id, start_date, end_date):
             await asyncio.sleep(2)
 
         data = await select_raffle_data(hash_id)
-        if data[0]["status"] == 'Завершен':
+        if data[0]["status"] == 'Завершен' or data[0]["status"] == 'Отмена':
             print('Розыгрыш завершен принудительно!')
             return
         
@@ -146,7 +146,8 @@ async def waiting_drawing_start(data, hash_id, start_date, end_date):
         
         temp_data = await select_raffle_data(hash_id)
         
-        if temp_data[0]["status"] == "Активен":
+        if temp_data[0]["status"] == "Активен" or temp_data[0]["status"] == 'Отмена':
+            print('Розыгрыш завершен принудительно из статуса ожидание!')
             return
         
         await update_raffle_end(hash_id, "Активен")
