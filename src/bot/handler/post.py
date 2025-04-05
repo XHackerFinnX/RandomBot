@@ -51,9 +51,11 @@ async def text_post_newpost(message: Message, state: FSMContext):
     await state.set_state(Post.confirmation)
 
     if photo_id:
-        await message.answer_photo(photo=photo_id, caption=post_text, reply_markup=markup_save_post)
+        sent_message = await message.answer_photo(photo=photo_id, caption=post_text, reply_markup=markup_save_post)
     else:
-        await message.answer(text=post_text, reply_markup=markup_save_post)
+        sent_message = await message.answer(text=post_text, reply_markup=markup_save_post)
+        
+    await state.update_data(confirm_message_id=sent_message.message_id)
         
 
 @router.callback_query(lambda c: c.data == "accept_post")
@@ -72,6 +74,12 @@ async def save_post(callback: CallbackQuery, state: FSMContext):
     success = await add_post(user_id, text_post, photo_bytes, date_post)
     if success:
         await callback.message.answer("🎉 Пост создан и сохранен", reply_markup=markup_start)
+        confirm_message_id = data.get("confirm_message_id")
+        if confirm_message_id:
+            try:
+                await callback.bot.delete_message(chat_id=callback.message.chat.id, message_id=confirm_message_id)
+            except Exception as e:
+                print(f"Ошибка при удалении сообщения: {e}")
     else:
         await callback.message.answer("⚠ Ошибка при сохранении поста.")
         print("Ошибка при сохранении поста.", user_id)
@@ -82,6 +90,13 @@ async def save_post(callback: CallbackQuery, state: FSMContext):
 async def cancel_post(callback: CallbackQuery, state: FSMContext):
     TEXT_CANCEL = "❌ Создание поста отменено. \n\nВы можете создать новый пост 👉🏻 /newpost"
     await callback.message.answer(text=TEXT_CANCEL, reply_markup=markup_start)
+    data = await state.get_data()
+    confirm_message_id = data.get("confirm_message_id")
+    if confirm_message_id:
+        try:
+            await callback.bot.delete_message(chat_id=callback.message.chat.id, message_id=confirm_message_id)
+        except Exception as e:
+            print(f"Ошибка при удалении сообщения: {e}")
     await state.clear()
     
 async def download_photo(photo_id: str, bot) -> bytes:
