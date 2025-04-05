@@ -57,6 +57,7 @@ async def receive_channel(message: Message, state: FSMContext, bot: Bot):
                     response = requests.get(photo_url)
                     if response.status_code == 200:
                         photo_bytes = response.content
+                        print('У канала есть фото.')
                     else:
                         print("Ошибка при скачивании фото.")
                         photo_bytes = None
@@ -66,7 +67,7 @@ async def receive_channel(message: Message, state: FSMContext, bot: Bot):
                     
             except Exception as e:
                 photo_url = f"Не удалось получить аватарку: {e}"
-        
+
             if not await check_channel(user_id, channel_id):
                 await add_channel(user_id, channel_id, member_count, chat.title, photo_bytes, "@"+chat.username)
                 await message.answer(f"✅ Канал успешно добавлен! Бот имеет доступ для управления этим каналом.", reply_markup=rmk)
@@ -75,7 +76,7 @@ async def receive_channel(message: Message, state: FSMContext, bot: Bot):
                 await update_channel(user_id, channel_id, member_count, chat.title, photo_bytes, True, "@"+chat.username)
                 await message.answer(f"🙂 Канал уже добавлен.\n\nВы можете добавить другой канал.\n\nДля отмены нажмите 👉🏻 /cancel")
         else:
-            await message.answer("❌ Бот не является администратором этого канала. Пожалуйста, добавьте бота в канал с правами администратора.")
+            await message.answer("❌ Бот не является администратором этого канала. Пожалуйста, добавьте бота в канал с правами администратора. Или сделайте его публичным!")
 
     except:
-        await message.answer("❌ Бот не является администратором этого канала. Пожалуйста, добавьте бота в канал с правами администратора.")
+        await message.answer("❌ Бот не является администратором этого канала. Пожалуйста, добавьте бота в канал с правами администратора. Или сделайте его публичным!")
