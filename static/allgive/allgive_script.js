@@ -146,6 +146,7 @@ document.addEventListener("DOMContentLoaded", function () {
                         raffle.status.toLowerCase() === "completed" ||
                         raffle.status_user
                     ) {
+                        tg.BackButton.hide();
                         window.location.href = `/raffle?raffle_id=${raffle.raffle_id}`;
                     } else {
                         window.location.href = `/manage-raffle?raffle_id=${raffle.raffle_id}`;
