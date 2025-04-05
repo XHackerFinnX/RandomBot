@@ -1,207 +1,153 @@
 <!DOCTYPE html>
 <html lang="ru">
-    <head>
-        <meta charset="UTF-8" />
-        <meta
-            name="viewport"
-            content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no"
-        />
-        <title>Розыгрыш призов</title>
-        <link rel="stylesheet" href="/static/endgive/endgive_style.css" />
-        <link
-            href="https://fonts.googleapis.com/icon?family=Material+Icons"
-            rel="stylesheet"
-        />
-        <link
-            href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap"
-            rel="stylesheet"
-        />
-        <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    </head>
 
-    <body>
-        <div class="bg-background flex items-center justify-center p-4">
-            <!-- Loading Screen -->
-            <div
-                id="loading-screen"
-                class="flex flex-col items-center justify-center py-12 animate-fade-in"
-            >
-                <div class="w-20 h-20 mb-6 loading-animation">
-                    <img
-                        src="https://raw.githubusercontent.com/XHackerFinnX/Domeae/master/db/file_zip/animSticker/AnimatedSticker-ezgif.com-gif-maker.webp"
-                        alt="Loading"
-                        class="w-full h-full object-contain"
-                    />
-                </div>
-                <h2 class="text-2xl font-semibold mb-2">Загрузка...</h2>
-                <p class="text-muted-foreground">
-                    Проверяем выполнены ли условия.
-                </p>
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Розыгрыш призов</title>
+    <link rel="stylesheet" href="/static/endgive/endgive_style.css" />
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+
+<body>
+    <div class="bg-background flex items-center justify-center p-4">
+        <!-- Loading Screen -->
+        <div id="loading-screen" class="flex flex-col items-center justify-center py-12 animate-fade-in">
+            <div class="w-20 h-20 mb-6 loading-animation">
+                <img src="https://raw.githubusercontent.com/XHackerFinnX/Domeae/master/db/file_zip/animSticker/AnimatedSticker-ezgif.com-gif-maker.webp"
+                    alt="Loading" class="w-full h-full object-contain" />
             </div>
-
-            <!-- Main Screen -->
-            <div id="main-screen" class="hidden animate-fade-in">
-                <div class="header">
-                    <div class="header-text">
-                        {{ name }}
-                        <br />
-                        ID: {{ raffle_id }}
-                    </div>
-                </div>
-
-                <div class="flex flex-col items-center justify-center mb-8">
-                    <div class="w-16 h-16 mb-4">
-                        <img
-                            src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/People/Man%20Police%20Officer.webp"
-                            alt="Icon"
-                            class="w-full h-full object-contain"
-                        />
-                    </div>
-                    <h2 class="text-xl font-semibold text-center">
-                        Вы не выполнили условия розыгрыша
-                    </h2>
-                </div>
-
-                <button id="about-button" class="gray-button">
-                    <span class="mr-2">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="20"
-                            height="20"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <circle cx="12" cy="12" r="10"></circle>
-                            <line x1="12" y1="16" x2="12" y2="12"></line>
-                            <line x1="12" y1="8" x2="12.01" y2="8"></line>
-                        </svg>
-                    </span>
-                    <span>О розыгрыше</span>
-                </button>
-
-                <div class="flex justify-between items-center mb-4 px-1">
-                    <div class="text-sm font-medium">Нужно подписаться</div>
-                    <div class="text-sm">
-                        Осталось:
-                        <span class="font-medium" id="time-left"
-                            >0д 00:00:00</span
-                        >
-                    </div>
-                </div>
-
-                <div id="channels-container" class="space-y-2 mb-6">
-                    <!-- Channel items will be added here via JavaScript -->
-                </div>
-
-                <button id="check-subscription-button" class="gray-button">
-                    <span class="mr-2">
-                        <svg
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="20"
-                            height="20"
-                            viewBox="0 0 24 24"
-                            fill="none"
-                            stroke="currentColor"
-                            stroke-width="2"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                        >
-                            <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-                            <polyline points="22 4 12 14.01 9 11.01"></polyline>
-                        </svg>
-                    </span>
-                    <span>Проверить подписку</span>
-                </button>
-
-                <button id="close-button" class="blue-button">Закрыть</button>
-            </div>
-
-            <!-- Success Screen -->
-            <div
-                id="success-screen"
-                class="hidden flex flex-col items-center justify-center py-12 animate-fade-in"
-            >
-                <div class="w-20 h-20 mb-6">
-                    <img
-                        src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Travel%20and%20Places/Police%20Car.webp"
-                        alt="Success"
-                        class="w-full h-full object-contain"
-                    />
-                </div>
-                <h2 class="text-2xl font-semibold mb-2">Неудача!</h2>
-                <p class="text-center text-muted-foreground mb-2">
-                    Вы не выполнили условия розыгрыша.
-                </p>
-                <p class="text-center font-medium mb-6">Теперь вы в розыске!</p>
-                <button id="success-close-button" class="blue-button-close">
-                    Закрыть
-                </button>
-            </div>
-
-            <!-- Экран успешного выполнения -->
-            <div id="success-screen-true" class="hidden success-screen-hidden">
-                <div class="step-header">
-                    <span class="material-icons icon-large"></span>
-                    <img
-                        src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Activity/Trophy.webp"
-                        class="blue-box"
-                    />
-                </div>
-                <h2 class="title-true">Успешно!</h2>
-                <p class="text-true">
-                    🚥 Вы принимаете участие в данной гонке! 🚥
-                </p>
-            </div>
-
-            <!-- About Dialog -->
-            <div
-                id="about-dialog"
-                class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden"
-            >
-                <div class="dialog-overlay" id="dialog-overlay"></div>
-                <div
-                    class="dialog-content bg-card rounded-xl shadow-lg max-w-md w-full p-6 z-10"
-                >
-                    <div class="mb-4">
-                        <h3 class="text-xl font-semibold mb-2">О розыгрыше</h3>
-                    </div>
-                    <div class="space-y-4">
-                        <p class="text-card-foreground">
-                            Этот розыгрыш проводится для подписчиков нашего
-                            канала. Чтобы участвовать, вам необходимо:
-                        </p>
-                        <ul
-                            class="list-disc pl-5 space-y-1 text-card-foreground"
-                        >
-                            <li>Подписаться на канал</li>
-                            <li>
-                                Оставаться подписчиком до окончания розыгрыша
-                            </li>
-                            <li>
-                                Проверить свою подписку, нажав на
-                                соответствующую кнопку
-                            </li>
-                        </ul>
-                        <p class="text-card-foreground">
-                            Победители будут выбраны случайным образом среди
-                            всех подписчиков. Результаты будут объявлены после
-                            окончания таймера.
-                        </p>
-                    </div>
-                    <button
-                        id="dialog-ok-button"
-                        class="blue-button-full-width"
-                    >
-                        Понятно
-                    </button>
-                </div>
-            </div>
+            <h2 class="text-2xl font-semibold mb-2">Загрузка...</h2>
+            <p class="text-muted-foreground">
+                Проверяем выполнены ли условия.
+            </p>
         </div>
 
-        <script defer src="/static/endgive/endgive_script.js"></script>
-    </body>
+        <!-- Main Screen -->
+        <div id="main-screen" class="hidden animate-fade-in">
+            <div class="header">
+                <div class="header-text">
+                    {{ name }}
+                    <br />
+                    ID: {{ raffle_id }}
+                </div>
+            </div>
+
+            <div class="flex flex-col items-center justify-center mb-8">
+                <div class="w-16 h-16 mb-4">
+                    <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/People/Man%20Police%20Officer.webp"
+                        alt="Icon" class="w-full h-full object-contain" />
+                </div>
+                <h2 class="text-xl font-semibold text-center">
+                    Вы не выполнили условия розыгрыша
+                </h2>
+            </div>
+
+            <button id="about-button" class="gray-button">
+                <span class="mr-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <circle cx="12" cy="12" r="10"></circle>
+                        <line x1="12" y1="16" x2="12" y2="12"></line>
+                        <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                    </svg>
+                </span>
+                <span>О розыгрыше</span>
+            </button>
+
+            <div class="flex justify-between items-center mb-4 px-1">
+                <div class="text-sm font-medium">Нужно подписаться</div>
+                <div class="text-sm">
+                    Осталось:
+                    <span class="font-medium" id="time-left">0д 00:00:00</span>
+                </div>
+            </div>
+
+            <div id="channels-container" class="space-y-2 mb-6">
+                <!-- Channel items will be added here via JavaScript -->
+            </div>
+
+            <button id="check-subscription-button" class="gray-button">
+                <span class="mr-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none"
+                        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
+                        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+                    </svg>
+                </span>
+                <span>Проверить подписку</span>
+            </button>
+
+            <button id="close-button" class="blue-button">Закрыть</button>
+        </div>
+
+        <!-- Success Screen -->
+        <div id="success-screen" class="hidden flex flex-col items-center justify-center py-12 animate-fade-in">
+            <div class="w-20 h-20 mb-6">
+                <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Travel%20and%20Places/Police%20Car.webp"
+                    alt="Success" class="w-full h-full object-contain" />
+            </div>
+            <h2 class="text-2xl font-semibold mb-2">Неудача!</h2>
+            <p class="text-center text-muted-foreground mb-2">
+                Вы не выполнили условия розыгрыша.
+            </p>
+            <p class="text-center font-medium mb-6">Теперь вы в розыске!</p>
+            <button id="success-close-button" class="blue-button-close">
+                Закрыть
+            </button>
+        </div>
+
+        <!-- Экран успешного выполнения -->
+        <div id="success-screen-true" class="hidden success-screen-hidden">
+            <div class="step-header">
+                <span class="material-icons icon-large"></span>
+                <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Activity/Trophy.webp"
+                    class="blue-box" />
+            </div>
+            <h2 class="title-true">Успешно!</h2>
+            <p class="text-true">
+                🚥 Вы принимаете участие в данной гонке! 🚥
+            </p>
+        </div>
+
+        <!-- About Dialog -->
+        <div id="about-dialog" class="fixed inset-0 z-50 flex items-center justify-center p-4 hidden">
+            <div class="dialog-overlay" id="dialog-overlay"></div>
+            <div class="dialog-content bg-card rounded-xl shadow-lg max-w-md w-full p-6 z-10">
+                <div class="mb-4">
+                    <h3 class="text-xl font-semibold mb-2">О розыгрыше</h3>
+                </div>
+                <div class="space-y-4">
+                    <p class="text-card-foreground">
+                        Этот розыгрыш проводится для подписчиков нашего
+                        канала. Чтобы участвовать, вам необходимо:
+                    </p>
+                    <ul class="list-disc pl-5 space-y-1 text-card-foreground">
+                        <li>Подписаться на канал</li>
+                        <li>
+                            Оставаться подписчиком до окончания розыгрыша
+                        </li>
+                        <li>
+                            Проверить свою подписку, нажав на
+                            соответствующую кнопку
+                        </li>
+                    </ul>
+                    <p class="text-card-foreground">
+                        Победители будут выбраны случайным образом среди
+                        всех подписчиков. Результаты будут объявлены после
+                        окончания таймера.
+                    </p>
+                </div>
+                <button id="dialog-ok-button" class="blue-button-full-width">
+                    Понятно
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script defer src="/static/endgive/endgive_script.js"></script>
+</body>
+
 </html>
