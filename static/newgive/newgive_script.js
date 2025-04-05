@@ -89,7 +89,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const firstDay = new Date(year, month, 1);
         const lastDay = new Date(year, month + 1, 0);
         const daysInMonth = lastDay.getDate();
-        const startingDay = firstDay.getDay();
+        let startingDay = firstDay.getDay(); 
+        startingDay = (startingDay === 0) ? 6 : startingDay - 1;
 
         currentMonthDisplay.textContent = new Intl.DateTimeFormat("ru-RU", {
             month: "long",
@@ -101,6 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
             const emptyDay = document.createElement("div");
             emptyDay.classList.add("calendar-day", "outside-month");
             calendarDays.appendChild(emptyDay);
+
         }
 
         // Добавление дней месяца
@@ -301,7 +303,7 @@ document.addEventListener("DOMContentLoaded", () => {
             end_date: giveawayData.endDate,
             user_win: giveawayData.winnersCount,
         };
-        console.log(raffleData);
+        
         document.getElementById("main-container").style.display = "none";
         document.getElementById("loading-container").style.display = "block";
         try {
@@ -661,7 +663,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         if (postid) {
             const postElement = document.getElementById(postid);
-            console.log(postElement);
+            
             if (postElement) {
                 postElement.id = giveawayData.postId;
             }
