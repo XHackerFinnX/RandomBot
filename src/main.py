@@ -52,7 +52,7 @@ async def lifespan(app: FastAPI):
     try:
         yield
     except asyncio.CancelledError:
-        print("App is shutting down.")
+        print("Приложение завершает работу.")
     finally:
         await bot.session.close()
 
@@ -62,9 +62,9 @@ async def lifespan(app: FastAPI):
                 try:
                     await task
                 except asyncio.CancelledError:
-                    print("Task canceled.")
+                    print("Таски отменены.")
         else:
-            print("Event loop is closed, no tasks to cancel.")
+            print("Цикл обработки событий замкнут, никаких задач для отмены нет.")
 
 
 app = FastAPI(lifespan=lifespan)
