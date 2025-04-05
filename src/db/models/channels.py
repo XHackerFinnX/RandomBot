@@ -50,7 +50,7 @@ async def update_channel(user_id, channel_id, channel_subscribers, channel_name,
         async with pool.acquire() as conn:
             await conn.execute(query, channel_subscribers, channel_name, channel_photo, channel_status, channel_tg, user_id, channel_id)
     except Exception as error:
-        print(f"Ошибка обновления в БД: {error}")
+        print(f"Ошибка обновления в БД канала: {error}")
         
 async def update_channel_false(user_id, channel_id, channel_status):
     query = """
