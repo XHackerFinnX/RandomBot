@@ -56,12 +56,12 @@ async def start_bot(message: Message, state: FSMContext, bot: Bot):
             await state.set_state(Post.text_post)
             await message.answer(text='💬 Отправьте мне ваш пост (текст или фото с подписью) \nДля отмены нажмите 👉🏻 /cancel')
             
-@router.message()
-async def start_bot(message: Message, bot: Bot):
+# @router.message()
+# async def start_bot(message: Message, bot: Bot):
     
-    if message.text.startswith('/winuser'):
-        user_data = await telegram_name_users(message)
-        print(user_data)
-        data_hash_id = message.text.split("=")
-        user_id = user_data['id_user']
-        await update_winuser(data_hash_id[-1], user_id)
+#     if message.text.startswith('/winuser'):
+#         user_data = await telegram_name_users(message)
+#         print(user_data)
+#         data_hash_id = message.text.split("=")
+#         user_id = user_data['id_user']
+#         await update_winuser(data_hash_id[-1], user_id)
