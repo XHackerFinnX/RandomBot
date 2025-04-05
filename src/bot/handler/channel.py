@@ -9,10 +9,11 @@ from bot.keyboard.inline import markup_start
 from bot.keyboard.reply import rmk, add_channel_keyboard
 from bot.utils.states import Channel
 from bot.text import HELLO_TEXT, MENU_TEXT, ADD_CHANNEL_TEXT
-
+from log.log import setup_logger
 from db.models.channels import check_channel, add_channel, update_channel
 
 router = Router()
+logger = setup_logger("Channel")
 
 @router.message(Command('newchannel'))
 async def start_channel(message: Message, state: FSMContext):

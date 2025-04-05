@@ -9,7 +9,7 @@ from bot.keyboard.inline import markup_start, markup_save_post
 from bot.keyboard.reply import rmk
 from bot.utils.states import Post
 from bot.text import HELLO_TEXT, MENU_TEXT
-
+from log.log import setup_logger
 from db.models.posts import add_post
 
 from zoneinfo import ZoneInfo
@@ -17,6 +17,7 @@ from datetime import datetime
 
 router = Router()
 MOSCOW_TZ = ZoneInfo("Europe/Moscow")
+logger = setup_logger("Commands")
 
 @router.message(Command('newpost'))
 async def start_newpost(message: Message, state: FSMContext):

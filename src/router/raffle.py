@@ -7,7 +7,7 @@ from typing import List
 
 from db.models.user import select_raffle_data, add_user_raffle, delete_user_raffle, check_user_raffle, select_winner_raffle_archive, winner_user
 from db.models.channels import check_channel_id_sub
-
+from log.log import setup_logger
 from bot.handler.message import message_check_sub_user, message_check_user_raffle, message_data_check_sub_user, message_update_send_channel
 
 from datetime import datetime
@@ -17,6 +17,7 @@ router = APIRouter(prefix="", tags=["Raffle"])
 
 templates = Jinja2Templates(directory="templates")
 MOSCOW_TZ = ZoneInfo("Europe/Moscow")
+logger = setup_logger("Raffle")
 
 
 class HashRaffle(BaseModel):

@@ -9,12 +9,14 @@ from db.models.user import check_user, add_user, update_winuser
 from bot.text import HELLO_TEXT, MENU_TEXT, ADD_CHANNEL_TEXT
 from bot.utils.states import Channel, Post
 from aiogram.fsm.context import FSMContext
+from log.log import setup_logger
 
 from zoneinfo import ZoneInfo
 from datetime import datetime
 
 router = Router()
 MOSCOW_TZ = ZoneInfo("Europe/Moscow")
+logger = setup_logger("Commands")
 
 @router.message(CommandStart())
 async def start_bot(message: Message, state: FSMContext, bot: Bot):

@@ -6,8 +6,10 @@ from bot.keyboard.inline import markup_start
 from bot.keyboard.reply import rmk
 from bot.text import HELLO_TEXT, MENU_TEXT
 from aiogram.fsm.context import FSMContext
+from log.log import setup_logger
 
 router = Router()
+logger = setup_logger("Cancel")
 
 @router.message(Command('cancel'))
 async def cancel_creation(message: Message, state: FSMContext):

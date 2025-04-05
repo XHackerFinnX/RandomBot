@@ -12,12 +12,14 @@ from db.models.user import count_user_sub_channel, select_raffle_active_my, sele
 from db.models.channels import check_channel_id_sub
 from bot.handler.raffle_time import waiting_drawing
 from bot.handler.message import message_new_raffle_list_data
+from log.log import setup_logger
 
 router = APIRouter(
     prefix="",
     tags=["AllGive"]
 )
 MOSCOW_TZ = ZoneInfo("Europe/Moscow")
+logger = setup_logger("AllGive")
 
 class MyRaffle(BaseModel):
     user_id: int

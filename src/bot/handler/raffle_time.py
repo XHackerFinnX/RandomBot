@@ -24,12 +24,14 @@ from bot.handler.message import (
     message_update_raffle_end,
 )
 from db.models.channels import check_channel_id_sub, select_active_raffle
+from log.log import setup_logger
 
 bot = Bot(
     config.BOT_TOKEN.get_secret_value(),
     default=DefaultBotProperties(parse_mode=ParseMode.HTML),
 )
 MOSCOW_TZ = ZoneInfo("Europe/Moscow")
+logger = setup_logger("Commands")
 # Хранилище для задач
 raffle_tasks = []
 

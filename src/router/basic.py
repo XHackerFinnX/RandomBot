@@ -7,7 +7,7 @@ from fastapi.responses import RedirectResponse
 
 from db.models.channels import select_channel, delete_channel_user, select_channel_true
 from db.models.posts import select_post, delete_post_user, select_view_post_user
-
+from log.log import setup_logger
 from bot.handler.message import (message_post, message_channel_delete,
                                  message_post_delete, message_channel_update, message_add_newpost,
                                  message_add_newchannel)
@@ -20,6 +20,7 @@ router = APIRouter(
 )
 
 templates = Jinja2Templates(directory="templates")
+logger = setup_logger("Basic")
 
 class GetDataRequest(BaseModel):
     user_id: int

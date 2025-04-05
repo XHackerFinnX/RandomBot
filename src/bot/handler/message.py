@@ -24,7 +24,7 @@ from db.models.channels import (
     select_tgname_channel,
 )
 from db.models.user import add_channel_send, add_user, check_user, select_photo_post, select_photo_raffle, winner_user, select_channel_send, count_user_sub_channel
-
+from log.log import setup_logger
 from config import config
 
 bot = Bot(
@@ -32,6 +32,7 @@ bot = Bot(
     default=DefaultBotProperties(parse_mode=ParseMode.HTML),
 )
 MOSCOW_TZ = ZoneInfo("Europe/Moscow")
+logger = setup_logger("Commands")
 
 async def message_check_user_raffle(user_id):
     user_data = await bot.get_chat(user_id)

@@ -12,6 +12,7 @@ from datetime import datetime
 from zoneinfo import ZoneInfo
 from db.models.channels import check_channel_user_sub
 from db.models.user import add_raffle, check_hash_id_raffle
+from log.log import setup_logger
 
 from bot.handler.message import message_new_raffle
 from bot.handler.raffle_time import waiting_drawing, waiting_drawing_start
@@ -20,6 +21,7 @@ router = APIRouter(prefix="", tags=["NewGive"])
 
 templates = Jinja2Templates(directory="templates")
 MOSCOW_TZ = ZoneInfo("Europe/Moscow")
+logger = setup_logger("NewGive")
 
 class NameChannel(BaseModel):
     name: str
