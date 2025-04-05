@@ -194,7 +194,11 @@ span {
 }
 
 #giveaway-name {
-    margin-left: 5px;
+    margin-left: 12px;
+}
+
+.give-way {
+    margin-left: 15px;
 }
 
 .input-field-text {
