@@ -14,7 +14,7 @@ class Settings(BaseSettings):
     WEBHOOK_URL: str = "https://racerandom.ru"
     WEBHOOK_PATH: str = "webhook"
     
-    APP_HOST: str = "127.0.0.1"
+    APP_HOST: str = "0.0.0.0"
     APP_PORT: int = 8000
     
     model_config: SettingsConfigDict = SettingsConfigDict(
