@@ -12,7 +12,7 @@ class Settings(BaseSettings):
     WEBAPP_URL: str = "https://racerandom.ru"
     
     WEBHOOK_URL: str = "https://racerandom.ru"
-    WEBHOOK_PATH: str = "webhook"
+    WEBHOOK_PATH: str = "/webhook"
     
     APP_HOST: str = "0.0.0.0"
     APP_PORT: int = 8000
