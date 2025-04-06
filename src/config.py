@@ -9,10 +9,8 @@ class Settings(BaseSettings):
     POSTGRESQL_PORT: SecretStr
     POSTGRESQL_DATABASE: SecretStr
     
-    # WEBAPP_URL: str = "https://7v02p8-178-236-140-171.ru.tuna.am"
     WEBAPP_URL: str = "https://racerandom.ru"
     
-    # WEBHOOK_URL: str = "https://7v02p8-178-236-140-171.ru.tuna.am"
     WEBHOOK_URL: str = "https://racerandom.ru"
     WEBHOOK_PATH: str = "/webhook"
     
