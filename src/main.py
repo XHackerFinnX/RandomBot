@@ -102,4 +102,4 @@ async def favicon():
     return True
 
 if __name__ == "__main__":
-    uvicorn.run(app, host=config.APP_HOST, port=config.APP_PORT, ssl_keyfile="/etc/letsencrypt/live/racerandom.ru/privkey.pem", ssl_certfile="/etc/letsencrypt/live/racerandom.ru/fullchain.pem")
+    uvicorn.run(app, host=config.APP_HOST, port=config.APP_PORT)
