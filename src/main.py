@@ -105,4 +105,8 @@ async def favicon():
     return True
 
 if __name__ == "__main__":
-    uvicorn.run(app, host=config.APP_HOST, port=config.APP_PORT)
+    uvicorn.run(
+        app, 
+        host=config.APP_HOST,
+        port=config.APP_PORT
+    )
