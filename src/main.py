@@ -39,7 +39,7 @@ def is_event_loop_running():
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     await bot.set_webhook(
-        url=f"{config.WEBHOOK_URL}/{config.WEBHOOK_PATH}",
+        url=f"{config.WEBHOOK_URL}{config.WEBHOOK_PATH}",
         drop_pending_updates=True,
         allowed_updates=dp.resolve_used_update_types()
     )
@@ -89,13 +89,12 @@ dp.include_routers(
     commands.router
 )
 
-@app.post(f"/{config.WEBHOOK_PATH}")
+@app.post(config.WEBHOOK_PATH)
 async def webhooks(request: Request):
     update = Update.model_validate(
         await request.json(),
         context={'bot': bot}
     )
-    print(bot, update)
     await dp.feed_update(bot, update)
 
 @app.get("/favicon.ico", include_in_schema=False)
@@ -103,4 +102,4 @@ async def favicon():
     return True
 
 if __name__ == "__main__":
-    uvicorn.run(app, host=config.APP_HOST, port=config.APP_PORT)
+    uvicorn.run(app, host=config.APP_HOST, port=config.APP_PORT, ssl_keyfile="/etc/letsencrypt/live/racerandom.ru/privkey.pem", ssl_certfile="/etc/letsencrypt/live/racerandom.ru/fullchain.pem")
