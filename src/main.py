@@ -39,12 +39,6 @@ def is_event_loop_running():
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     print("Starting bot setup...")
-    dp.include_routers(
-        cancel.router,
-        post.router,
-        channel.router,
-        commands.router
-    )
     await bot.set_webhook(
         url=f"{config.WEBHOOK_URL}{config.WEBHOOK_PATH}",
         drop_pending_updates=True,
