@@ -20,8 +20,6 @@ from aiogram.types import Update
 from aiogram.client.default import DefaultBotProperties
 from aiogram.enums import ParseMode
 
-app = FastAPI()
-
 bot = Bot(
     config.BOT_TOKEN.get_secret_value(),
     default=DefaultBotProperties(parse_mode=ParseMode.HTML)
@@ -91,18 +89,18 @@ dp.include_routers(
     commands.router
 )
 
-# @app.post(config.WEBHOOK_PATH)
-# async def webhooks(request: Request):
-#     update = Update.model_validate(
-#         await request.json(),
-#         context={'bot': bot}
-#     )
-#     await dp.feed_update(bot, update)
+@app.post(config.WEBHOOK_PATH)
+async def webhooks(request: Request):
+    update = Update.model_validate(
+        await request.json(),
+        context={'bot': bot}
+    )
+    await dp.feed_update(bot, update)
+    return {"ok": True}
 
-
-@app.get(config.WEBHOOK_PATH)
-async def webhook_get():
-    return {"status": "OK"}
+# @app.get(config.WEBHOOK_PATH)
+# async def webhook_get():
+#     return {"status": "OK"}
 
 @app.get("/favicon.ico", include_in_schema=False)
 async def favicon():
