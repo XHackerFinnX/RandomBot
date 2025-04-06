@@ -91,13 +91,18 @@ dp.include_routers(
     commands.router
 )
 
-@app.post(config.WEBHOOK_PATH)
-async def webhooks(request: Request):
-    update = Update.model_validate(
-        await request.json(),
-        context={'bot': bot}
-    )
-    await dp.feed_update(bot, update)
+# @app.post(config.WEBHOOK_PATH)
+# async def webhooks(request: Request):
+#     update = Update.model_validate(
+#         await request.json(),
+#         context={'bot': bot}
+#     )
+#     await dp.feed_update(bot, update)
+
+
+@app.get(config.WEBHOOK_PATH)
+async def webhook_get():
+    return {"status": "OK"}
 
 @app.get("/favicon.ico", include_in_schema=False)
 async def favicon():
