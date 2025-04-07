@@ -49,9 +49,12 @@ async def text_post_newpost(message: Message, state: FSMContext):
         post_text = message.caption
     
     links = extract_links(post_text)
+    response = ""
+    print(links)
     if links:
         response = "\n".join(links)
-
+        
+    print(response)
     await state.update_data(text_post=post_text, photo_id=photo_id)
     await state.set_state(Post.confirmation)
 

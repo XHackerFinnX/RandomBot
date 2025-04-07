@@ -38,13 +38,11 @@ def is_event_loop_running():
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    print("Starting bot setup...")
     await bot.set_webhook(
         url=f"{config.WEBHOOK_URL}{config.WEBHOOK_PATH}",
         drop_pending_updates=True,
         allowed_updates=dp.resolve_used_update_types()
     )
-    print(f"Webhook set to {config.WEBHOOK_URL}{config.WEBHOOK_PATH}")
     task = asyncio.create_task(background_task())
     tasks.append(task)
 
@@ -92,13 +90,11 @@ dp.include_routers(
 
 @app.post(config.WEBHOOK_PATH)
 async def webhooks(request: Request):
-    print("Received webhook request")
     update = Update.model_validate(
         await request.json(),
         context={'bot': bot}
     )
     await dp.feed_update(bot, update)
-    print("Update processed")
 
 @app.get("/favicon.ico", include_in_schema=False)
 async def favicon():
