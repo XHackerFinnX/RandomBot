@@ -48,20 +48,20 @@ async def text_post_newpost(message: Message, state: FSMContext):
         photo_id = message.photo[-1].file_id
         post_text = message.caption
     
-    links = extract_links(post_text)
-    response = ""
-    print(links)
-    if links:
-        response = "\n".join(links)
+    # links = extract_links(post_text)
+    # response = ""
+    # print(links)
+    # if links:
+    #     response = "\n".join(links)
         
-    print(response)
+    # print(response)
     await state.update_data(text_post=post_text, photo_id=photo_id)
     await state.set_state(Post.confirmation)
 
     if photo_id:
-        sent_message = await message.answer_photo(photo=photo_id, caption=post_text + "\n\n" + response, reply_markup=markup_save_post)
+        sent_message = await message.answer_photo(photo=photo_id, caption=post_text, reply_markup=markup_save_post)
     else:
-        sent_message = await message.answer(text=post_text + "\n\n" + response, reply_markup=markup_save_post)
+        sent_message = await message.answer(text=post_text, reply_markup=markup_save_post)
         
     await state.update_data(confirm_message_id=sent_message.message_id)
         
