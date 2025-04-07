@@ -9,11 +9,17 @@ class Settings(BaseSettings):
     POSTGRESQL_PORT: SecretStr
     POSTGRESQL_DATABASE: SecretStr
     
-    WEBAPP_URL: str = "https://xhackerfinnx-randombot-b4ef.twc1.net"
+    # Локальный запуск
+    # WEBAPP_URL: str = "https://xhackerfinnx-randombot-b4ef.twc1.net"
+    # WEBHOOK_URL: str = "https://xhackerfinnx-randombot-b4ef.twc1.net"
+    # WEBHOOK_PATH: str = "/webhook"
+    # APP_HOST: str = "0.0.0.0"
+    # APP_PORT: int = 8000
     
-    WEBHOOK_URL: str = "https://xhackerfinnx-randombot-b4ef.twc1.net"
+    # Продакшен
+    WEBAPP_URL: str = "https://racerandom.ru"
+    WEBHOOK_URL: str = "https://racerandom.ru"
     WEBHOOK_PATH: str = "/webhook"
-    
     APP_HOST: str = "0.0.0.0"
     APP_PORT: int = 8000
     
