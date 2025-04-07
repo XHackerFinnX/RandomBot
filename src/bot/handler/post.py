@@ -1,4 +1,5 @@
 import aiohttp
+import re
 
 from aiogram import Router, html
 from aiogram.filters import Command
@@ -39,21 +40,25 @@ async def text_post_newpost(message: Message, state: FSMContext):
 
     post_text = message.text if message.text else ""
     photo_id = None
-
+    
     if message.photo:
         if not message.caption:
             await message.answer("🙂 Вы не ввели описание поста.\n\nДля отмены нажмите 👉🏻 /cancel")
             return
         photo_id = message.photo[-1].file_id
         post_text = message.caption
+    
+    links = extract_links(post_text)
+    if links:
+        response = "\n".join(links)
 
     await state.update_data(text_post=post_text, photo_id=photo_id)
     await state.set_state(Post.confirmation)
 
     if photo_id:
-        sent_message = await message.answer_photo(photo=photo_id, caption=post_text, reply_markup=markup_save_post)
+        sent_message = await message.answer_photo(photo=photo_id, caption=post_text + "\n\n" + response, reply_markup=markup_save_post)
     else:
-        sent_message = await message.answer(text=post_text, reply_markup=markup_save_post)
+        sent_message = await message.answer(text=post_text + "\n\n" + response, reply_markup=markup_save_post)
         
     await state.update_data(confirm_message_id=sent_message.message_id)
         
@@ -107,3 +112,7 @@ async def download_photo(photo_id: str, bot) -> bytes:
     async with aiohttp.ClientSession() as session:
         async with session.get(url) as response:
             return await response.read()
+        
+async def extract_links(text: str) -> list[str]:
+    # Находит все ссылки в тексте
+    return re.findall(r'(https?://[^\s]+)', text)
