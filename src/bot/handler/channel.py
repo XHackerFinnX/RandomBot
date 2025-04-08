@@ -17,7 +17,7 @@ logger = setup_logger("Channel")
 
 @router.message(Command('newchannel'))
 async def start_channel(message: Message, state: FSMContext):
-    photo = FSInputFile(r"photo/channel_bot.jpg")
+    photo = FSInputFile(r"src/bot/photo/channel_bot.jpg")
     await state.set_state(Channel.channel)
     await message.answer_photo(
         photo=photo,
