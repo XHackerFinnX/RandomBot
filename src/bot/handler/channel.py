@@ -1,7 +1,7 @@
 import requests
 from aiogram import Router, html, Bot
 from aiogram.filters import Command
-from aiogram.types import Message, ChatMemberAdministrator
+from aiogram.types import Message, ChatMemberAdministrator, FSInputFile
 from aiogram.fsm.context import FSMContext
 from config import config
 
@@ -17,8 +17,13 @@ logger = setup_logger("Channel")
 
 @router.message(Command('newchannel'))
 async def start_channel(message: Message, state: FSMContext):
+    photo = FSInputFile(r"photo/channel_bot.jpg")
     await state.set_state(Channel.channel)
-    await message.answer(text=ADD_CHANNEL_TEXT, reply_markup=add_channel_keyboard)
+    await message.answer_photo(
+        photo=photo,
+        caption=ADD_CHANNEL_TEXT,
+        reply_markup=add_channel_keyboard
+    )
 
 
 @router.message(Channel.channel)
