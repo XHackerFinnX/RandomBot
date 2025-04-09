@@ -459,3 +459,161 @@ async def update_status_raffle_start(raffle_id):
             await conn.execute(query, raffle_id)
     except Exception as error:
         print(f"Ошибка запуска розыгрыша через настройки: {error}")
+        
+
+async def check_user_save_raffle(user_id):
+    query = """
+    SELECT 1 FROM random_raffle_save WHERE user_id = $1
+    """
+
+    try:
+        pool = await User.connect()
+        async with pool.acquire() as conn:
+            result = await conn.fetchrow(query, user_id)
+            return bool(result)
+    except Exception as error:
+        print(f"Ошибка получения сохраненного розыгрыша: {error}")
+        return False
+
+
+async def update_save_raffle(
+    user_id,
+    name,
+    post_id,
+    post_text,
+    post_button,
+    sub_channel_id,
+    announcet_channel_id,
+    results_channel_id,
+    start_date,
+    end_date,
+    user_win,
+    step
+):
+    query = """
+    UPDATE random_raffle_save
+    SET
+        name = $1,
+        post_id = $2,
+        post_text = $3,
+        post_button = $4,
+        sub_channel_id = $5,
+        announcet_channel_id = $6,
+        results_channel_id = $7,
+        start_date = $8,
+        end_date = $9,
+        user_winners = $10,
+        step = $11
+    WHERE user_id = $12;
+    """
+
+    try:
+        pool = await User.connect()
+        async with pool.acquire() as conn:
+            await conn.execute(
+                query,
+                name,
+                post_id,
+                post_text,
+                post_button,
+                sub_channel_id,
+                announcet_channel_id,
+                results_channel_id,
+                start_date,
+                end_date,
+                user_win,
+                step,
+                user_id
+            )
+            return True
+    except Exception as error:
+        print(f"Ошибка при обновлении розыгрыша: {error}")
+        return False
+
+
+async def add_save_raffle(
+    user_id,
+    name,
+    post_id,
+    post_text,
+    post_button,
+    sub_channel_id,
+    announcet_channel_id,
+    results_channel_id,
+    start_date,
+    end_date,
+    user_win,
+    step
+):
+    query = """
+    INSERT INTO random_raffle_save (
+        user_id,
+        name,
+        post_id,
+        post_text,
+        post_button,
+        sub_channel_id,
+        announcet_channel_id,
+        results_channel_id,
+        start_date,
+        end_date,
+        user_winners,
+        step
+    ) VALUES (
+        $1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12
+    );
+    """
+
+    try:
+        pool = await User.connect()
+        async with pool.acquire() as conn:
+            await conn.execute(
+                query,
+                user_id,
+                name,
+                post_id,
+                post_text,
+                post_button,
+                sub_channel_id,
+                announcet_channel_id,
+                results_channel_id,
+                start_date,
+                end_date,
+                user_win,
+                step
+            )
+            return True
+    except Exception as error:
+        print(f"Ошибка при сохранении розыгрыша: {error}")
+        return False
+    
+
+async def select_all_save_raffle(user_id):
+    query = """
+    SELECT * FROM random_raffle_save
+    WHERE user_id = $1
+    """
+
+    try:
+        pool = await User.connect()
+        async with pool.acquire() as conn:
+            record = await conn.fetchrow(query, user_id)
+            return dict(record) if record else None
+    except Exception as error:
+        print(f"Ошибка при получении сохраненнго розыгрыша: {error}")
+        return None
+    
+async def delete_save_raffle(user_id):
+    query = """
+    DELETE FROM random_raffle_save
+    WHERE user_id = $1
+    """
+
+    try:
+        pool = await User.connect()
+        async with pool.acquire() as conn:
+            await conn.execute(query, user_id)
+            return True
+    except Exception as error:
+        print(f"Ошибка при удалении сохраненного розыгрыша: {error}")
+        return False
