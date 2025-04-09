@@ -13,7 +13,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
 document.addEventListener("DOMContentLoaded", function () {
     const tg = window.Telegram?.WebApp;
-    tg.BackButton.hide();
+    if (tg) {
+        tg.BackButton.hide();
+    }
 
     const userData = {
         name: "Пользователь",
