@@ -120,9 +120,14 @@ async def get_posts(request: GetDataRequest):
     if await check_user_save_raffle(user_id):
         data_channel_sub = await select_channel_save_raffle(user_id)
         if data_channel_sub['sub_channel_id']:
-            data_channel = []
+            # data_channel = []
+            channel_id_list = []
+            for id_c in data_channel:
+                channel_id_list.append(id_c['channel_id'])
+                
             for id_channel_sub in data_channel_sub['sub_channel_id']:
-                data_channel += await check_channel_id_sub(id_channel_sub)
+                if id_channel_sub not in channel_id_list:
+                    data_channel += await check_channel_id_sub(id_channel_sub)
 
     channels = []
     for data_user in data_channel:
