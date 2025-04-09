@@ -529,6 +529,58 @@ async def update_save_raffle(
     except Exception as error:
         print(f"Ошибка при обновлении розыгрыша: {error}")
         return False
+    
+
+async def update_save_raffle_end_date(
+    user_id,
+    name,
+    post_id,
+    post_text,
+    post_button,
+    sub_channel_id,
+    announcet_channel_id,
+    results_channel_id,
+    start_date,
+    user_win,
+    step
+):
+    query = """
+    UPDATE random_raffle_save
+    SET
+        name = $1,
+        post_id = $2,
+        post_text = $3,
+        post_button = $4,
+        sub_channel_id = $5,
+        announcet_channel_id = $6,
+        results_channel_id = $7,
+        start_date = $8,
+        user_winners = $9,
+        step = $10
+    WHERE user_id = $11;
+    """
+
+    try:
+        pool = await User.connect()
+        async with pool.acquire() as conn:
+            await conn.execute(
+                query,
+                name,
+                post_id,
+                post_text,
+                post_button,
+                sub_channel_id,
+                announcet_channel_id,
+                results_channel_id,
+                start_date,
+                user_win,
+                step,
+                user_id
+            )
+            return True
+    except Exception as error:
+        print(f"Ошибка при обновлении розыгрыша: {error}")
+        return False
 
 
 async def add_save_raffle(
@@ -617,3 +669,19 @@ async def delete_save_raffle(user_id):
     except Exception as error:
         print(f"Ошибка при удалении сохраненного розыгрыша: {error}")
         return False
+    
+
+async def select_channel_save_raffle(user_id):
+    query = """
+    SELECT sub_channel_id FROM random_raffle_save
+    WHERE user_id = $1
+    """
+
+    try:
+        pool = await User.connect()
+        async with pool.acquire() as conn:
+            record = await conn.fetch(query, user_id)
+            return record[0]
+    except Exception as error:
+        print(f"Ошибка при получении каналов сохраненного розыгрыша: {error}")
+        return None
