@@ -5,7 +5,7 @@ from fastapi import APIRouter, Request, BackgroundTasks
 from pydantic import BaseModel
 from fastapi.responses import RedirectResponse
 
-from db.models.channels import select_channel, delete_channel_user, select_channel_true
+from db.models.channels import check_channel_id_sub, select_channel, delete_channel_user, select_channel_true
 from db.models.posts import select_post, delete_post_user, select_view_post_user
 from log.log import setup_logger
 from bot.handler.message import (message_post, message_channel_delete,
@@ -13,6 +13,8 @@ from bot.handler.message import (message_post, message_channel_delete,
                                  message_add_newchannel)
 from config import config
 from typing import Optional
+
+from db.models.user import check_user_save_raffle, select_channel_save_raffle
 
 router = APIRouter(
     prefix="",
@@ -115,6 +117,13 @@ async def get_posts(request: GetDataRequest):
 async def get_posts(request: GetDataRequest):
     user_id = request.user_id
     data_channel = await select_channel_true(user_id)
+    if await check_user_save_raffle(user_id):
+        data_channel_sub = await select_channel_save_raffle(user_id)
+        if data_channel_sub['sub_channel_id']:
+            data_channel = []
+            for id_channel_sub in data_channel_sub['sub_channel_id']:
+                data_channel += await check_channel_id_sub(id_channel_sub)
+
     channels = []
     for data_user in data_channel:
         if data_user['channel_photo'] is None:
