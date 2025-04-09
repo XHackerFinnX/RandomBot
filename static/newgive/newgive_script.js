@@ -132,7 +132,27 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     tg.BackButton.show();
     tg.BackButton.onClick(() => {
-        window.location.href = "/";
+        const userId = tg?.initDataUnsafe?.user?.id;
+        fetch("/api/delete-save-raffle", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                user_id: userId,
+            }),
+        })
+            .then((response) => {
+                if (response.ok) {
+                    console.log("Розыгрыш успешно удален");
+                    window.location.href = "/";
+                } else {
+                    console.error("Ошибка при удалении розыгрыша");
+                }
+            })
+            .catch((error) => {
+                console.error("Ошибка при отправке запроса:", error);
+            });
     });
 
     const stepContent = document.getElementById("step-content");
@@ -796,7 +816,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
 
             const channels = await response.json();
-
+            document.getElementById("channels-loader").style.display = "none";
             let selectedChannels;
             switch (type) {
                 case "subscription":
@@ -1384,6 +1404,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 async function getSavedRaffle() {
     const tg = window.Telegram?.WebApp;
     const userId = tg?.initDataUnsafe?.user?.id;
+    const type = "channel";
     try {
         const response = await fetch("/api/get-save-raffle", {
             method: "POST",
@@ -1399,7 +1420,21 @@ async function getSavedRaffle() {
 
         const data = await response.json();
 
-        // Нормализуем структуру данных
+        const response_channel = await fetch("/api/get_channel", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ user_id: userId, type }),
+        });
+
+        if (!response_channel.ok) {
+            throw new Error(
+                "Ошибка ответа от сервера:",
+                response_channel.statusText
+            );
+        }
+
+        const channels = await response_channel.json();
+
         return {
             step: data.step || 0,
             giveawayData: {
@@ -1417,6 +1452,9 @@ async function getSavedRaffle() {
                 startDate: data.start_date || "",
                 endDate: data.end_date || "",
                 winnersCount: data.user_winners || 1,
+                subscriptionChannels: channels || [],
+                announcementChannels: channels || [],
+                resultChannels: channels || [],
             },
         };
     } catch (error) {
