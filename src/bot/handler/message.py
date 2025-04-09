@@ -1,21 +1,15 @@
-from collections import namedtuple
-from datetime import datetime
-from io import BytesIO
-from zoneinfo import ZoneInfo
 import requests
 import ast
-
 from aiogram import Bot
 from aiogram.enums import ParseMode
 from aiogram.types import BufferedInputFile
 from aiogram.client.default import DefaultBotProperties
-from bot.keyboard.inline import markup_continue
 from aiogram.types import (
     InlineKeyboardMarkup,
     InlineKeyboardButton,
     ChatMemberAdministrator,
 )
-
+from bot.keyboard.inline import markup_continue
 from db.models.channels import (
     check_channel,
     select_send_channel_result,
@@ -26,13 +20,15 @@ from db.models.channels import (
 from db.models.user import add_channel_send, add_user, check_user, select_photo_post, select_photo_raffle, winner_user, select_channel_send, count_user_sub_channel
 from log.log import setup_logger
 from config import config
+from datetime import datetime
+from zoneinfo import ZoneInfo
 
 bot = Bot(
     config.BOT_TOKEN.get_secret_value(),
     default=DefaultBotProperties(parse_mode=ParseMode.HTML),
 )
 MOSCOW_TZ = ZoneInfo("Europe/Moscow")
-logger = setup_logger("Commands")
+logger = setup_logger("Message")
 
 async def message_check_user_raffle(user_id):
     user_data = await bot.get_chat(user_id)

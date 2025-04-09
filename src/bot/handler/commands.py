@@ -1,16 +1,14 @@
-from aiogram import Bot, Router, html
+from aiogram import Router, html
 from aiogram.filters import CommandStart
-from aiogram.types import Message
-
+from aiogram.types import Message, FSInputFile
+from aiogram.fsm.context import FSMContext
 from bot.keyboard.inline import markup_start
 from bot.keyboard.reply import add_channel_keyboard
 from bot.tg_name import telegram_name_users
-from db.models.user import check_user, add_user, update_winuser
 from bot.text import HELLO_TEXT, MENU_TEXT, ADD_CHANNEL_TEXT
 from bot.utils.states import Channel, Post
-from aiogram.fsm.context import FSMContext
+from db.models.user import check_user, add_user
 from log.log import setup_logger
-
 from zoneinfo import ZoneInfo
 from datetime import datetime
 
@@ -19,7 +17,7 @@ MOSCOW_TZ = ZoneInfo("Europe/Moscow")
 logger = setup_logger("Commands")
 
 @router.message(CommandStart())
-async def start_bot(message: Message, state: FSMContext, bot: Bot):
+async def start_bot(message: Message, state: FSMContext):
     
     await state.clear()
     args = message.text.split(maxsplit=1)
@@ -41,6 +39,7 @@ async def start_bot(message: Message, state: FSMContext, bot: Bot):
         )
         
     if len(args) == 1:
+        logger.info(f"Пользователь ID:({user_id}) Name:({user_name}) Запустил команду /start без параметров")
         await message.answer(
             text=f"{HELLO_TEXT}{html.bold(user_fname)}!{MENU_TEXT}",
             reply_markup=markup_start
@@ -48,20 +47,16 @@ async def start_bot(message: Message, state: FSMContext, bot: Bot):
     else:
         await message.delete()
         data = args[-1].split('_')
+        logger.info(f"Пользователь ID:({user_id}) Name:({user_name}) Запустил команду /start с параметром {data[-1]}")
         if data[-1] == 'channel':
+            photo = FSInputFile(r"src/bot/photo/channel_bot.jpg")
             await state.set_state(Channel.channel)
-            await message.answer(text=ADD_CHANNEL_TEXT, reply_markup=add_channel_keyboard)
+            await message.answer_photo(
+                photo=photo,
+                caption=ADD_CHANNEL_TEXT,
+                reply_markup=add_channel_keyboard
+            )
         
         if data[-1] == 'post':
             await state.set_state(Post.text_post)
             await message.answer(text='💬 Отправьте мне ваш пост (текст или фото с подписью) \nДля отмены нажмите 👉🏻 /cancel')
-            
-# @router.message()
-# async def start_bot(message: Message, bot: Bot):
-    
-#     if message.text.startswith('/winuser'):
-#         user_data = await telegram_name_users(message)
-#         print(user_data)
-#         data_hash_id = message.text.split("=")
-#         user_id = user_data['id_user']
-#         await update_winuser(data_hash_id[-1], user_id)

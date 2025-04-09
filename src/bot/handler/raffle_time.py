@@ -1,21 +1,8 @@
 import asyncio
 import random
-
 from aiogram import Bot
 from aiogram.enums import ParseMode
 from aiogram.client.default import DefaultBotProperties
-
-from db.models.user import (
-    add_raffle_archive,
-    select_all_user_raffle,
-    select_raffle_data,
-    select_turn_user_raffle,
-    update_raffle_end,
-)
-
-from datetime import datetime
-from zoneinfo import ZoneInfo
-from config import config
 from bot.handler.message import (
     message_channel_result_raffle,
     message_data_check_sub_user_end_raffle,
@@ -23,15 +10,25 @@ from bot.handler.message import (
     message_new_raffle_list_data,
     message_update_raffle_end,
 )
+from db.models.user import (
+    add_raffle_archive,
+    select_all_user_raffle,
+    select_raffle_data,
+    select_turn_user_raffle,
+    update_raffle_end,
+)
 from db.models.channels import check_channel_id_sub, select_active_raffle
 from log.log import setup_logger
+from datetime import datetime
+from zoneinfo import ZoneInfo
+from config import config
 
 bot = Bot(
     config.BOT_TOKEN.get_secret_value(),
     default=DefaultBotProperties(parse_mode=ParseMode.HTML),
 )
 MOSCOW_TZ = ZoneInfo("Europe/Moscow")
-logger = setup_logger("Commands")
+logger = setup_logger("Raffle-Time")
 # Хранилище для задач
 raffle_tasks = []
 
@@ -67,7 +64,7 @@ async def waiting_drawing(hash_id, start_date, end_date):
     try:
         entry_date = datetime.now(MOSCOW_TZ).replace(tzinfo=None)
         raffle_time = (end_date - entry_date).total_seconds()
-        print(f"Розыгрыш {hash_id} закончится через {raffle_time} сек.")
+        logger.info(f"Розыгрыш {hash_id} закончится через {raffle_time} сек.")
         if raffle_time > 0:
             await asyncio.sleep(raffle_time)
         else:
@@ -75,7 +72,7 @@ async def waiting_drawing(hash_id, start_date, end_date):
 
         data = await select_raffle_data(hash_id)
         if data[0]["status"] == 'Завершен' or data[0]["status"] == 'Отмена':
-            print('Розыгрыш завершен принудительно!')
+            logger.info(f"Розыгрыш завершен принудительно!")
             return
         
         await update_raffle_end(hash_id, "Ждем")
@@ -129,8 +126,9 @@ async def waiting_drawing(hash_id, start_date, end_date):
         await add_raffle_archive(hash_id, turn_list_winner, start_date, end_date)
         await message_channel_result_raffle(hash_id, turn_list_winner)
         await update_raffle_end(hash_id, "Завершен")
+        logger.info(f"Розыгрыш {hash_id} завершен!")
     except asyncio.CancelledError:
-        print(f"Розыгрыш {hash_id} отключен! И временно не работает")
+        logger.warning(f"Розыгрыш {hash_id} отключен! И временно не работает в waiting_drawing")
 
 
 async def waiting_drawing_start(data, hash_id, start_date, end_date):
@@ -138,7 +136,7 @@ async def waiting_drawing_start(data, hash_id, start_date, end_date):
         entry_date = datetime.now(MOSCOW_TZ).replace(tzinfo=None)
         raffle_time_start = (start_date - entry_date).total_seconds()
 
-        print(f"Розыгрыш {hash_id} начнется через {raffle_time_start} сек.")
+        logger.info(f"Розыгрыш {hash_id} начнется через {raffle_time_start} сек.")
         if raffle_time_start > 0:
             await asyncio.sleep(raffle_time_start)
         else:
@@ -147,7 +145,7 @@ async def waiting_drawing_start(data, hash_id, start_date, end_date):
         temp_data = await select_raffle_data(hash_id)
         
         if temp_data[0]["status"] == "Активен" or temp_data[0]["status"] == 'Отмена':
-            print('Розыгрыш завершен принудительно из статуса ожидание!')
+            logger.info(f"Розыгрыш завершен принудительно из статуса ожидание!")
             return
         
         await update_raffle_end(hash_id, "Активен")
@@ -158,7 +156,7 @@ async def waiting_drawing_start(data, hash_id, start_date, end_date):
             
         entry_date = datetime.now(MOSCOW_TZ).replace(tzinfo=None)
         raffle_time = (end_date - entry_date).total_seconds()
-        print(f"Розыгрыш {hash_id} закончится через {raffle_time} сек.")
+        logger.info(f"Розыгрыш {hash_id} закончится через {raffle_time} сек.")
         if raffle_time > 0:
             await asyncio.sleep(raffle_time)
         else:
@@ -215,5 +213,6 @@ async def waiting_drawing_start(data, hash_id, start_date, end_date):
         await add_raffle_archive(hash_id, turn_list_winner, start_date, end_date)
         await message_channel_result_raffle(hash_id, turn_list_winner)
         await update_raffle_end(hash_id, "Завершен")
+        logger.info(f"Розыгрыш {hash_id} завершен!")
     except asyncio.CancelledError:
-        print(f"Розыгрыш {hash_id} отключен! И временно не работает")
+        logger.warning(f"Розыгрыш {hash_id} отключен! И временно не работает в waiting_drawing_start")
