@@ -10,10 +10,10 @@ class Settings(BaseSettings):
     POSTGRESQL_DATABASE: SecretStr
     
     # Локальный запуск
-    # WEBAPP_URL: str = "https://xhackerfinnx-randombot-b4ef.twc1.net"
-    # WEBHOOK_URL: str = "https://xhackerfinnx-randombot-b4ef.twc1.net"
+    # WEBAPP_URL: str = "https://randomrace.serveo.net"
+    # WEBHOOK_URL: str = "https://randomrace.serveo.net"
     # WEBHOOK_PATH: str = "/webhook"
-    # APP_HOST: str = "0.0.0.0"
+    # APP_HOST: str = "localhost"
     # APP_PORT: int = 8000
     
     # Продакшен
