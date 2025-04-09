@@ -31,6 +31,7 @@ async function fetchData() {
         }
 
         const data = await response.json();
+        console.log(data);
         updateUI(data);
     } catch (error) {
         console.error("Ошибка получения данных:", error);
@@ -72,7 +73,9 @@ function updateUI(data) {
         statusIndicator.style.backgroundColor = "gray";
         actionButton.style.display = "none";
     }
-
+    console.log(data.subscription_channels);
+    console.log(data.announcement_channels);
+    console.log(data.result_channels);
     updateChannels(".channels-list", data.subscription_channels);
     updateChannels(".announcement-list", data.announcement_channels);
     updateChannels(".result-list", data.result_channels);
@@ -91,6 +94,26 @@ function updateChannels(selector, channels) {
         const channelElement = createChannelElementSub(channel);
         container.appendChild(channelElement);
     });
+}
+
+function getRandomColor() {
+    const letters = "0123456789ABCDEF";
+    let color = "#";
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+function generateAvatarLetter(name) {
+    const letter = name.charAt(0).toUpperCase();
+    const color = getRandomColor();
+    return `
+  <svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="20" cy="20" r="20" fill="${color}" /> <!-- Делаем круглый фон -->
+    <text x="50%" y="45%" font-size="20" text-anchor="middle" dominant-baseline="central" fill="white">${letter}</text>
+  </svg>
+`;
 }
 
 function createChannelElementSub(channel) {
