@@ -209,10 +209,18 @@ async def save_create_raffle(data: SaveRaffle):
 @router.post('/api/get-save-raffle')
 async def get_save_raffle(data_user: UserId):
     data = await select_all_save_raffle(data_user.user_id)
-    data.update({
-        "start_date": data['start_date'].strftime('%d.%m.%Y %H:%M')
-    })
-    data.update({
-        "end_date": data['end_date'].strftime('%d.%m.%Y %H:%M')
-    })
+    try:
+        data.update({
+            "start_date": data['start_date'].strftime('%d.%m.%Y %H:%M')
+        })
+    except:
+        pass
+    
+    try:
+        data.update({
+            "end_date": data['end_date'].strftime('%d.%m.%Y %H:%M')
+        })
+    except:
+        pass
+    
     return data
