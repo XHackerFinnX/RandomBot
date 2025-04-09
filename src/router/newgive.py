@@ -11,7 +11,7 @@ from pydantic.types import List
 from datetime import datetime
 from zoneinfo import ZoneInfo
 from db.models.channels import check_channel_user_sub
-from db.models.user import add_raffle, add_save_raffle, check_hash_id_raffle, check_user_save_raffle, delete_save_raffle, select_all_save_raffle, update_save_raffle
+from db.models.user import add_raffle, add_save_raffle, check_hash_id_raffle, check_user_save_raffle, delete_save_raffle, select_all_save_raffle, update_save_raffle, update_save_raffle_end_date
 from log.log import setup_logger
 from bot.handler.message import message_new_raffle
 from bot.handler.raffle_time import waiting_drawing, waiting_drawing_start
@@ -170,25 +170,40 @@ async def save_create_raffle(data: SaveRaffle):
     try:
         end_date_raffle = datetime.strptime(raffle_data['end_date'], '%d.%m.%Y %H:%M')
     except:
-        end_date_raffle = datetime.now()
-    
+        end_date_raffle = None
+
     user_win = raffle_data['user_win']
     
     if await check_user_save_raffle(user_id):
-        await update_save_raffle(
-            user_id,
-            name,
-            post_id,
-            post_text,
-            post_button,
-            sub_channel_id,
-            announcet_channel_id,
-            results_channel_id,
-            start_date_raffle,
-            end_date_raffle,
-            user_win,
-            step
-        )
+        if end_date_raffle is None:
+            await update_save_raffle_end_date(
+                user_id,
+                name,
+                post_id,
+                post_text,
+                post_button,
+                sub_channel_id,
+                announcet_channel_id,
+                results_channel_id,
+                start_date_raffle,
+                user_win,
+                step
+            )
+        else:
+            await update_save_raffle(
+                user_id,
+                name,
+                post_id,
+                post_text,
+                post_button,
+                sub_channel_id,
+                announcet_channel_id,
+                results_channel_id,
+                start_date_raffle,
+                end_date_raffle,
+                user_win,
+                step
+            )
     else:
         await add_save_raffle(
             user_id,
@@ -224,3 +239,7 @@ async def get_save_raffle(data_user: UserId):
         pass
     
     return data
+
+@router.post('/api/delete-save-raffle')
+async def delete_save_raffle_back(data: UserId):
+    await delete_save_raffle(data.user_id)
