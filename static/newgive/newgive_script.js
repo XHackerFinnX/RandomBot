@@ -1,4 +1,6 @@
 let activeDateField = null;
+let savedRaffleData = null;
+let currentStep = 0;
 
 class SimpleAlert {
     constructor() {
@@ -35,7 +37,7 @@ function safeQuerySelector(selector) {
     return document.querySelector(selector) || null;
 }
 
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
     const tg = window.Telegram?.WebApp;
     window.Telegram.WebApp.ready();
     let currentYear, currentMonth; // Сохраняем состояние между открытиями модального окна для даты
@@ -89,8 +91,8 @@ document.addEventListener("DOMContentLoaded", () => {
         const firstDay = new Date(year, month, 1);
         const lastDay = new Date(year, month + 1, 0);
         const daysInMonth = lastDay.getDate();
-        let startingDay = firstDay.getDay(); 
-        startingDay = (startingDay === 0) ? 6 : startingDay - 1;
+        let startingDay = firstDay.getDay();
+        startingDay = startingDay === 0 ? 6 : startingDay - 1;
 
         currentMonthDisplay.textContent = new Intl.DateTimeFormat("ru-RU", {
             month: "long",
@@ -102,7 +104,6 @@ document.addEventListener("DOMContentLoaded", () => {
             const emptyDay = document.createElement("div");
             emptyDay.classList.add("calendar-day", "outside-month");
             calendarDays.appendChild(emptyDay);
-
         }
 
         // Добавление дней месяца
@@ -147,7 +148,6 @@ document.addEventListener("DOMContentLoaded", () => {
         review: document.getElementById("template-review")?.content,
     };
     const steps = Object.keys(templates);
-    let currentStep = 0;
 
     // Функция для обновления индикатора прогресса
     function updateProgressIndicator() {
@@ -248,6 +248,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Обработчик кнопки "Назад"
     backButton.addEventListener("click", () => {
         saveCurrentStepData();
+        postGiveawayData(currentStep);
         if (currentStep > 0) {
             currentStep--;
             loadStep(currentStep);
@@ -257,6 +258,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Обработчик кнопки "Вперед"
     nextButton.addEventListener("click", () => {
         saveCurrentStepData();
+        postGiveawayData(currentStep);
         if (currentStep < steps.length - 1) {
             currentStep++;
             loadStep(currentStep);
@@ -264,6 +266,64 @@ document.addEventListener("DOMContentLoaded", () => {
             createRaffle();
         }
     });
+
+    function postGiveawayData(stepCount) {
+        const tg = window.Telegram?.WebApp;
+        const userId = tg?.initDataUnsafe?.user?.id;
+
+        const dateString = new Date()
+            .toLocaleString("ru-RU", {
+                timeZone: "Europe/Moscow",
+                year: "numeric",
+                month: "2-digit",
+                day: "2-digit",
+                hour: "2-digit",
+                minute: "2-digit",
+                second: "2-digit",
+            })
+            .replace(",", "");
+
+        const raffleData = {
+            user_id: userId,
+            name: giveawayData.name,
+            post_id: giveawayData.postId,
+            post_text: giveawayData.selectedPost,
+            post_button: giveawayData.buttonText,
+            sub_channel_id:
+                giveawayData.selectedSubscriptionChannels.map(Number),
+            announcet_channel_id:
+                giveawayData.selectedAnnouncementChannels.map(Number),
+            results_channel_id: giveawayData.selectedResultChannels.map(Number),
+            start_date: giveawayData.startImmediately
+                ? dateString
+                : giveawayData.startDate,
+            end_date: giveawayData.endDate,
+            user_win: giveawayData.winnersCount,
+        };
+
+        fetch("/api/save-giveaway", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+                giveawayData: raffleData,
+                step: stepCount,
+            }),
+        })
+            .then((response) => {
+                if (!response.ok) {
+                    throw new Error("Ошибка при отправке данных");
+                }
+                return response.json();
+            })
+            .then((data) => {
+                console.log("Данные успешно отправлены:", data);
+            })
+            .catch((error) => {
+                console.error("Ошибка POST-запроса:", error);
+            });
+    }
 
     async function createRaffle() {
         const tg = window.Telegram?.WebApp;
@@ -303,7 +363,7 @@ document.addEventListener("DOMContentLoaded", () => {
             end_date: giveawayData.endDate,
             user_win: giveawayData.winnersCount,
         };
-        
+
         document.getElementById("main-container").style.display = "none";
         document.getElementById("loading-container").style.display = "block";
         try {
@@ -663,7 +723,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
         if (postid) {
             const postElement = document.getElementById(postid);
-            
+
             if (postElement) {
                 postElement.id = giveawayData.postId;
             }
@@ -1286,9 +1346,84 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     }
 
-    // Инициализация первого шага
+    try {
+        // Загружаем сохраненные данные
+        savedRaffleData = await getSavedRaffle();
+        console.log("Saved raffle data:", savedRaffleData);
+
+        if (savedRaffleData && savedRaffleData.giveawayData) {
+            // Обновляем giveawayData сохраненными значениями
+            Object.assign(giveawayData, savedRaffleData.giveawayData);
+
+            // Восстанавливаем шаг
+            currentStep = savedRaffleData.step || 0;
+            console.log("Restored step:", currentStep);
+
+            // Восстанавливаем специфичные данные
+            if (savedRaffleData.giveawayData.post_text) {
+                giveawayData.selectedPost =
+                    savedRaffleData.giveawayData.post_text;
+            }
+            if (savedRaffleData.giveawayData.post_id) {
+                giveawayData.postId = savedRaffleData.giveawayData.post_id;
+            }
+            console.log(savedRaffleData.giveawayData.user_winners);
+            if (savedRaffleData.giveawayData.user_winners) {
+                giveawayData.winnersCount =
+                    savedRaffleData.giveawayData.user_winners;
+            }
+        }
+    } catch (e) {
+        console.error("Error loading saved data:", e);
+        currentStep = 0;
+    }
+
     loadStep(currentStep);
 });
+
+async function getSavedRaffle() {
+    const tg = window.Telegram?.WebApp;
+    const userId = tg?.initDataUnsafe?.user?.id;
+    try {
+        const response = await fetch("/api/get-save-raffle", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ user_id: userId }),
+        });
+
+        if (!response.ok) {
+            throw new Error("Ошибка при получении сохраненного розыгрыша");
+        }
+
+        const data = await response.json();
+
+        // Нормализуем структуру данных
+        return {
+            step: data.step || 0,
+            giveawayData: {
+                name: data.name || "",
+                selectedPost: data.post_text || "Выбрать пост",
+                postId: data.post_id || "",
+                buttonText: data.post_button || "Участвовать",
+                selectedSubscriptionChannels:
+                    data.sub_channel_id?.map(String) || [],
+                selectedAnnouncementChannels:
+                    data.announcet_channel_id?.map(String) || [],
+                selectedResultChannels:
+                    data.results_channel_id?.map(String) || [],
+                startImmediately: data.start_date === "immediately",
+                startDate: data.start_date || "",
+                endDate: data.end_date || "",
+                winnersCount: data.user_winners || 1,
+            },
+        };
+    } catch (error) {
+        console.error("Ошибка запроса:", error);
+        return null;
+    }
+}
 
 // Инициализация состояния приложения
 const giveawayData = {
