@@ -270,7 +270,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         saveCurrentStepData();
         if (currentStep > 0) {
             currentStep--;
-            postGiveawayData(currentStep - 1);
+            postGiveawayData(currentStep);
             loadStep(currentStep);
         }
     });
@@ -280,7 +280,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         saveCurrentStepData();
         if (currentStep < steps.length - 1) {
             currentStep++;
-            postGiveawayData(currentStep + 1);
+            postGiveawayData(currentStep);
             loadStep(currentStep);
         } else {
             createRaffle();
@@ -1376,7 +1376,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             Object.assign(giveawayData, savedRaffleData.giveawayData);
 
             // Восстанавливаем шаг
-            currentStep = savedRaffleData.step || 0;
+            currentStep = savedRaffleData.step + 1 || 0;
             console.log("Restored step:", currentStep);
 
             // Восстанавливаем специфичные данные
