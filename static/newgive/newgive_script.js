@@ -1436,7 +1436,7 @@ async function getSavedRaffle() {
         const channels = await response_channel.json();
 
         return {
-            step: data.step + 1 || 0,
+            step: data.step || 0,
             giveawayData: {
                 name: data.name || "",
                 selectedPost: data.post_text || "Выбрать пост",
