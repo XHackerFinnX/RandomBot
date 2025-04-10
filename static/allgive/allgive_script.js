@@ -120,24 +120,24 @@ document.addEventListener("DOMContentLoaded", function () {
                 raffleItem.classList.add("raffle-item");
 
                 raffleItem.innerHTML = `
-          <div class="raffle-header">
-            <div class="raffle-status ${statusClass}">
-              <span class="status-dot"></span>
-              ${raffle.status}
-            </div>
-            ${remainingTimeHTML} <!-- Вставляем оставшееся время, если оно больше 0 -->
-          </div>
-          
-          <div class="raffle-title">
-            <h3 class="raffle-name">${raffle.name}</h3>
-          </div>
-          
-          <div class="raffle-dates">
-            ${formattedStartDate} - ${formattedEndDate}
-          </div>
-          
-          <button class="raffle-manage">${buttonText}</button>
-        `;
+                <div class="raffle-header">
+                    <div class="raffle-status ${statusClass}">
+                    <span class="status-dot"></span>
+                    ${raffle.status}
+                    </div>
+                    ${remainingTimeHTML} <!-- Вставляем оставшееся время, если оно больше 0 -->
+                </div>
+                
+                <div class="raffle-title">
+                    <h3 class="raffle-name">${raffle.name}</h3>
+                </div>
+                
+                <div class="raffle-dates">
+                    ${formattedStartDate} - ${formattedEndDate}
+                </div>
+                
+                <button class="raffle-manage">${buttonText}</button>
+                `;
 
                 const manageButton = raffleItem.querySelector(".raffle-manage");
                 manageButton.addEventListener("click", function () {

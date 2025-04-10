@@ -268,9 +268,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Обработчик кнопки "Назад"
     backButton.addEventListener("click", () => {
         saveCurrentStepData();
-        postGiveawayData(currentStep);
         if (currentStep > 0) {
             currentStep--;
+            postGiveawayData(currentStep);
             loadStep(currentStep);
         }
     });
@@ -278,9 +278,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     // Обработчик кнопки "Вперед"
     nextButton.addEventListener("click", () => {
         saveCurrentStepData();
-        postGiveawayData(currentStep);
         if (currentStep < steps.length - 1) {
             currentStep++;
+            postGiveawayData(currentStep);
             loadStep(currentStep);
         } else {
             createRaffle();

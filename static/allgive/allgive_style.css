@@ -18,7 +18,7 @@ body {
     padding: 16px;
     min-height: 100vh;
     margin-top: 40px;
-    position: relative; /* Add this */
+    position: relative;
 }
 
 .header {
@@ -26,7 +26,7 @@ body {
     margin: 24px 0;
     position: relative;
     z-index: 11;
-    background-color: #121212; /* Match body background */
+    background-color: #121212;
 }
 
 .header h1 {
@@ -37,10 +37,8 @@ body {
 
 .tabs {
     width: 100%;
-    overflow-y: auto; /* Allow vertical scrolling */
-    height: calc(
-        100vh - 120px
-    ); /* Adjust height to fit the screen minus header */
+    overflow-y: auto;
+    height: calc(100vh - 120px);
 }
 
 .tabs-list {
@@ -49,9 +47,9 @@ body {
     border-radius: 8px;
     margin-bottom: 24px;
     padding: 4px;
-    position: sticky; /* Change to sticky positioning */
-    top: 0; /* Stick to the top */
-    z-index: 10; /* Ensure it stays above other content */
+    position: sticky;
+    top: 0;
+    z-index: 10;
     margin-top: 0;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
         0 2px 4px -1px rgba(0, 0, 0, 0.06);
@@ -113,7 +111,6 @@ body {
     background-color: #2563eb;
 }
 
-/* New styles for raffle cards */
 .raffle-item {
     background-color: #1e1e1e;
     border-radius: 12px;

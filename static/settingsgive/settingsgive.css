@@ -28,14 +28,12 @@ body {
     margin-top: 25px;
 }
 
-/* Header */
 .header {
     margin-bottom: 1rem;
     text-align: center;
     color: #9ca3af;
 }
 
-/* Status button */
 .status-container {
     display: flex;
     justify-content: center;
@@ -70,14 +68,13 @@ body {
 }
 
 .status-button.active .status-indicator {
-    background-color: #ef4444 !important; /* Красный для активного */
+    background-color: #ef4444 !important;
 }
 
 .status-button.waiting .status-indicator {
-    background-color: #f59e0b !important; /* Оранжевый для ожидания */
+    background-color: #f59e0b !important;
 }
 
-/* Participants counter */
 .participants-counter {
     margin-bottom: 1rem;
     padding: 0.75rem;
@@ -96,7 +93,6 @@ body {
     font-weight: bold;
 }
 
-/* Action buttons */
 .action-buttons {
     display: flex;
     gap: 0.5rem;
@@ -136,7 +132,6 @@ body {
     background-color: #dc2626;
 }
 
-/* Sections */
 .section {
     margin-bottom: 1rem;
 }
@@ -165,7 +160,6 @@ body {
     color: #fcd34d;
 }
 
-/* Setting items */
 .setting-item {
     margin-bottom: 0.5rem;
     padding: 0.75rem;
@@ -192,7 +186,6 @@ body {
     text-overflow: ellipsis;
 }
 
-/* Channels list */
 .channels-list {
     background-color: #18181b;
     border-radius: 0.5rem;
@@ -214,7 +207,6 @@ body {
     color: #6b7280;
 }
 
-/* Date editing */
 .date-edit-container {
     display: flex;
     align-items: center;
@@ -323,7 +315,6 @@ body {
     font-size: 0.875rem;
 }
 
-/* Стили для модального окна */
 #confirmation-modal {
     display: none;
     position: fixed;
