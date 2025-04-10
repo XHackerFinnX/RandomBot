@@ -270,7 +270,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         saveCurrentStepData();
         if (currentStep > 0) {
             currentStep--;
-            postGiveawayData(currentStep);
+            postGiveawayData(currentStep - 1);
             loadStep(currentStep);
         }
     });
@@ -280,7 +280,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         saveCurrentStepData();
         if (currentStep < steps.length - 1) {
             currentStep++;
-            postGiveawayData(currentStep);
+            postGiveawayData(currentStep + 1);
             loadStep(currentStep);
         } else {
             createRaffle();
