@@ -185,7 +185,7 @@ async def message_new_raffle(data, hash_id):
 
     channel_sub = []
     if photo_post is None:
-        for channel in data.sub_channel_id:
+        for channel in data.announcet_channel_id:
             try:
                 channel_tg = await select_tgname_channel(int(channel))
                 send_raffle_channel_sub = await bot.send_message(
@@ -210,7 +210,7 @@ async def message_new_raffle(data, hash_id):
                         print(e)
     else:
         photo = BufferedInputFile(photo_post, filename="image.jpg")
-        for channel in data.sub_channel_id:
+        for channel in data.announcet_channel_id:
             try:
                 channel_tg = await select_tgname_channel(int(channel))
                 send_raffle_channel_sub = await bot.send_photo(
@@ -267,7 +267,7 @@ async def message_new_raffle_list_data(data, hash_id):
 
     channel_sub = []
     if photo_post is None:
-        for channel in data[0]["sub_channel_id"]:
+        for channel in data[0]["announcet_channel_id"]:
             try:
                 channel_tg = await select_tgname_channel(int(channel))
                 send_raffle_channel_sub = await bot.send_message(
@@ -292,7 +292,7 @@ async def message_new_raffle_list_data(data, hash_id):
                         print(e)
     else:
         photo = BufferedInputFile(photo_post, filename="image.jpg")
-        for channel in data[0]["sub_channel_id"]:
+        for channel in data[0]["announcet_channel_id"]:
             try:
                 channel_tg = await select_tgname_channel(int(channel))
                 send_raffle_channel_sub = await bot.send_photo(
