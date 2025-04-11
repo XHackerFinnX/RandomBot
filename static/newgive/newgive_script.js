@@ -1379,7 +1379,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             Object.assign(giveawayData, savedRaffleData.giveawayData);
 
             // Восстанавливаем шаг
-            currentStep = savedRaffleData.step - 1 || 0;
+            currentStep = savedRaffleData.step || 0;
             console.log("Restored step:", currentStep);
 
             // Восстанавливаем специфичные данные
