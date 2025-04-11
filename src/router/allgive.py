@@ -192,11 +192,12 @@ async def perform_raffle_action(data: CancelRaffle):
     raffle = await select_raffle_data(data.raffle_id)
     
     if data.action == 'end':
+        start_date_now = datetime.now(MOSCOW_TZ).replace(tzinfo=None)
         asyncio.create_task(
             waiting_drawing(
                 raffle[0]["raffle_id"],
                 raffle[0]["end_date"],
-                raffle[0]["start_date"]
+                start_date_now
             )
         )
         await asyncio.sleep(2)
