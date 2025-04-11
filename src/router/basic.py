@@ -26,6 +26,7 @@ logger = setup_logger("Basic")
 
 class GetDataRequest(BaseModel):
     user_id: int
+    type_channel: str
 
 class ReqData(BaseModel):
     user_id: int
@@ -116,11 +117,12 @@ async def get_posts(request: GetDataRequest):
 @router.post("/api/get_channel")
 async def get_posts(request: GetDataRequest):
     user_id = request.user_id
+    type_channel = request.type_channel
+    print(type_channel)
     data_channel = await select_channel_true(user_id)
     if await check_user_save_raffle(user_id):
         data_channel_sub = await select_channel_save_raffle(user_id)
         if data_channel_sub['sub_channel_id']:
-            # data_channel = []
             channel_id_list = []
             for id_c in data_channel:
                 channel_id_list.append(id_c['channel_id'])
