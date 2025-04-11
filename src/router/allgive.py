@@ -149,7 +149,7 @@ async def raffle_data_settings(data: RaffleId):
             )
             
     res_channels = []
-    for rci in data['announcet_channel_id']:
+    for rci in data['results_channel_id']:
         data_channel = await check_channel_id_sub(rci)
         if not data_channel:
             pass
