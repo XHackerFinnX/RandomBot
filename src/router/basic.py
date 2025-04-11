@@ -26,6 +26,9 @@ logger = setup_logger("Basic")
 
 class GetDataRequest(BaseModel):
     user_id: int
+    
+class GetDataRequestChannel(BaseModel):
+    user_id: int
     type_channel_text: str
 
 class ReqData(BaseModel):
@@ -115,7 +118,7 @@ async def get_posts(request: GetDataRequest):
     return [pt for pt in channels]
 
 @router.post("/api/get_channel")
-async def get_posts(request: GetDataRequest):
+async def get_posts(request: GetDataRequestChannel):
     user_id = request.user_id
     type_channel = request.type_channel_text
     print(type_channel)
