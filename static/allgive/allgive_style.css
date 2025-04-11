@@ -10,6 +10,7 @@ body {
     background-color: #121212;
     color: white;
     min-height: 100vh;
+    overflow: hidden;
 }
 
 .container {
@@ -39,6 +40,12 @@ body {
     width: 100%;
     overflow-y: auto;
     height: calc(100vh - 120px);
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.tabs::-webkit-scrollbar {
+    display: none;
 }
 
 .tabs-list {
@@ -228,4 +235,5 @@ body {
 .tab-content {
     width: 100%;
     align-items: stretch;
+    padding-bottom: 100px;
 }
