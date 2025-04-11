@@ -807,7 +807,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             const response = await fetch("/api/get_channel", {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ user_id: userId, type }),
+                body: JSON.stringify({ user_id: userId, type_channel: type }),
             });
 
             if (!response.ok) {
@@ -1423,7 +1423,7 @@ async function getSavedRaffle() {
         const response_channel = await fetch("/api/get_channel", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ user_id: userId, type }),
+            body: JSON.stringify({ user_id: userId, type_channel: type }),
         });
 
         if (!response_channel.ok) {
