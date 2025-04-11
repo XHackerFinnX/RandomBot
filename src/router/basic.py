@@ -125,7 +125,7 @@ async def get_posts(request: GetDataRequestChannel):
     data_channel = await select_channel_true(user_id)
     if await check_user_save_raffle(user_id):
         data_channel_sub = await select_channel_save_raffle(user_id)
-        if data_channel_sub['sub_channel_id']:
+        if data_channel_sub['sub_channel_id'] and (type_channel in ['channel', 'subscription']):
             channel_id_list = []
             for id_c in data_channel:
                 channel_id_list.append(id_c['channel_id'])
