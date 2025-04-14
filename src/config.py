@@ -21,7 +21,7 @@ class Settings(BaseSettings):
     WEBHOOK_URL: str = "https://xhackerfinnx-randombot-b4ef.twc1.net"
     WEBHOOK_PATH: str = "/webhook"
     APP_HOST: str = "0.0.0.0"
-    APP_PORT: int = 8081
+    APP_PORT: int = 5000
     
     model_config: SettingsConfigDict = SettingsConfigDict(
         env_file='.env',
