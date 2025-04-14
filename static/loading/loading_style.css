@@ -17,6 +17,10 @@
     font-family: Arial, sans-serif;
 }
 
+*:focus {
+    outline: none;
+}
+
 html,
 body {
     margin: 0;

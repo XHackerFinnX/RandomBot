@@ -2,6 +2,10 @@
     --telegram-blue: #4ea4f6;
 }
 
+*:focus {
+    outline: none;
+}
+
 .modal-overlay {
     position: fixed;
     top: 0;

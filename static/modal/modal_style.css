@@ -6,6 +6,10 @@ body.modal-open {
     overflow: hidden;
 }
 
+*:focus {
+    outline: none;
+}
+
 .modal-overlay {
     position: fixed;
     top: 0;
