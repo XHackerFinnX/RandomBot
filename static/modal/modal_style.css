@@ -6,11 +6,11 @@ body.modal-open {
     overflow: hidden;
 }
 
-*:focus {
+/* *:focus {
     outline: none;
     box-shadow: none;
     -webkit-tap-highlight-color: transparent;
-}
+} */
 
 .modal-overlay {
     position: fixed;
