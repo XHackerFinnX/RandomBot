@@ -8,7 +8,6 @@ class Settings(BaseSettings):
     POSTGRESQL_HOST: SecretStr
     POSTGRESQL_PORT: SecretStr
     POSTGRESQL_DATABASE: SecretStr
-    PORT: SecretStr
     
     # Локальный запуск
     # WEBAPP_URL: str = "https://randomrace.serveo.net"
@@ -22,7 +21,7 @@ class Settings(BaseSettings):
     WEBHOOK_URL: str = "https://xhackerfinnx-randombot-b4ef.twc1.net"
     WEBHOOK_PATH: str = "/webhook"
     APP_HOST: str = "0.0.0.0"
-    APP_PORT: int = PORT
+    APP_PORT: int = 8000
     
     model_config: SettingsConfigDict = SettingsConfigDict(
         env_file='.env',
