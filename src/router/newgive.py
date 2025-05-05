@@ -6,7 +6,7 @@ from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse, JSONResponse
 from fastapi import APIRouter, Request, BackgroundTasks, Body
 from pydantic import BaseModel
-from pydantic.types import List
+from typing import List
 
 from datetime import datetime
 from zoneinfo import ZoneInfo
@@ -147,50 +147,66 @@ async def create_raffle(data: Raffle, background_tasks: BackgroundTasks):
 
 @router.post("/api/save-giveaway")
 async def save_create_raffle(data: SaveRaffle):
-    raffle_data = data.giveawayData
-    step = data.step
-
-    user_id = raffle_data['user_id']
-    name = raffle_data['name']
-    post_id = int(raffle_data['post_id'])
-    post_text = raffle_data['post_text']
-    post_button = raffle_data['post_button']
-    sub_channel_id = raffle_data['sub_channel_id']
-    announcet_channel_id = raffle_data['announcet_channel_id']
-    results_channel_id = raffle_data['results_channel_id']
-    
     try:
-        start_date_raffle = datetime.strptime(raffle_data['start_date'], '%d.%m.%Y %H:%M:%S')
-    except:
+        raffle_data = data.giveawayData
+        step = data.step
+
+        user_id = raffle_data['user_id']
+        name = raffle_data['name']
+        post_id = int(raffle_data['post_id'])
+        post_text = raffle_data['post_text']
+        post_button = raffle_data['post_button']
+        sub_channel_id = raffle_data['sub_channel_id']
+        announcet_channel_id = raffle_data['announcet_channel_id']
+        results_channel_id = raffle_data['results_channel_id']
+        
         try:
-            start_date_raffle = datetime.strptime(raffle_data['start_date'], '%d.%m.%Y %H:%M')
+            start_date_raffle = datetime.strptime(raffle_data['start_date'], '%d.%m.%Y %H:%M:%S')
         except:
-            start_date_raffle = datetime.strptime(raffle_data['start_date'], '%Y-%m-%dT%H:%M:%S')
-    
-    try:
-        end_date_raffle = datetime.strptime(raffle_data['end_date'], '%d.%m.%Y %H:%M')
-    except:
-        end_date_raffle = None
+            try:
+                start_date_raffle = datetime.strptime(raffle_data['start_date'], '%d.%m.%Y %H:%M')
+            except:
+                start_date_raffle = datetime.strptime(raffle_data['start_date'], '%Y-%m-%dT%H:%M:%S')
+        
+        try:
+            end_date_raffle = datetime.strptime(raffle_data['end_date'], '%d.%m.%Y %H:%M')
+        except:
+            end_date_raffle = None
 
-    user_win = raffle_data['user_win']
-    
-    if await check_user_save_raffle(user_id):
-        if end_date_raffle is None:
-            await update_save_raffle_end_date(
-                user_id,
-                name,
-                post_id,
-                post_text,
-                post_button,
-                sub_channel_id,
-                announcet_channel_id,
-                results_channel_id,
-                start_date_raffle,
-                user_win,
-                step
-            )
+        user_win = raffle_data['user_win']
+        
+        if await check_user_save_raffle(user_id):
+            if end_date_raffle is None:
+                await update_save_raffle_end_date(
+                    user_id,
+                    name,
+                    post_id,
+                    post_text,
+                    post_button,
+                    sub_channel_id,
+                    announcet_channel_id,
+                    results_channel_id,
+                    start_date_raffle,
+                    user_win,
+                    step
+                )
+            else:
+                await update_save_raffle(
+                    user_id,
+                    name,
+                    post_id,
+                    post_text,
+                    post_button,
+                    sub_channel_id,
+                    announcet_channel_id,
+                    results_channel_id,
+                    start_date_raffle,
+                    end_date_raffle,
+                    user_win,
+                    step
+                )
         else:
-            await update_save_raffle(
+            await add_save_raffle(
                 user_id,
                 name,
                 post_id,
@@ -204,21 +220,8 @@ async def save_create_raffle(data: SaveRaffle):
                 user_win,
                 step
             )
-    else:
-        await add_save_raffle(
-            user_id,
-            name,
-            post_id,
-            post_text,
-            post_button,
-            sub_channel_id,
-            announcet_channel_id,
-            results_channel_id,
-            start_date_raffle,
-            end_date_raffle,
-            user_win,
-            step
-        )
+    except:
+        pass
         
 
 @router.post('/api/get-save-raffle')
