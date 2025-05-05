@@ -16,11 +16,11 @@
     padding: 0;
 }
 
-/* *:focus {
+*:focus {
     outline: none;
     box-shadow: none;
     -webkit-tap-highlight-color: transparent;
-} */
+}
 
 html,
 body {

@@ -2,11 +2,11 @@
     --telegram-blue: #4ea4f6;
 }
 
-/* *:focus {
+*:focus {
     outline: none;
     box-shadow: none;
     -webkit-tap-highlight-color: transparent;
-} */
+}
 
 .modal-overlay {
     position: fixed;

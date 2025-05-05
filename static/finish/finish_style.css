@@ -4,11 +4,11 @@
     box-sizing: border-box;
 }
 
-/* *:focus {
+*:focus {
     outline: none;
     box-shadow: none;
     -webkit-tap-highlight-color: transparent;
-} */
+}
 
 body {
     font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
