@@ -1,37 +1,33 @@
 <!DOCTYPE html>
 <html lang="ru">
-
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
     <title>Розыгрыш призов</title>
     <link rel="stylesheet" href="/static/endgive/endgive_style.css" />
+    <link rel="stylesheet" href="/static/endgive/endgive_banner_style.css">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet" />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
 </head>
 
 <body>
-    <div class="bg-background flex items-center justify-center p-4">
+    <div class="bg-background">
         <!-- Loading Screen -->
         <div id="loading-screen" class="flex flex-col items-center justify-center py-12 animate-fade-in">
             <div class="w-20 h-20 mb-6 loading-animation">
                 <img src="https://raw.githubusercontent.com/XHackerFinnX/Domeae/master/db/file_zip/animSticker/AnimatedSticker-ezgif.com-gif-maker.webp"
                     alt="Loading" class="w-full h-full object-contain" />
             </div>
-            <h2 class="text-2xl font-semibold mb-2">Загрузка...</h2>
-            <p class="text-muted-foreground">
-                Проверяем выполнены ли условия.
-            </p>
+            <h2 class="text-xl font-semibold mb-2">Загрузка...</h2>
+            <p class="text-muted-foreground">Проверяем выполнены ли условия.</p>
         </div>
 
         <!-- Main Screen -->
         <div id="main-screen" class="hidden animate-fade-in">
             <div class="header">
                 <div class="header-text">
-                    {{ name }}
-                    <br />
-                    ID: {{ raffle_id }}
+                    {{ name }}<br />ID: {{ raffle_id }}
                 </div>
             </div>
 
@@ -60,8 +56,7 @@
             <div class="flex justify-between items-center mb-4 px-1">
                 <div class="text-sm font-medium">Нужно подписаться</div>
                 <div class="text-sm">
-                    Осталось:
-                    <span class="font-medium" id="time-left">0д 00:00:00</span>
+                    Осталось: <span class="font-medium" id="time-left">0д 00:00:00</span>
                 </div>
             </div>
 
@@ -81,35 +76,98 @@
             </button>
 
             <button id="close-button" class="blue-button">Закрыть</button>
+
+            <!-- Банер активных розыгрышей для Main Screen -->
+            <div class="active-giveaways-banner">
+                <div class="giveaways-slider" id="giveaways-slider">
+                    {% for dr in data_raffle %}
+                        <div class="giveaway-card">
+                            <div class="giveaway-content">
+                                <div class="giveaway-info">
+                                    <h3 class="giveaway-title">{{ dr.name }}</h3>
+                                    <p class="giveaway-description">{{ dr.description }}</p>
+                                </div>
+                                <button class="participate-btn" onclick="window.location.href='{{ dr.url }}'">Участвовать ({{ dr.count }})</button>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                {% if count_indicator > 0 %}
+                <div class="slider-indicators" id="slider-indicators">
+                    {% for i in range(count_indicator) %}
+                        <span class="indicator {% if i == 0 %}active{% endif %}"></span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
         </div>
 
         <!-- Success Screen -->
-        <div id="success-screen" class="hidden flex flex-col items-center justify-center py-12 animate-fade-in">
+        <div id="success-screen" class="hidden flex flex-col items-center justify-center py-12 animate-fade-in success-screen-o">
             <div class="w-20 h-20 mb-6">
                 <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Travel%20and%20Places/Police%20Car.webp"
                     alt="Success" class="w-full h-full object-contain" />
             </div>
-            <h2 class="text-2xl font-semibold mb-2">Неудача!</h2>
-            <p class="text-center text-muted-foreground mb-2">
-                Вы не выполнили условия розыгрыша.
-            </p>
-            <p class="text-center font-medium mb-6">Теперь вы в розыске!</p>
-            <button id="success-close-button" class="blue-button-close">
-                Закрыть
-            </button>
+            <h2 class="text-xl font-semibold mb-2">Неудача!</h2>
+            <p class="text-center text-muted-foreground mb-2">Вы не выполнили условия розыгрыша.</p>
+            <p class="text-xl font-medium mb-6">Теперь вы в розыске!</p>
+            <button id="success-close-button" class="blue-button-close">Закрыть</button>
+
+            <div class="active-giveaways-banner">
+                <div class="giveaways-slider" id="giveaways-slider-success">
+                    {% for dr in data_raffle %}
+                        <div class="giveaway-card">
+                            <div class="giveaway-content">
+                                <div class="giveaway-info">
+                                    <h3 class="giveaway-title">{{ dr.name }}</h3>
+                                    <p class="giveaway-description">{{ dr.description }}</p>
+                                </div>
+                                <button class="participate-btn" onclick="window.location.href='{{ dr.url }}'">Участвовать ({{ dr.count }})</button>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                {% if count_indicator > 0 %}
+                <div class="slider-indicators" id="slider-indicators-success">
+                    {% for i in range(count_indicator) %}
+                        <span class="indicator {% if i == 0 %}active{% endif %}"></span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
         </div>
 
         <!-- Экран успешного выполнения -->
         <div id="success-screen-true" class="hidden success-screen-hidden">
             <div class="step-header">
-                <span class="material-icons icon-large"></span>
                 <img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Telegram-Animated-Emojis/main/Activity/Trophy.webp"
                     class="blue-box" />
             </div>
             <h2 class="title-true">Успешно!</h2>
-            <p class="text-true">
-                🚥 Вы принимаете участие в данной гонке! 🚥
-            </p>
+            <p class="text-true">🚥 Вы принимаете участие в данной гонке! 🚥</p>
+
+            <div class="active-giveaways-banner">
+                <div class="giveaways-slider" id="giveaways-slider-true">
+                    {% for dr in data_raffle %}
+                        <div class="giveaway-card">
+                            <div class="giveaway-content">
+                                <div class="giveaway-info">
+                                    <h3 class="giveaway-title">{{ dr.name }}</h3>
+                                    <p class="giveaway-description">{{ dr.description }}</p>
+                                </div>
+                                <button class="participate-btn" onclick="window.location.href='{{ dr.url }}'">Участвовать ({{ dr.count }})</button>
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+                {% if count_indicator > 0 %}
+                <div class="slider-indicators" id="slider-indicators-true">
+                    {% for i in range(count_indicator) %}
+                        <span class="indicator {% if i == 0 %}active{% endif %}"></span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+            </div>
         </div>
 
         <!-- About Dialog -->
@@ -121,33 +179,23 @@
                 </div>
                 <div class="space-y-4">
                     <p class="text-card-foreground">
-                        Этот розыгрыш проводится для подписчиков нашего
-                        канала. Чтобы участвовать, вам необходимо:
+                        Этот розыгрыш проводится для подписчиков нашего канала. Чтобы участвовать, вам необходимо:
                     </p>
                     <ul class="list-disc pl-5 space-y-1 text-card-foreground">
                         <li>Подписаться на канал</li>
-                        <li>
-                            Оставаться подписчиком до окончания розыгрыша
-                        </li>
-                        <li>
-                            Проверить свою подписку, нажав на
-                            соответствующую кнопку
-                        </li>
+                        <li>Оставаться подписчиком до окончания розыгрыша</li>
+                        <li>Проверить свою подписку, нажав на соответствующую кнопку</li>
                     </ul>
                     <p class="text-card-foreground">
-                        Победители будут выбраны случайным образом среди
-                        всех подписчиков. Результаты будут объявлены после
-                        окончания таймера.
+                        Победители будут выбраны случайным образом среди всех подписчиков. Результаты будут объявлены после окончания таймера.
                     </p>
                 </div>
-                <button id="dialog-ok-button" class="blue-button-full-width">
-                    Понятно
-                </button>
+                <button id="dialog-ok-button" class="blue-button-full-width">Понятно</button>
             </div>
         </div>
     </div>
 
     <script defer src="/static/endgive/endgive_script.js"></script>
+    <script defer src="/static/endgive/endgive_banner.js"></script>
 </body>
-
 </html>

@@ -3,7 +3,7 @@
     <head>
         <meta charset="UTF-8" />
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>RandomWood</title>
+        <title>Random Race</title>
         <link rel="stylesheet" href="/static/basic/basic_styles.css" />
         <link rel="stylesheet" href="/static/modal/modal_style.css" />
         <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -16,6 +16,30 @@
             </div>
 
             <div id="main-content" class="main-content hidden">
+                <!-- Банер активных розыгрышей -->
+                <div class="active-giveaways-banner">
+                    <div class="giveaways-slider" id="giveaways-slider">
+                        {% for dr in data_raffle %}
+                            <div class="giveaway-card">
+                                <div class="giveaway-content">
+                                    <div class="giveaway-info">
+                                        <h3 class="giveaway-title">{{ dr.name }}</h3>
+                                        <p class="giveaway-description">{{ dr.description }}</p>
+                                    </div>
+                                    <button class="participate-btn" onclick="window.location.href='{{ dr.url }}'">Участвовать ({{ dr.count }})</button>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    {% if count_indicator > 0 %}
+                    <div class="slider-indicators" id="slider-indicators">
+                        {% for i in range(count_indicator) %}
+                            <span class="indicator {% if i == 0 %}active{% endif %}"></span>
+                        {% endfor %}
+                    </div>
+                    {% endif %}
+                </div>
+
                 <!-- Создать розыгрыш секция -->
                 <div class="telegram-section pt-4">
                     <div class="greeting animate-fade-in">
@@ -240,5 +264,6 @@
         <script defer src="/static/basic/basic_script.js"></script>
         <script defer src="/static/basic/basic_requests.js"></script>
         <script defer src="/static/modal/modal_script.js"></script>
+        <script defer src="/static/basic/basic_banner.js"></script>
     </body>
 </html>
