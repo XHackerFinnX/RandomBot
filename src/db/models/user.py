@@ -685,3 +685,19 @@ async def select_channel_save_raffle(user_id):
     except Exception as error:
         print(f"Ошибка при получении каналов сохраненного розыгрыша: {error}")
         return None
+    
+
+async def select_all_raffle_active():
+    query = """
+    SELECT raffle_id, name, post_text FROM random_raffle
+    WHERE status = 'Активен'
+    """
+
+    try:
+        pool = await User.connect()
+        async with pool.acquire() as conn:
+            record = await conn.fetch(query)
+            return record
+    except Exception as error:
+        print(f"Ошибка при всех розыгрышей которые сейчас активные: {error}")
+        return None
