@@ -10,14 +10,14 @@ class Settings(BaseSettings):
     POSTGRESQL_DATABASE: SecretStr
     
     # Локальный запуск
-    WEBAPP_URL: str = "https://f2yur3-185-247-185-62.ru.tuna.am"
-    WEBHOOK_URL: str = "https://f2yur3-185-247-185-62.ru.tuna.am"
-    APP_HOST: str = "localhost"
+    # WEBAPP_URL: str = "https://4ycuog-178-236-140-171.ru.tuna.am"
+    # WEBHOOK_URL: str = "https://4ycuog-178-236-140-171.ru.tuna.am"
+    # APP_HOST: str = "localhost"
     
     # Продакшен
-    # WEBAPP_URL: str = "https://racerandom.ru"
-    # WEBHOOK_URL: str = "https://xhackerfinnx-randombot-b4ef.twc1.net"
-    # APP_HOST: str = "0.0.0.0"
+    WEBAPP_URL: str = "xhackerfinnx-randombot-612f.twc1.net"
+    WEBHOOK_URL: str = "xhackerfinnx-randombot-612f.twc1.net"
+    APP_HOST: str = "0.0.0.0"
     
     
     WEBHOOK_PATH: str = "/webhook"
