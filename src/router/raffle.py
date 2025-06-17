@@ -5,7 +5,7 @@ from fastapi import APIRouter, Request, BackgroundTasks
 from pydantic import BaseModel
 from typing import List
 
-from db.models.user import select_raffle_data, add_user_raffle, delete_user_raffle, check_user_raffle, select_winner_raffle_archive, winner_user
+from db.models.user import count_user_sub_channel, select_all_raffle_active, select_raffle_data, add_user_raffle, delete_user_raffle, check_user_raffle, select_winner_raffle_archive, winner_user
 from db.models.channels import check_channel_id_sub
 from log.log import setup_logger
 from bot.handler.message import message_check_sub_user, message_check_user_raffle, message_data_check_sub_user, message_update_send_channel
@@ -42,6 +42,22 @@ async def main_random(raffle_id: str, request: Request):
     data = data[0]
     name = data["name"]
     status = data["status"]
+    
+    data_raffle = []
+    raffle_list_active = await select_all_raffle_active()
+    count_indicator = len(raffle_list_active)
+    for raff_id in raffle_list_active:
+        raffle_name = raff_id['name']
+        count_user = await count_user_sub_channel(raff_id['raffle_id'])
+        raffle_description = raff_id['post_text']
+        data_raffle.append(
+            {
+                'name': raffle_name,
+                'description': raffle_description,
+                'count': count_user[0]['count'],
+                'url': f"/?tgWebAppStartParam={raff_id['raffle_id']}"
+            }
+        )
 
     if status == 'Активен' or status == 'Ждем':
         return templates.TemplateResponse(
@@ -49,7 +65,9 @@ async def main_random(raffle_id: str, request: Request):
             {
                 "request": request,
                 "raffle_id": raffle_id,
-                "name": name
+                "name": name,
+                'data_raffle': data_raffle,
+                'count_indicator': count_indicator
             },
         )
         

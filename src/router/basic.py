@@ -14,7 +14,7 @@ from bot.handler.message import (message_post, message_channel_delete,
 from config import config
 from typing import Optional
 
-from db.models.user import check_user_save_raffle, select_channel_save_raffle
+from db.models.user import check_user_save_raffle, count_user_sub_channel, select_all_raffle_active, select_channel_save_raffle
 
 router = APIRouter(
     prefix="",
@@ -40,8 +40,31 @@ async def main_random(request: Request, tgWebAppStartParam: Optional[str] = None
     if tgWebAppStartParam:
         redirect_url = f"{config.WEBAPP_URL}/raffle?raffle_id={tgWebAppStartParam}"
         return RedirectResponse(url=redirect_url)
+    
+    data_raffle = []
+    raffle_list_active = await select_all_raffle_active()
+    count_indicator = len(raffle_list_active)
+    for raff_id in raffle_list_active:
+        raffle_name = raff_id['name']
+        count_user = await count_user_sub_channel(raff_id['raffle_id'])
+        raffle_description = raff_id['post_text']
+        data_raffle.append(
+            {
+                'name': raffle_name,
+                'description': raffle_description,
+                'count': count_user[0]['count'],
+                'url': f"/?tgWebAppStartParam={raff_id['raffle_id']}"
+            }
+        )
 
-    return templates.TemplateResponse("basic.html", {"request": request})
+    return templates.TemplateResponse(
+        "basic.html",
+        {
+            "request": request,
+            "data_raffle": data_raffle,
+            "count_indicator": count_indicator
+        }
+    )
 
 @router.post("/api/get_data")
 async def get_data(request: GetDataRequest):
