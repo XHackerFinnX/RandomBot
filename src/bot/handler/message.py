@@ -31,22 +31,25 @@ MOSCOW_TZ = ZoneInfo("Europe/Moscow")
 logger = setup_logger("Message")
 
 async def message_check_user_raffle(user_id):
-    user_data = await bot.get_chat(user_id)
-    user_name = '@' + str(user_data.username)
-    user_fname = str(user_data.first_name)
-    user_lname = str(user_data.last_name)
+    try:
+        logger.info(f'Получаем user_id пользователя для bot.get_chat(): {user_id}')
+        user_data = await bot.get_chat(user_id)
+        user_name = '@' + str(user_data.username)
+        user_fname = str(user_data.first_name)
+        user_lname = str(user_data.last_name)
 
-    entry_date = datetime.now(MOSCOW_TZ).replace(tzinfo=None)
-    
-    if not await check_user(user_id):
-        await add_user(
-            user_id,
-            user_name,
-            user_fname,
-            user_lname,
-            entry_date
-        )
-
+        entry_date = datetime.now(MOSCOW_TZ).replace(tzinfo=None)
+        
+        if not await check_user(user_id):
+            await add_user(
+                user_id,
+                user_name,
+                user_fname,
+                user_lname,
+                entry_date
+            )
+    except:
+        logger.warning(f'Не удалось проверить пользователя с user_id в bot.get_chat(): {user_id}')
 
 async def message_post(user_id: int, text: str):
     photo_post = await select_photo_post(user_id, text)
