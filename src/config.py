@@ -16,7 +16,7 @@ class Settings(BaseSettings):
     
     # Продакшен
     WEBAPP_URL: str = "https://racerandom.ru"
-    WEBHOOK_URL: str = "https://xhackerfinnx-randombot-612f.twc1.net"
+    WEBHOOK_URL: str = "https://racerandom.ru"
     APP_HOST: str = "0.0.0.0"
     
     
