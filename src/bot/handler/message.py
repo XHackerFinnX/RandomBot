@@ -17,7 +17,7 @@ from db.models.channels import (
     update_channel_false,
     select_tgname_channel,
 )
-from db.models.user import add_channel_send, add_user, check_user, select_photo_post, select_photo_raffle, winner_user, select_channel_send, count_user_sub_channel
+from db.models.user import add_channel_send, add_user, check_user, select_photo_post, select_photo_raffle, update_user, winner_user, select_channel_send, count_user_sub_channel
 from log.log import setup_logger
 from config import config
 from datetime import datetime
@@ -37,11 +37,20 @@ async def message_check_user_raffle(user_id):
         user_name = '@' + str(user_data.username)
         user_fname = str(user_data.first_name)
         user_lname = str(user_data.last_name)
-
         entry_date = datetime.now(MOSCOW_TZ).replace(tzinfo=None)
         
         if not await check_user(user_id):
+            logger.info(f"Добавляем данные нового пользователя user_id {user_id}")
             await add_user(
+                user_id,
+                user_name,
+                user_fname,
+                user_lname,
+                entry_date
+            )
+        else:
+            logger.info(f"Обновляем данные пользователя user_id {user_id}")
+            await update_user(
                 user_id,
                 user_name,
                 user_fname,

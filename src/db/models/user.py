@@ -37,6 +37,30 @@ async def add_user(
     except Exception as error:
         print(f"Ошибка добавление клиента в БД: {error}")
         return None
+    
+
+async def update_user(
+    user_id: int, username: str, first_name: str, last_name: str, entry_date
+):
+    query = """
+    UPDATE random_user
+    SET
+        username = $1,
+        first_name = $2,
+        last_name = $3,
+        entry_date = $4
+    WHERE
+        user_id = $5
+    """
+    try:
+        pool = await User.connect()
+        async with pool.acquire() as conn:
+            await conn.execute(
+                query, username, first_name, last_name, entry_date, user_id
+            )
+    except Exception as error:
+        print(f"Ошибка при обновлении клиента в БД: {error}")
+        return None
 
 
 async def add_raffle(
