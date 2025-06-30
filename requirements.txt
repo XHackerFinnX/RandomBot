@@ -7,3 +7,4 @@ requests
 pydantic_settings
 tzdata
 colorama
+init_data_py
