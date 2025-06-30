@@ -1,5 +1,6 @@
 import requests
 import ast
+import codecs
 from aiogram import Bot
 from aiogram.enums import ParseMode
 from aiogram.types import BufferedInputFile
@@ -29,6 +30,9 @@ bot = Bot(
 )
 MOSCOW_TZ = ZoneInfo("Europe/Moscow")
 logger = setup_logger("Message")
+
+def decode_unicode(s: str) -> str:
+    return s.encode("utf-16", "surrogatepass").decode("utf-16")
 
 async def message_check_user_raffle(user_id):
     max_retries = 3
@@ -68,32 +72,27 @@ async def message_check_user_raffle(user_id):
                 
 async def message_check_user_raffle_initdata(user_data):
     user_id = user_data.id
+
     if await message_check_user_raffle(user_id):
         try:
             logger.info(f'Добавляем через initData: {user_id}')
-            user_name = '@' + str(user_data.username)
-            user_fname = str(user_data.first_name)
-            user_lname = str(user_data.last_name)
+
+            user_name = '@' + str(user_data.username or "")
+            user_fname_raw = str(user_data.first_name or "")
+            user_lname_raw = str(user_data.last_name or "")
+
+            user_fname = decode_unicode(user_fname_raw)
+            user_lname = decode_unicode(user_lname_raw)
+
             entry_date = datetime.now(MOSCOW_TZ).replace(tzinfo=None)
 
             if not await check_user(user_id):
                 logger.info(f"Добавляем данные нового пользователя user_id {user_id}")
-                await add_user(
-                    user_id,
-                    user_name,
-                    user_fname,
-                    user_lname,
-                    entry_date
-                )
+                await add_user(user_id, user_name, user_fname, user_lname, entry_date)
             else:
                 logger.info(f"Обновляем данные пользователя user_id {user_id}")
-                await update_user(
-                    user_id,
-                    user_name,
-                    user_fname,
-                    user_lname,
-                    entry_date
-                )
+                await update_user(user_id, user_name, user_fname, user_lname, entry_date)
+
         except Exception as error:
             logger.warning(f'Ошибка через initData для user_id={user_id}: {type(error).__name__} - {error}')
         
