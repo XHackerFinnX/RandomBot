@@ -8,7 +8,7 @@ from bot.handler.telegram_auth import get_verified_user
 from db.models.user import count_user_sub_channel, select_all_raffle_active, select_raffle_data, add_user_raffle, delete_user_raffle, check_user_raffle, select_winner_raffle_archive, winner_user
 from db.models.channels import check_channel_id_sub
 from log.log import setup_logger
-from bot.handler.message import message_check_sub_user, message_check_user_raffle, message_data_check_sub_user, message_update_send_channel
+from bot.handler.message import message_check_sub_user, message_check_user_raffle, message_data_check_sub_user, message_update_send_channel, message_check_user_raffle_initdata
 
 from datetime import datetime
 from zoneinfo import ZoneInfo
@@ -91,8 +91,8 @@ async def get_channels(data: HashRaffle, background_tasks: BackgroundTasks, user
     user_id = data.userid
     hash_id = data.hashid
     data = await select_raffle_data(hash_id)
-    print(user_data)
-    background_tasks.add_task(message_check_user_raffle, user_id)
+    print(user_data.user)
+    background_tasks.add_task(message_check_user_raffle_initdata, user_data.user)
     data = data[0]
     sub_channel = data["sub_channel_id"]
     end_date = data["end_date"]
