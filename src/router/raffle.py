@@ -1,10 +1,10 @@
 import base64
 from fastapi.templating import Jinja2Templates
 from fastapi.responses import HTMLResponse
-from fastapi import APIRouter, Request, BackgroundTasks
+from fastapi import APIRouter, Request, BackgroundTasks, Depends
 from pydantic import BaseModel
 from typing import List
-
+from bot.handler.telegram_auth import get_verified_user
 from db.models.user import count_user_sub_channel, select_all_raffle_active, select_raffle_data, add_user_raffle, delete_user_raffle, check_user_raffle, select_winner_raffle_archive, winner_user
 from db.models.channels import check_channel_id_sub
 from log.log import setup_logger
@@ -86,11 +86,12 @@ async def main_random(raffle_id: str, request: Request):
 
 
 @router.post("/api/channels-raffle-sub")
-async def get_channels(data: HashRaffle, background_tasks: BackgroundTasks):
+async def get_channels(data: HashRaffle, background_tasks: BackgroundTasks, user_data: dict = Depends(get_verified_user)):
 
     user_id = data.userid
     hash_id = data.hashid
     data = await select_raffle_data(hash_id)
+    print(user_data)
     background_tasks.add_task(message_check_user_raffle, user_id)
     data = data[0]
     sub_channel = data["sub_channel_id"]

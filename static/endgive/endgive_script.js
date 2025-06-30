@@ -32,8 +32,14 @@ document.addEventListener("DOMContentLoaded", async function () {
     try {
         const response = await fetch("/api/channels-raffle-sub", {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ hashid: raffleId, userid: userId }),
+            headers: {
+                "Content-Type": "application/json",
+                "X-Telegram-InitData": Telegram.WebApp.initData,
+            },
+            body: JSON.stringify({
+                hashid: raffleId,
+                userid: userId,
+            }),
         });
 
         if (!response.ok) {
